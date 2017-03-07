@@ -1,7 +1,6 @@
 stc:
-    resource: "@STCBundle/Controller/"
+    resource: "@StcBundle/Controller/"
     type:     annotation
-    prefix:   /
 
 app:
     resource: "@AppBundle/Controller/"

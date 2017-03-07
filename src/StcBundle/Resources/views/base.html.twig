@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Shoot The Code{% endblock %}</title>
+        {% block stylesheets %}
+        {% endblock %}
+        <link rel="stylesheet" href="{{asset('css/bootstrap-theme.min.css')}}" />
+        <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}" />
+        <link rel="stylesheet" href="{{asset('css/style.css')}}" />
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+
+        <link rel="icon" type="image/x-icon" href="" />
+    </head>
+
+    <body>
+        {% include 'StcBundle:Game:header.html.twig' %}
+
+        {% block content %}
+        {% endblock %}
+    </body>
+{% block javascripts %}{% endblock %}
+</html>

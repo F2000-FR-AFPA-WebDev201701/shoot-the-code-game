@@ -1,9 +1,9 @@
 <?php
 
-namespace STCBundle;
+namespace StcBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class STCBundle extends Bundle
-{
+class StcBundle extends Bundle {
+
 }
