@@ -1,0 +1,57 @@
+@charset "utf-8";
+/* CSS Document */
+
+.padding-0 { padding: 0 }
+.margin-0 { margin: 0 }
+
+header img
+{
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+#objectif, #howto { margin-bottom: 30px }
+
+#score table { border: 1px solid #ddd }
+
+#contact form { margin-bottom: 70px }
+
+input { margin-bottom: 15px }
+
+h1
+{
+    margin: 50px 0 20px;
+    font-size: 2em;
+}
+
+h2 { font-size: 1.3em }
+
+#connexion p, #inscription p
+{
+    margin-bottom: 20px;
+    font-size: 0.9em;
+}
+
+/* PLATEAU */
+
+#plateau { margin: 30px 0 }
+
+#plateau table
+{
+    width: 960px;
+    height: 600px;
+    background: #D0D0D0;
+}
+
+.power { margin-top: 20px }
+
+#jouer_accueil { margin-bottom: 100px }
+
+#indications
+{
+    font-size: 2.8em;
+    margin-top: 40px;
+}
+
+/* [class*="col-"] { border: 1px solid black } */
+/* [class*="row"] { border: 1px solid red } */
