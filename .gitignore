@@ -9,6 +9,9 @@
 # Vendors
 /vendor
 
+# Netbeans
+/nbproject
+
 # Managed by Composer
 /app/bootstrap.php.cache
 /var/bootstrap.php.cache
@@ -29,3 +32,4 @@
 
 # Backup entities generated with doctrine:generate:entities command
 **/Entity/*~
+/nbproject/private/
