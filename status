@@ -1,0 +1,92 @@
+warning: LF will be replaced by CRLF in bin/symfony_requirements.
+The file will have its original line endings in your working directory.
+warning: LF will be replaced by CRLF in var/SymfonyRequirements.php.
+The file will have its original line endings in your working directory.
+warning: LF will be replaced by CRLF in web/config.php.
+The file will have its original line endings in your working directory.
+warning: LF will be replaced by CRLF in app/config/parameters.yml.
+The file will have its original line endings in your working directory.
+[1mdiff --git a/app/config/parameters.yml b/app/config/parameters.yml[m
+[1mindex 3b5b74c..2b8609e 100644[m
+[1m--- a/app/config/parameters.yml[m
+[1m+++ b/app/config/parameters.yml[m
+[36m@@ -2,7 +2,7 @@[m
+ parameters:[m
+     database_host: 127.0.0.1[m
+     database_port: null[m
+[31m-    database_name: symfony[m
+[32m+[m[32m    database_name: stc[m
+     database_user: root[m
+     database_password: null[m
+     mailer_transport: smtp[m
+[1mdiff --git a/src/StcBundle/Resources/views/Game/index.html.twig b/src/StcBundle/Resources/views/Game/index.html.twig[m
+[1mindex e8c5842..47a9f99 100644[m
+[1m--- a/src/StcBundle/Resources/views/Game/index.html.twig[m
+[1m+++ b/src/StcBundle/Resources/views/Game/index.html.twig[m
+[36m@@ -1,194 +1,198 @@[m
+[31m-<!doctype html>[m
+[31m-<html>[m
+[31m-    <head>[m
+[31m-        <meta charset="utf-8">[m
+[31m-        <title>Shoot the Code - Accueil</title>[m
+[31m-        <!-- jQuery -->[m
+[31m-        <script src="js/jquery.js"></script>[m
+[31m-        <!-- Bootstrap CSS -->[m
+[31m-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">[m
+[31m-       <!-- Bootstrap JavaScript -->[m
+[31m-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>[m
+[31m-        [m
+[31m-        <link href="css/style.css" rel="stylesheet" type="text/css">[m
+[31m-    </head>[m
+[32m+[m[32m{% extends 'StcBundle::base.html.twig' %}[m
+ [m
+[31m-    <body>[m
+[31m-        [m
+[31m-        <!-- Bannière -->[m
+[31m-        <header>[m
+[31m-            <div class="row margin-0">[m
+[31m-                <div class="col-xs-12 padding-0">[m
+[31m-                    <a href="#">[m
+[31m-                        <img src="http://fakeimg.pl/1366x150/?text=Bannière" alt="Bannière Shoot the code" title="Shoot the Code" />[m
+[31m-                    </a>[m
+[32m+[m[32m{% block title %}[m
+[32m+[m[32mAccueil[m
+[32m+[m[32m{% endblock %}[m
+[32m+[m
+[32m+[m[32m{% block content %}[m
+[32m+[m[32m<!-- Bannière -->[m
+[32m+[m[32m<header>[m
+[32m+[m[32m    <div class="row margin-0">[m
+[32m+[m[32m        <div class="col-xs-12 padding-0">[m
+[32m+[m[32m            <a href="#">[m
+[32m+[m[32m                <img src="http://fakeimg.pl/1366x150/?text=Bannière" alt="Bannière Shoot the code" title="Shoot the Code" />[m
+[32m+[m[32m            </a>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </div>[m
+[32m+[m[32m</header>[m
+[32m+[m[32m<!-- /Bannière -->[m
+[32m+[m
+[32m+[m[32m<main class="container-fluid">[m
+[32m+[m
+[32m+[m[32m    <!-- Avertissement aux personnes n'ayant pas activé Javascript -->[m
+[32m+[m[32m    <noscript>[m
+[32m+[m[32m        <section class="row">[m
+[32m+[m[32m            <p class="col-sm-10 col-sm-offset-1 col-md-4 col-md-offset-4 text-center">[m
+[32m+[m[32m                Ce jeu n'est accessible que pour les navigateurs autorisant javascript, désolé ![m
+[32m+[m[32m            </p>[m
+[32m+[m[32m        </section>[m
+[32m+[m[32m    </noscript>[m
+[32m+[m[32m    <!-- /Avertissement aux personnes n'ayant pas activé Javascript -->[m
+[32m+[m
+[32m+[m[32m    <!-- Jouer -->[m
+[32m+[m[32m    <section id="jouer" class="row visible-lg">[m
+[32m+[m[32m        <a href="jouer.html">[m
+[32m+[m[32m            <img src="http://fakeimg.pl/400x150/?text=Jouer" alt="Jouer !" title="Jouer !" class="col-sm-10 col-sm-offset-1 col-md-4 col-md-offset-4" />[m
+[32m+[m[32m        </a>[m
+[32m+[m[32m    </section>[m
+[32m+[m[32m    <!-- /Jouer -->[m
+[32m+[m
+[32m+[m[32m    <!-- Connexion -->[m
+[32m+[m[32m    <section id="connexion" class="row hidden">[m
+[32m+[m[32m        <h2 class="col-sm-10 col-sm-offset-">[m
+[32m+[m[32m            Pour jou
