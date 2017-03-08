@@ -7,7 +7,7 @@ use StcBundle\Model\Square;
 class Board {
 
     private $hauteur = 20;
-    private $longueur = 16;
+    private $longueur = 15;
     private $cases = [];
 
     //Constructeur
@@ -23,6 +23,17 @@ class Board {
                 $this->cases[$y][$x] = new Square($y, $x);
             }
         }
+
+        //Tests affichage
+        $this->cases[19][7]->setContent('Avion');
+        $this->cases[1][2]->setContent('Bloc');
+        $this->cases[1][3]->setContent('Bloc');
+        $this->cases[1][5]->setContent('Bloc');
+        $this->cases[1][6]->setContent('Bloc');
+        $this->cases[1][8]->setContent('Bloc');
+        $this->cases[1][9]->setContent('Bloc');
+        $this->cases[1][11]->setContent('Bloc');
+        $this->cases[1][12]->setContent('Bloc');
     }
 
     //Getters et Setters
