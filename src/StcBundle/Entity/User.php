@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="users")
+ * @ORM\Table(name="User")
  */
 class User {
 
@@ -19,27 +19,33 @@ class User {
 
     /**
      * @ORM\Column(name="login",type="string", length=20, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Type("string")
      */
     private $login;
 
     /**
      * @ORM\Column(name="password",type="string", length=100, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Type("string")
      */
     private $password;
 
     /**
      * @ORM\Column(name="mail",type="string", length=100, nullable=false)
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
      */
     private $mail;
-
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -50,8 +56,7 @@ class User {
      *
      * @return User
      */
-    public function setLogin($login)
-    {
+    public function setLogin($login) {
         $this->login = $login;
 
         return $this;
@@ -62,8 +67,7 @@ class User {
      *
      * @return string
      */
-    public function getLogin()
-    {
+    public function getLogin() {
         return $this->login;
     }
 
@@ -74,8 +78,7 @@ class User {
      *
      * @return User
      */
-    public function setPassword($password)
-    {
+    public function setPassword($password) {
         $this->password = $password;
 
         return $this;
@@ -86,8 +89,7 @@ class User {
      *
      * @return string
      */
-    public function getPassword()
-    {
+    public function getPassword() {
         return $this->password;
     }
 
@@ -98,8 +100,7 @@ class User {
      *
      * @return User
      */
-    public function setMail($mail)
-    {
+    public function setMail($mail) {
         $this->mail = $mail;
 
         return $this;
@@ -110,8 +111,8 @@ class User {
      *
      * @return string
      */
-    public function getMail()
-    {
+    public function getMail() {
         return $this->mail;
     }
+
 }
