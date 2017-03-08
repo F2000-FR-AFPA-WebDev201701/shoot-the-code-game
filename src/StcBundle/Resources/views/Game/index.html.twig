@@ -45,19 +45,17 @@
             <p class="col-sm-10 col-sm-offset-1">
                 <a href="#">Pas encore inscrit ? Inscrivez-vous !</a>
             </p>
-            <form method="post" class="col-sm-10 col-sm-offset-1">
-                <fieldset class="row">
-                    <div class="col-xs-12">
-                        <input type="text" name="login" placeholder="Entrez votre pseudo" class="form-control" required />
-                    </div>
-                    <div class="col-xs-12">
-                        <input type="password" name="password" placeholder="*********" class="form-control" required />
-                    </div>
-                    <div class="col-xs-12">
-                        <input type="submit" value="Se connecter" class="form-control btn-primary" />
-                    </div>
-                </fieldset>
-            </form>
+            {#{{form_start(userForm)}}
+            <div class="col-xs-12">
+                {{form_widget(userForm.login)}}
+            </div>
+            <div class="col-xs-12">
+                {{form_widget(userForm.password)}}
+            </div>
+            <div class="col-xs-12">
+                {{form_widget(userForm.submit)}}
+            </div>
+            {{form_end(userForm)}}#}
         </section>
         <!-- /Connexion -->
 
@@ -90,25 +88,6 @@
             </div>
             {{form_widget(inscriptionForm)}}
             {{form_end(inscriptionForm)}}
-            {#<form method="post" class="col-sm-10 col-sm-offset-1">
-                <fieldset class="row">
-                    <div class="col-xs-12">
-                        <input type="text" name="login" placeholder="Entrez votre pseudo" class="form-control" required />
-                    </div>
-                    <div class="col-xs-12">
-                        <input type="password" name="password" placeholder="Entrez un mot de passe" class="form-control" required />
-                    </div>
-                    <div class="col-xs-12">
-                        <input type="password" name="password2" placeholder="Retapez votre mot de passe" class="form-control" required />
-                    </div>
-                    <div class="col-xs-12">
-                        <input type="email" name="mail_inscription" placeholder="Entrez votre adresse mail" class="form-control" required />
-                    </div>
-                    <div class="col-xs-12">
-                        <input type="submit" value="S'inscrire" class="form-control btn-primary" />
-                    </div>
-                </fieldset>
-            </form>#}
         </section>
         <!-- /Inscription -->
 

@@ -42,6 +42,7 @@ class GameController extends Controller {
 //        }
 
         return $this->render('StcBundle:Game:index.html.twig', array(
+                    //'userForm' => $oUserForm->createView(),
                     'inscriptionForm' => $oInscriptionForm->createView(),
                     'contactForm' => $oContactForm->createView()));
     }

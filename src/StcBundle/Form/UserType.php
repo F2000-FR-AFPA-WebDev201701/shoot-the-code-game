@@ -12,9 +12,17 @@ class UserType extends AbstractType {
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('login')
-                ->add('password')
-                ->add('mail');
+        $builder->add('login', FormType\TextType::class, array(
+                    'attr' => array('class' => 'form-control',
+                        'placeholder' => 'Entrez votre pseudo',
+                        'required' => 'true')))
+                ->add('password', FormType\PasswordType::class, array(
+                    'attr' => array('class' => 'form-control',
+                        'placeholder' => 'Entrez votre mot de passe',
+                        'required' => 'true')))
+                ->add('submit', FormType\SubmitType::class, array(
+                    'attr' => array('class' => 'form-control btn-primary',
+                        'value' => 'Se connecter')));
     }
 
     /**
