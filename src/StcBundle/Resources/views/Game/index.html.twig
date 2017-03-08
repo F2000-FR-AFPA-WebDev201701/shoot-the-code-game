@@ -26,20 +26,33 @@
                 Ce jeu n'est accessible que pour les navigateurs autorisant javascript, désolé !
             </p>
         </section>
+
         </noscript>
         <!-- /Avertissement aux personnes n'ayant pas activé Javascript -->
 
         <!-- Jouer -->
         <section id="jouer" class="row visible-lg">
-            <a href="jouer.html">
-                <img src="http://fakeimg.pl/400x150/?text=Jouer" alt="Jouer !" title="Jouer !" class="col-sm-10 col-sm-offset-1 col-md-4 col-md-offset-4" />
-            </a>
+            <div class="col-lg-2 col-lg-offset-2 text-right">
+                <a href="jouer.html">
+                    <img src="http://fakeimg.pl/200x100/?text=Solo" alt="Jouer en solo" title="Jouer en solo" />
+                </a>
+            </div>
+            <div class="col-lg-2 col-lg-offset-1 text-center">
+                <a href="jouer.html">
+                    <img src="http://fakeimg.pl/200x100/?text=Multi" alt="Créer une partie multijoueur" title="Créer une partie multijoueur" />
+                </a>
+            </div>
+            <div class="col-lg-2 col-lg-offset-1">
+                <a href="jouer.html">
+                    <img src="http://fakeimg.pl/200x100/?text=Rejoindre" alt="Rejoindre une partie" title="Rejoindre une partie" />
+                </a>
+            </div>
         </section>
         <!-- /Jouer -->
 
         <!-- Connexion -->
         <section id="connexion" class="row hidden">
-            <h2 class="col-sm-10 col-sm-offset-">
+            <h2 class="col-sm-10 col-sm-offset-1">
                 Pour jouer, vous devez vous connecter :
             </h2>
             <p class="col-sm-10 col-sm-offset-1">
@@ -70,21 +83,32 @@
             <p class="col-sm-10 col-sm-offset-1">
                 Attention : votre résolution actuelle ne vous permet pas de jouer à ce jeu.
             </p>
-            {{form_start(inscriptionForm)}}
-            <div class="col-xs-12">
-                {{form_widget(inscriptionForm.login)}}
+
+            {{form_start(inscriptionForm, {'attr' : {'class' : 'col-sm-10 col-sm-offset-1 '}})}}
+            <div class="row">
+                <div class="col-xs-12">
+                    {{form_widget(inscriptionForm.login)}}
+                </div>
             </div>
-            <div class="col-xs-12">
-                {{form_widget(inscriptionForm.password)}}
+            <div class="row">
+                <div class="col-xs-12">
+                    {{form_widget(inscriptionForm.password)}}
+                </div>
             </div>
-            <div class="col-xs-12">
-                {{form_widget(inscriptionForm.password2)}}
+            <div class="row">
+                <div class="col-xs-12">
+                    {{form_widget(inscriptionForm.password2)}}
+                </div>
             </div>
-            <div class="col-xs-12">
-                {{form_widget(inscriptionForm.mail_inscription)}}
+            <div class="row">
+                <div class="col-xs-12">
+                    {{form_widget(inscriptionForm.mail_inscription)}}
+                </div>
             </div>
-            <div class="col-xs-12">
-                {{form_widget(inscriptionForm.submit)}}
+            <div class="row">
+                <div class="col-xs-12">
+                    {{form_widget(inscriptionForm.submit)}}
+                </div>
             </div>
             {{form_widget(inscriptionForm)}}
             {{form_end(inscriptionForm)}}
@@ -176,34 +200,30 @@
                 </h1>
             </div>
             <div class="row">
-                <form method="post" class="col-sm-10 col-sm-offset-1">
-                    <div class="row">
-                        {{form_start(contactForm)}}
-                        <div class="col-sm-5">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    {{form_widget(contactForm.name)}}
-                                </div>
-                                <div class="col-sm-12">
-                                    {{form_widget(contactForm.email)}}
-                                </div>
-                                <div class="col-sm-12">
-                                    {{form_widget(contactForm.submit,{
+                {{form_start(contactForm, {'attr' : {'class' : 'col-sm-10 col-sm-offset-1'}})}}
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {{form_widget(contactForm.name)}}
+                            </div>
+                            <div class="col-sm-12">
+                                {{form_widget(contactForm.email)}}
+                            </div>
+                            <div class="col-sm-12">
+                                {{form_widget(contactForm.submit,{
                                     'label' : 'Valider'
                                         })
-                                    }}
-                                </div>
+                                }}
                             </div>
                         </div>
-                        <div class="col-sm-7">
-                            <div class="col-sm-12">
-                                {{form_widget(contactForm.message)}}
-                            </div>
-                        </div>
-                        {{form_widget(contactForm)}}
-                        {{form_end(contactForm)}}
                     </div>
-                </form>
+                    <div class="col-sm-7">
+                        {{form_widget(contactForm.message)}}
+                    </div>
+                    {{form_widget(contactForm)}}
+                </div>
+                {{form_end(contactForm)}}
             </div>
         </section>
         <!-- /Contact -->

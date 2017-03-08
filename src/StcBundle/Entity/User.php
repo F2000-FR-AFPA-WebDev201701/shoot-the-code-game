@@ -3,6 +3,7 @@
 namespace StcBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -34,18 +35,33 @@ class User {
     /**
      * @ORM\Column(name="mail",type="string", length=100, nullable=false)
      * @Assert\Email(
-     *     message = "The email '{{ value }}' is not a valid email.",
+     *     message = "L'email '{{ value }}' n'est pas valide.",
      *     checkMX = true
      * )
      */
     private $mail;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Game", inversedBy="users")
+     * @ORM\JoinTable(name="users_games")
+     */
+    private $games;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->games = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -56,7 +72,8 @@ class User {
      *
      * @return User
      */
-    public function setLogin($login) {
+    public function setLogin($login)
+    {
         $this->login = $login;
 
         return $this;
@@ -67,7 +84,8 @@ class User {
      *
      * @return string
      */
-    public function getLogin() {
+    public function getLogin()
+    {
         return $this->login;
     }
 
@@ -78,7 +96,8 @@ class User {
      *
      * @return User
      */
-    public function setPassword($password) {
+    public function setPassword($password)
+    {
         $this->password = $password;
 
         return $this;
@@ -89,7 +108,8 @@ class User {
      *
      * @return string
      */
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
 
@@ -100,7 +120,8 @@ class User {
      *
      * @return User
      */
-    public function setMail($mail) {
+    public function setMail($mail)
+    {
         $this->mail = $mail;
 
         return $this;
@@ -111,8 +132,42 @@ class User {
      *
      * @return string
      */
-    public function getMail() {
+    public function getMail()
+    {
         return $this->mail;
     }
 
+    /**
+     * Add game
+     *
+     * @param \StcBundle\Entity\Game $game
+     *
+     * @return User
+     */
+    public function addGame(\StcBundle\Entity\Game $game)
+    {
+        $this->games[] = $game;
+
+        return $this;
+    }
+
+    /**
+     * Remove game
+     *
+     * @param \StcBundle\Entity\Game $game
+     */
+    public function removeGame(\StcBundle\Entity\Game $game)
+    {
+        $this->games->removeElement($game);
+    }
+
+    /**
+     * Get games
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGames()
+    {
+        return $this->games;
+    }
 }
