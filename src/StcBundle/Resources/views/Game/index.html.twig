@@ -27,96 +27,96 @@
             </p>
         </section>
 
-    </noscript>
-    <!-- /Avertissement aux personnes n'ayant pas activé Javascript -->
+        </noscript>
+        <!-- /Avertissement aux personnes n'ayant pas activé Javascript -->
 
-    <!-- Jouer -->
-    <section id="jouer" class="row visible-lg">
-        <div class="col-lg-2 col-lg-offset-2 text-right">
-            <a href="jouer.html">
-                <img src="http://fakeimg.pl/200x100/?text=Solo" alt="Jouer en solo" title="Jouer en solo" />
-            </a>
-        </div>
-        <div class="col-lg-2 col-lg-offset-1 text-center">
-            <a href="jouer.html">
-                <img src="http://fakeimg.pl/200x100/?text=Multi" alt="Créer une partie multijoueur" title="Créer une partie multijoueur" />
-            </a>
-        </div>
-        <div class="col-lg-2 col-lg-offset-1">
-            <a href="jouer.html">
-                <img src="http://fakeimg.pl/200x100/?text=Rejoindre" alt="Rejoindre une partie" title="Rejoindre une partie" />
-            </a>
-        </div>
-    </section>
-    <!-- /Jouer -->
+        <!-- Jouer -->
+        <section id="jouer" class="row visible-lg">
+            <div class="col-lg-2 col-lg-offset-2 text-right">
+                <a href="jouer.html">
+                    <img src="http://fakeimg.pl/200x100/?text=Solo" alt="Jouer en solo" title="Jouer en solo" />
+                </a>
+            </div>
+            <div class="col-lg-2 col-lg-offset-1 text-center">
+                <a href="jouer.html">
+                    <img src="http://fakeimg.pl/200x100/?text=Multi" alt="Créer une partie multijoueur" title="Créer une partie multijoueur" />
+                </a>
+            </div>
+            <div class="col-lg-2 col-lg-offset-1">
+                <a href="jouer.html">
+                    <img src="http://fakeimg.pl/200x100/?text=Rejoindre" alt="Rejoindre une partie" title="Rejoindre une partie" />
+                </a>
+            </div>
+        </section>
+        <!-- /Jouer -->
 
-    <!-- Connexion -->
-    <section id="connexion" class="row hidden">
-        <h2 class="col-sm-10 col-sm-offset-1">
-            Pour jouer, vous devez vous connecter :
-        </h2>
-        <p class="col-sm-10 col-sm-offset-1">
-            <a href="#">Pas encore inscrit ? Inscrivez-vous !</a>
-        </p>
-        <form method="post" class="col-sm-10 col-sm-offset-1">
-            <fieldset class="row">
+        <!-- Connexion -->
+        <section id="connexion" class="row hidden">
+            <h2 class="col-sm-10 col-sm-offset-1">
+                Pour jouer, vous devez vous connecter :
+            </h2>
+            <p class="col-sm-10 col-sm-offset-1">
+                <a href="#">Pas encore inscrit ? Inscrivez-vous !</a>
+            </p>
+            <form method="post" class="col-sm-10 col-sm-offset-1">
+                <fieldset class="row">
+                    <div class="col-xs-12">
+                        <input type="text" name="login" placeholder="Entrez votre pseudo" class="form-control" required />
+                    </div>
+                    <div class="col-xs-12">
+                        <input type="password" name="password" placeholder="*********" class="form-control" required />
+                    </div>
+                    <div class="col-xs-12">
+                        <input type="submit" value="Se connecter" class="form-control btn-primary" />
+                    </div>
+                </fieldset>
+            </form>
+        </section>
+        <!-- /Connexion -->
+
+        <!-- Inscription -->
+        <section id="inscription" class="row hidden-lg">
+            <h2 class="col-sm-10 col-sm-offset-1">
+                Inscription :
+            </h2>
+            <p class="col-sm-10 col-sm-offset-1">
+                <a href="#">Retourner au formulaire de connexion.</a>
+            </p>
+            <p class="col-sm-10 col-sm-offset-1">
+                Attention : votre résolution actuelle ne vous permet pas de jouer à ce jeu.
+            </p>
+
+            {{form_start(inscriptionForm, {'attr' : {'class' : 'col-sm-10 col-sm-offset-1 '}})}}
+            <div class="row">
                 <div class="col-xs-12">
-                    <input type="text" name="login" placeholder="Entrez votre pseudo" class="form-control" required />
+                    {{form_widget(inscriptionForm.login)}}
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-xs-12">
-                    <input type="password" name="password" placeholder="*********" class="form-control" required />
+                    {{form_widget(inscriptionForm.password)}}
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-xs-12">
-                    <input type="submit" value="Se connecter" class="form-control btn-primary" />
+                    {{form_widget(inscriptionForm.password2)}}
                 </div>
-            </fieldset>
-        </form>
-    </section>
-    <!-- /Connexion -->
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    {{form_widget(inscriptionForm.mail_inscription)}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    {{form_widget(inscriptionForm.submit)}}
+                </div>
+            </div>
+            {{form_widget(inscriptionForm)}}
+            {{form_end(inscriptionForm)}}
 
-    <!-- Inscription -->
-    <section id="inscription" class="row hidden-lg">
-        <h2 class="col-sm-10 col-sm-offset-1">
-            Inscription :
-        </h2>
-        <p class="col-sm-10 col-sm-offset-1">
-            <a href="#">Retourner au formulaire de connexion.</a>
-        </p>
-        <p class="col-sm-10 col-sm-offset-1">
-            Attention : votre résolution actuelle ne vous permet pas de jouer à ce jeu.
-        </p>
-
-        {{form_start(inscriptionForm, {'attr' : {'class' : 'col-sm-10 col-sm-offset-1 '}})}}
-        <div class="row">
-            <div class="col-xs-12">
-                {{form_widget(inscriptionForm.login)}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                {{form_widget(inscriptionForm.password)}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                {{form_widget(inscriptionForm.password2)}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                {{form_widget(inscriptionForm.mail_inscription)}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                {{form_widget(inscriptionForm.submit)}}
-            </div>
-        </div>
-        {{form_widget(inscriptionForm)}}
-        {{form_end(inscriptionForm)}}
-
-    </section>
-    <!-- /Inscription -->
+        </section>
+        <!-- /Inscription -->
 
         <!-- Règles -->
         <section id="regles">
@@ -204,29 +204,29 @@
             </div>
             <div class="row">
                 {{form_start(contactForm, {'attr' : {'class' : 'col-sm-10 col-sm-offset-1'}})}}
-                    <div class="row">
-                        <div class="col-sm-5">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    {{form_widget(contactForm.name)}}
-                                </div>
-                                <div class="col-sm-12">
-                                    {{form_widget(contactForm.email)}}
-                                </div>
-                                <div class="col-sm-12">
-                                    {{form_widget(contactForm.submit,{
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {{form_widget(contactForm.name)}}
+                            </div>
+                            <div class="col-sm-12">
+                                {{form_widget(contactForm.email)}}
+                            </div>
+                            <div class="col-sm-12">
+                                {{form_widget(contactForm.submit,{
                                     'label' : 'Valider'
                                         })
-                                    }}
-                                </div>
+                                }}
                             </div>
                         </div>
-                        <div class="col-sm-7">
-                            {{form_widget(contactForm.message)}}
-                        </div>
-                        {{form_widget(contactForm)}}
                     </div>
-            {{form_end(contactForm)}}
+                    <div class="col-sm-7">
+                        {{form_widget(contactForm.message)}}
+                    </div>
+                    {{form_widget(contactForm)}}
+                </div>
+                {{form_end(contactForm)}}
             </div>
         </section>
         <!-- /Contact -->
