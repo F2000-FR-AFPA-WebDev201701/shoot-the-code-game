@@ -50,8 +50,7 @@ class User {
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->games = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -60,8 +59,7 @@ class User {
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -72,8 +70,7 @@ class User {
      *
      * @return User
      */
-    public function setLogin($login)
-    {
+    public function setLogin($login) {
         $this->login = $login;
 
         return $this;
@@ -84,8 +81,7 @@ class User {
      *
      * @return string
      */
-    public function getLogin()
-    {
+    public function getLogin() {
         return $this->login;
     }
 
@@ -96,9 +92,9 @@ class User {
      *
      * @return User
      */
-    public function setPassword($password)
-    {
+    public function setPassword($password) {
         $this->password = $password;
+        //$this->password = sha1($password);
 
         return $this;
     }
@@ -108,8 +104,7 @@ class User {
      *
      * @return string
      */
-    public function getPassword()
-    {
+    public function getPassword() {
         return $this->password;
     }
 
@@ -120,8 +115,7 @@ class User {
      *
      * @return User
      */
-    public function setMail($mail)
-    {
+    public function setMail($mail) {
         $this->mail = $mail;
 
         return $this;
@@ -132,8 +126,7 @@ class User {
      *
      * @return string
      */
-    public function getMail()
-    {
+    public function getMail() {
         return $this->mail;
     }
 
@@ -144,8 +137,7 @@ class User {
      *
      * @return User
      */
-    public function addGame(\StcBundle\Entity\Game $game)
-    {
+    public function addGame(\StcBundle\Entity\Game $game) {
         $this->games[] = $game;
 
         return $this;
@@ -156,8 +148,7 @@ class User {
      *
      * @param \StcBundle\Entity\Game $game
      */
-    public function removeGame(\StcBundle\Entity\Game $game)
-    {
+    public function removeGame(\StcBundle\Entity\Game $game) {
         $this->games->removeElement($game);
     }
 
@@ -166,8 +157,8 @@ class User {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getGames()
-    {
+    public function getGames() {
         return $this->games;
     }
+
 }

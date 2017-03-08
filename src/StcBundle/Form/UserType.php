@@ -5,6 +5,7 @@ namespace StcBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type as FormType;
 
 class UserType extends AbstractType {
 
@@ -12,9 +13,17 @@ class UserType extends AbstractType {
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('login')
-                ->add('password')
-                ->add('mail');
+        $builder->add('login', FormType\TextType::class, array(
+                    'attr' => array('class' => 'form-control',
+                        'placeholder' => 'Entrez votre pseudo',
+                        'required' => 'true')))
+                ->add('password', FormType\PasswordType::class, array(
+                    'attr' => array('class' => 'form-control',
+                        'placeholder' => 'Entrez votre mot de passe',
+                        'required' => 'true')))
+                ->add('submit', FormType\SubmitType::class, array(
+                    'attr' => array('class' => 'form-control btn-primary',
+                        'value' => 'Se connecter')));
     }
 
     /**
