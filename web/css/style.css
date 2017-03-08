@@ -32,6 +32,11 @@ h2 { font-size: 1.3em }
     font-size: 0.9em;
 }
 
+#regles p
+{
+    text-align: justify;
+}
+
 /* PLATEAU */
 
 #plateau { margin: 30px 0 }
