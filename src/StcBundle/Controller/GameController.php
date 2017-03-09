@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use StcBundle\Form\ContactType;
 use StcBundle\Form\InscriptionType;
+use StcBundle\Form\GameType;
 use StcBundle\Entity\Game;
 
 class GameController extends Controller {
@@ -34,6 +35,10 @@ class GameController extends Controller {
             // prévoir l'inscription en base de l'utilisateur
         }
 
+        $oGame = new Game();
+        $oCreateGameForm = $this->createForm(GameType::class, $oGame);
+        $oCreateGameForm->handleRequest($request);
+
         // gestion formulaire de connexion
 //        $oUserForm = $this->createForm(UserType::class);
 //        $oUserForm->handleRequest($request);
@@ -44,26 +49,31 @@ class GameController extends Controller {
 
         return $this->render('StcBundle:Game:index.html.twig', array(
                     'inscriptionForm' => $oInscriptionForm->createView(),
-                    'contactForm' => $oContactForm->createView()));
+                    'contactForm' => $oContactForm->createView(),
+        ));
     }
 
     /**
      * @Route("/game", name="create_game")
      */
     public function createAction(Request $request) {
-        //TO DO
-        //Formulaire de création de partie
-        // Vérifier si tout ok dans formulaire
-        // Création de la partie dans la base
         //On créé une nouvelle partie
         $oGame = new Game();
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($oGame);
-        //On sérialize le plateau pour le stockage en base de données
-        $oGame->setBoard(serialize($oGame->getBoard()));
-        $em->flush();
-        // Redirection vers gameAction avec l'id de la partie
-        return $this->redirectToRoute('game', array('id' => $oGame->getId()));
+        $oCreateGameForm = $this->createForm(GameType::class, $oGame, array('nom' => $request->getSession()->get('userName')));
+        $oCreateGameForm->handleRequest($request);
+
+        //Si le formulaire est envoyé et valide
+        if ($oCreateGameForm->isSubmitted() && $oCreateGameForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($oGame);
+            //On sérialize le plateau pour le stockage en base de données
+            $oGame->setBoard(serialize($oGame->getBoard()));
+            $em->flush();
+            // Redirection vers gameAction avec l'id de la partie
+            return $this->redirectToRoute('game', array('id' => $oGame->getId()));
+        }
+        return $this->render('StcBundle:Game:creategame.html.twig', array(
+                    'createGameForm' => $oCreateGameForm->createView()));
     }
 
     /**
