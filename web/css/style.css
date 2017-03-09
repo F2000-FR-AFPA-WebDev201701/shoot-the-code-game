@@ -32,6 +32,11 @@ h2 { font-size: 1.3em }
     font-size: 0.9em;
 }
 
+#deconnexion
+{
+    margin-bottom: 50px;
+}
+
 #regles p
 {
     text-align: justify;

@@ -31,8 +31,11 @@
         <!-- /Avertissement aux personnes n'ayant pas activé Javascript -->
 
         {% if (app.request.session.get('userStatus') == 'connected') %}
-            Connecté sous {{app.request.session.get('userName')}}<br />
-            <a href="{{path('logout')}}">Se déconnecter</a>
+            <div id="deconnexion" class="row text-center">
+                <p class="col-xs-12">Connecté sous {{app.request.session.get('userName')}}</p>
+                <a href="{{path('logout')}}"><button class="btn btn-primary">Se déconnecter</button></a>
+            </div>
+            
             <!-- Jouer -->
             <section id="jouer" class="row visible-lg">
                 <div class="col-lg-2 col-lg-offset-2 text-right">
