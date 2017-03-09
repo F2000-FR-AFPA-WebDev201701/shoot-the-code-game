@@ -27,7 +27,7 @@ class UserController extends Controller {
             $userPwd = $oUser->getPassword();
             //$userPwd = sha1($oConnexionUser->getPassword());
             $em = $this->getDoctrine()->getManager();
-            $userRepository = $em->getRepository('StcBundle:Users');
+            $userRepository = $em->getRepository('StcBundle:User');
             $userRepository->findOneBy(array(
                 'login' => $userName,
                 'password' => $userPwd));
