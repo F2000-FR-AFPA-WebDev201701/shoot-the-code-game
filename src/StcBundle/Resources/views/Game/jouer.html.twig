@@ -1,57 +1,61 @@
 {% extends 'StcBundle::base.html.twig' %}
 
 {% block title %}
-Jouer
+    Jouer
 {% endblock %}
 
 {% block content %}
-<main id="plateau" class="container-fluid visible-lg">
+    <main id="plateau" class="container-fluid visible-lg">
 
-    <div class="row">
+        <div class="row">
 
-        <!-- Plateau -->
-        <table class="col-lg-9 col-lg-offset-1">
+            <!-- Plateau -->
+            <table class="col-lg-9 col-lg-offset-1 table table-bordered text-center">
+                {% for ligne in plateau %}
+                    <tr>{% for case in ligne %}
+                        <td>{{ case.content}}</td>
+                    {% endfor %}</tr>
+                    {% endfor %}
 
-        </table>
-        <!-- /Plateau -->
+                </table>
+                <!-- /Plateau -->
 
-        <!-- Menu latéral -->
-        <div class="col-lg-1">
-            <div class="row">
-                <a href="index.html">
-                    <img src="http://fakeimg.pl/87x87/?text=Accueil" alt="Accueil" title="Accueil" class="col-lg-12" id="jouer_accueil" />
-                </a>
-                <img src="http://fakeimg.pl/87x87/?text=Pouvoir_1" alt="Pouvoir 1" title="Pouvoir 1" class="col-lg-12 power" />
-                <img src="http://fakeimg.pl/87x87/?text=Pouvoir_2" alt="Pouvoir 2" title="Pouvoir 2" class="col-lg-12 power" />
-                <img src="http://fakeimg.pl/87x87/?text=Pouvoir_3" alt="Pouvoir 3" title="Pouvoir 3" class="col-lg-12 power" />
+                <!-- Menu latéral -->
+                <div class="col-lg-1">
+                    <div class="row">
+                        <a href="{{path('index')}}">
+                            <img src="http://fakeimg.pl/87x87/?text=Accueil" alt="Accueil" title="Accueil" class="col-lg-12" id="jouer_accueil" />
+                        </a>
+                        <img src="http://fakeimg.pl/87x87/?text=Pouvoir_1" alt="Pouvoir 1" title="Pouvoir 1" class="col-lg-12 power" />
+                        <img src="http://fakeimg.pl/87x87/?text=Pouvoir_2" alt="Pouvoir 2" title="Pouvoir 2" class="col-lg-12 power" />
+                        <img src="http://fakeimg.pl/87x87/?text=Pouvoir_3" alt="Pouvoir 3" title="Pouvoir 3" class="col-lg-12 power" />
+                    </div>
+                </div>
+                <!-- /Menu latéral -->
             </div>
-        </div>
-        <!-- /Menu latéral -->
 
-    </div>
+            <!-- Indications -->
+            <div id="indications" class="row">
+                <div class="col-lg-1 col-lg-offset-2">
+                    <span class="glyphicon glyphicon-arrow-left"></span> Q
+                </div>
+                <div class="col-lg-1 col-lg-offset-1">
+                    <span class="glyphicon glyphicon-arrow-right"></span> S
+                </div>
+                <div class="col-lg-2 col-lg-offset-1">
+                    Espace <span class="glyphicon glyphicon-chevron-up"></span>
+                </div>
+            </div>
+            <!-- /Indications -->
 
-    <!-- Indications -->
-    <div id="indications" class="row">
-        <div class="col-lg-1 col-lg-offset-2">
-            <span class="glyphicon glyphicon-arrow-left"></span> Q
-        </div>
-        <div class="col-lg-1 col-lg-offset-1">
-            <span class="glyphicon glyphicon-arrow-right"></span> S
-        </div>
-        <div class="col-lg-2 col-lg-offset-1">
-            Espace <span class="glyphicon glyphicon-chevron-up"></span>
-        </div>
-    </div>
-    <!-- /Indications -->
+        </main>
 
-</main>
-
-<!-- Résolution trop faible -->
-<main class="hidden-lg text-center">
-    <h1>
-        Vous n'avez pas la résolution nécessaire pour jouer à ce jeu.
-    </h1>
-    <p><a href="index.html">Retourner à l'accueil.</a></p>
-</main>
-<!-- /Résolution trop faible -->
-{% endblock %}
+        <!-- Résolution trop faible -->
+        <main class="hidden-lg text-center">
+            <h1>
+                Vous n'avez pas la résolution nécessaire pour jouer à ce jeu.
+            </h1>
+            <p><a href="index.html">Retourner à l'accueil.</a></p>
+        </main>
+        <!-- /Résolution trop faible -->
+        {% endblock %}
