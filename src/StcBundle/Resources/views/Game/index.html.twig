@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block content %}
-
     <!-- Bannière -->
     <header>
         <div class="row margin-0">
@@ -30,23 +29,30 @@
         </noscript>
         <!-- /Avertissement aux personnes n'ayant pas activé Javascript -->
 
+
         {% if (app.request.session.get('userStatus') == 'connected') %}
+            <div class="modal fade" id="soloModal">
+                <div class="modal-dialog">
+                    {{ render(controller('StcBundle:Game:create')) }}
+                </div>
+            </div>
+
             Connecté sous {{app.request.session.get('userName')}}<br />
             <a href="{{path('logout')}}">Se déconnecter</a>
             <!-- Jouer -->
             <section id="jouer" class="row visible-lg">
                 <div class="col-lg-2 col-lg-offset-2 text-right">
-                    <a href="{{path('create_game')}}">
+                    <a href="#soloModal" data-toggle="modal">
                         <img src="http://fakeimg.pl/200x100/?text=Solo" alt="Jouer en solo" title="Jouer en solo" />
                     </a>
                 </div>
                 <div class="col-lg-2 col-lg-offset-1 text-center">
-                    <a href="jouer.html">
+                    <a href=#>
                         <img src="http://fakeimg.pl/200x100/?text=Multi" alt="Créer une partie multijoueur" title="Créer une partie multijoueur" />
                     </a>
                 </div>
                 <div class="col-lg-2 col-lg-offset-1">
-                    <a href="jouer.html">
+                    <a href=#>
                         <img src="http://fakeimg.pl/200x100/?text=Rejoindre" alt="Rejoindre une partie" title="Rejoindre une partie" />
                     </a>
                 </div>
@@ -69,9 +75,36 @@
                 <p class="col-sm-10 col-sm-offset-1 col-lg-6 col-lg-offset-3 hidden-lg">
                     Attention : votre résolution actuelle ne vous permet pas de jouer à ce jeu.
                 </p>
-                {{ render(controller('StcBundle:User:register')) }}
-            </section>
 
+                {{form_start(inscriptionForm, {'attr' : {'class' : 'col-sm-10 col-sm-offset-1 col-lg-6 col-lg-offset-3'}})}}
+                <div class="row">
+                    <div class="col-xs-12">
+                        {{form_widget(inscriptionForm.login)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        {{form_widget(inscriptionForm.password)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        {{form_widget(inscriptionForm.password2)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        {{form_widget(inscriptionForm.mail_inscription)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        {{form_widget(inscriptionForm.submit)}}
+                    </div>
+                </div>
+                {{form_widget(inscriptionForm)}}
+                {{form_end(inscriptionForm)}}
+            </section>
             <!-- /Inscription -->
         {% endif %}
 
@@ -172,7 +205,7 @@
                             </div>
                             <div class="col-sm-12">
                                 {{form_widget(contactForm.submit,{
-                                    'label' : 'Envoyer le message'
+                                    'label' : 'Valider'
                                         })
                                 }}
                             </div>
