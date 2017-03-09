@@ -1,0 +1,31 @@
+{{form_start(inscriptionForm, {'action' : path('register'),
+                            'attr' : {'class' : 'col-sm-10 col-sm-offset-1 col-lg-6 col-lg-offset-3 '}
+                            })
+}}
+<div class="row">
+    <div class="col-xs-12">
+        {{form_widget(inscriptionForm.login)}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        {{form_widget(inscriptionForm.password)}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        {{form_widget(inscriptionForm.password2)}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        {{form_widget(inscriptionForm.mail_inscription)}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        {{form_widget(inscriptionForm.submit, { 'label': 'S\'enregister' })}}
+    </div>
+</div>
+{{form_widget(inscriptionForm)}}
+{{form_end(inscriptionForm)}}

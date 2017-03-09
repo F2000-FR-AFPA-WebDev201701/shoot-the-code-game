@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use StcBundle\Form\ContactType;
 use StcBundle\Form\InscriptionType;
 use StcBundle\Entity\Game;
+use StcBundle\Entity\User;
 
 class GameController extends Controller {
 
@@ -22,28 +23,11 @@ class GameController extends Controller {
         $oContactForm = $this->createForm(ContactType::class);
         $oContactForm->handleRequest($request);
         if ($oContactForm->isSubmitted() && $oContactForm->isValid()) {
-            // dump($oContactForm->getData());
+            //dump($oContactForm->getData());
             // prévoir l'envoit d'un email à l'administrateur
         }
 
-        // gestion formulaire d'inscription
-        $oInscriptionForm = $this->createForm(InscriptionType::class);
-        $oInscriptionForm->handleRequest($request);
-        if ($oInscriptionForm->isSubmitted() && $oInscriptionForm->isValid()) {
-            // dump($oInscriptionForm->getData());
-            // prévoir l'inscription en base de l'utilisateur
-        }
-
-        // gestion formulaire de connexion
-//        $oUserForm = $this->createForm(UserType::class);
-//        $oUserForm->handleRequest($request);
-//        if ($oUserForm->isSubmitted() && $oUserForm->isValid()) {
-//            // dump($oUserForm->getData());
-//            // prévoir la connexion de l'utilisateur
-//        }
-
         return $this->render('StcBundle:Game:index.html.twig', array(
-                    'inscriptionForm' => $oInscriptionForm->createView(),
                     'contactForm' => $oContactForm->createView()));
     }
 
