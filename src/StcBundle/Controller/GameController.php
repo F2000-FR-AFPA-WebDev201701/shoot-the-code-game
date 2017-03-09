@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use StcBundle\Form\ContactType;
 use StcBundle\Form\InscriptionType;
 use StcBundle\Entity\Game;
+use StcBundle\Model\Square;
 
 class GameController extends Controller {
 
@@ -77,8 +78,36 @@ class GameController extends Controller {
         $oGame->setBoard(unserialize($oGame->getBoard()));
         $board = $oGame->getBoard()->getCases();
         //On retourne le tableau de cases
-        return $this->render('StcBundle:Game:jouer.html.twig', array(
-                    'plateau' => $board));
+        return $this->render(
+            'StcBundle:Game:jouer.html.twig', 
+            array(
+                'idGame'=> $oGame->getId(),
+                'plateau' => $board
+        )
+        );
+    }
+    
+    /**
+    * @Route("/controls/{idGame}/{action}", name="controls")
+    */
+    public function controlsAction($idGame, $action) {
+        
+        $rep=$this->getDoctrine()->getRepository('StcBundle:Game');
+        $oGame = $rep->find($idGame);
+        
+        $oGame->setBoard(unserialize($oGame->getBoard()));
+        
+        $board = $oGame->getBoard();
+        
+        $board->doAction($action);
+        // return $this->render(...);
+        
+        return $this->render(
+            'StcBundle:Game:plateau.html.twig', 
+            array(
+                    'plateau' => $board
+        )
+        );
     }
 
 }
