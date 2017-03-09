@@ -17,10 +17,10 @@ class Board {
 
     //Fonctions
     public function init() {
-        for ($y = 0; $y < $this->hauteur; $y++) {
-            $this->cases[$y] = [];
-            for ($x = 0; $x < $this->longueur; $x++) {
-                $this->cases[$y][$x] = new Square($y, $x);
+        for ($x = 0; $x < $this->hauteur; $x++) {
+            $this->cases[$x] = [];
+            for ($y = 0; $y < $this->longueur; $y++) {
+                $this->cases[$x][$y] = new Square($y, $x);
             }
         }
 

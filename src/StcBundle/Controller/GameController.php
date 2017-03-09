@@ -48,11 +48,35 @@ class GameController extends Controller {
     }
 
     /**
-     * @Route("/game", name="game")
+     * @Route("/game", name="create_game")
      */
-    public function gameAction(Request $request) {
-        $game = new Game();
-        $board = $game->getBoard()->getCases();
+    public function createAction(Request $request) {
+        //TO DO
+        //Formulaire de création de partie
+        // Vérifier si tout ok dans formulaire
+        // Création de la partie dans la base
+        //On créé une nouvelle partie
+        $oGame = new Game();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($oGame);
+        //On sérialize le plateau pour le stockage en base de données
+        $oGame->setBoard(serialize($oGame->getBoard()));
+        $em->flush();
+        // Redirection vers gameAction avec l'id de la partie
+        return $this->redirectToRoute('game', array('id' => $oGame->getId()));
+    }
+
+    /**
+     * @Route("/game/{id}", name="game")
+     */
+    public function gameAction(Request $request, $id) {
+        //On récupère les informations de la partie demandée
+        $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
+        $oGame = $rep->find($id);
+        //On désérialize les infos du plateau pour récupérer ses cases que l'on pourra lire
+        $oGame->setBoard(unserialize($oGame->getBoard()));
+        $board = $oGame->getBoard()->getCases();
+        //On retourne le tableau de cases
         return $this->render('StcBundle:Game:jouer.html.twig', array(
                     'plateau' => $board));
     }

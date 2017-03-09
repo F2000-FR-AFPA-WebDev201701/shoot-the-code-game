@@ -51,7 +51,7 @@ class Game {
     private $createdDate;
 
     /**
-     * @ORM\Column(name="board",type="string")
+     * @ORM\Column(name="board",type="text")
      */
     private $board;
 
@@ -60,15 +60,21 @@ class Game {
      */
     private $users;
 
+    const PENDING_GAME = 0;
+    const CURRENT_GAME = 1;
+    const END_GAME = 2;
+
     /**
      * Constructor
      */
-    public function __construct() {
-        $this->name = 'game';
-        $this->state = 0;
+    public function __construct($name = 'game', $state = Game::PENDING_GAME, $score = 0, $maxPlayers = 1) {
+        $this->name = $name;
+        $this->state = $state;
+        $this->score = $score;
+        $this->maxPlayers = $maxPlayers;
         $this->createdDate = new \Datetime();
-        $this->maxPlayers = 1;
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        //Création du plateau de jeu
         $this->board = new Board();
     }
 
