@@ -25,15 +25,11 @@ class Board {
         }
 
         //Tests affichage
-        $this->cases[19][7]->setContent('Avion');
-        $this->cases[1][2]->setContent('Bloc');
-        $this->cases[1][3]->setContent('Bloc');
-        $this->cases[1][5]->setContent('Bloc');
-        $this->cases[1][6]->setContent('Bloc');
-        $this->cases[1][8]->setContent('Bloc');
-        $this->cases[1][9]->setContent('Bloc');
-        $this->cases[1][11]->setContent('Bloc');
-        $this->cases[1][12]->setContent('Bloc');
+        $this->cases[1][2]->setContent('couleur1');
+        $this->cases[1][5]->setContent('couleur4');
+        $this->cases[1][9]->setContent('couleur5');
+        $this->cases[1][12]->setContent('couleur7');
+        $this->cases[18][7]->setContent('avion');
     }
 
     //Getters et Setters
@@ -59,6 +55,26 @@ class Board {
 
     public function setCases($cases) {
         $this->cases = $cases;
+    }
+    
+    public function doAction($action) {
+        switch ($action) {
+            case 'left':
+                
+                break;
+            case 'right':
+                
+                break;
+            case 'up':
+                
+                break;
+            case 'down':
+                
+                break;
+            case 'shoot':
+                
+                break;
+        }
     }
 
 }

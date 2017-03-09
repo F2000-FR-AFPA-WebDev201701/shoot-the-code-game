@@ -1,0 +1,7 @@
+{% for ligne in plateau %}
+    <tr>
+       {% for case in ligne %}
+        <td class="{{ case.content }}"></td>
+        {% endfor %}
+    </tr>
+{% endfor %}

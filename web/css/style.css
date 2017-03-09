@@ -54,9 +54,19 @@ h2 { font-size: 1.3em }
 
 #indications
 {
-    font-size: 2.8em;
-    margin-top: 40px;
+    font-size: 2.5em;
+    margin-top: 30px;
 }
+
+.couleur1 { background-color: #C50A0A }
+.couleur2 { background-color: #C11CC1 }
+.couleur3 { background-color: #6815AF }
+.couleur4 { background-color: #1609B3 }
+.couleur5 { background-color: #25A6C0 }
+.couleur6 { background-color: #01A600 }
+.couleur7 { background-color: #D0EB0E }
+.couleur8 { background-color: #FF7600 }
+.avion { background-color: #000000 }
 
 /* [class*="col-"] { border: 1px solid black } */
 /* [class*="row"] { border: 1px solid red } */

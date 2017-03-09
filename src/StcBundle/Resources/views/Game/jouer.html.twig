@@ -10,13 +10,8 @@
         <div class="row">
 
             <!-- Plateau -->
-            <table class="col-lg-9 col-lg-offset-1 table table-bordered text-center">
-                {% for ligne in plateau %}
-                    <tr>{% for case in ligne %}
-                        <td>{{ case.content}}</td>
-                    {% endfor %}</tr>
-                    {% endfor %}
-
+                <table id="plateau-table" class="col-lg-9 col-lg-offset-1 table table-bordered text-center">
+                    {% include 'StcBundle:Game:plateau.html.twig' %}
                 </table>
                 <!-- /Plateau -->
 
@@ -58,5 +53,47 @@
             </h1>
             <p><a href="index.html">Retourner à l'accueil.</a></p>
         </main>
+        
+        <script>
+        $('body').keypress(function(key) {
+            switch (key.key) {
+                case 'q':
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "left"}) }}',
+                        success: refreshTable()
+                    });
+                    break;
+                case 'd':
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "right"}) }}',
+                        success: refreshTable()
+                    });
+                    break;
+                case 'z':
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "up"}) }}',
+                        success: refreshTable()
+                    });
+                    break;
+                case 's':
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "down"}) }}',
+                        success: refreshTable()
+                    });
+                    break;
+                case ' ':
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
+                        success: refreshTable()
+                    });
+                    break;
+            }
+        });
+
+        function refreshTable(view) {
+                $('#plateau table').html(view);
+                return this;
+            }
+        </script>
         <!-- /Résolution trop faible -->
         {% endblock %}
