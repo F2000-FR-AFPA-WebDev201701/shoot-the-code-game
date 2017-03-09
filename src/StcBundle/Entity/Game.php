@@ -8,7 +8,7 @@ use StcBundle\Model\Board;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="Game")
+ * @ORM\Table(name="Games")
  */
 class Game {
 
