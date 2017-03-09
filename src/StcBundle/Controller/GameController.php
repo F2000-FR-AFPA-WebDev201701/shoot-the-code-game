@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use StcBundle\Form\ContactType;
 use StcBundle\Form\InscriptionType;
+use StcBundle\Entity\Game;
 
 class GameController extends Controller {
 
@@ -42,9 +43,18 @@ class GameController extends Controller {
 //        }
 
         return $this->render('StcBundle:Game:index.html.twig', array(
-                    //'userForm' => $oUserForm->createView(),
                     'inscriptionForm' => $oInscriptionForm->createView(),
                     'contactForm' => $oContactForm->createView()));
+    }
+
+    /**
+     * @Route("/game", name="game")
+     */
+    public function gameAction(Request $request) {
+        $game = new Game();
+        $board = $game->getBoard()->getCases();
+        return $this->render('StcBundle:Game:jouer.html.twig', array(
+                    'plateau' => $board));
     }
 
 }
