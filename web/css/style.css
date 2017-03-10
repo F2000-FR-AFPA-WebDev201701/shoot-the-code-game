@@ -4,6 +4,28 @@
 .padding-0 { padding: 0 }
 .margin-0 { margin: 0 }
 
+.radius1 { border-radius: 0 0 0px 50px }
+.radius2 { border-radius: 0 0 50px 0 }
+
+#regles img { border-radius: 0 0 0 50px }
+
+#jouer img, #regles img
+{
+    padding: 0;
+    -moz-box-shadow: 0px 0px 7px 0px black;
+    -webkit-box-shadow: 0px 0px 7px 0px black;
+    -o-box-shadow: 0px 0px 7px 0px black;
+    box-shadow: 0px 0px 7px 0px black;
+}
+
+#jouer img:hover
+{
+    -moz-box-shadow: 0px 0px 20px 0px #003F00;
+    -webkit-box-shadow: 0px 0px 20px 0px #003F00;
+    -o-box-shadow: 0px 0px 20px 0px #003F00;
+    box-shadow: 0px 0px 20px 0px #003F00;
+}
+
 header img
 {
     width: 100%;

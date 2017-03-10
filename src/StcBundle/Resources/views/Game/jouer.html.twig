@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'StcBundle::base.html.twig' %}
 
 {% block title %}
@@ -56,10 +57,11 @@
 
     <script>
         $('body').keypress(function (key) {
+            key.preventDefault();
             switch (key.key) {
                 case 'q':
                     $.ajax({
-                        url: '{{ path('controls', {'idGame' : idGame, 'action' : 'left'}) }}',
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : 'left'}) }}',
                         success: refreshTable
                     });
                     break;
@@ -96,3 +98,4 @@
     </script>
     <!-- /Résolution trop faible -->
 {% endblock %}
+
