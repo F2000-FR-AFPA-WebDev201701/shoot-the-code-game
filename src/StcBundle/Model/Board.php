@@ -56,23 +56,30 @@ class Board {
     public function setCases($cases) {
         $this->cases = $cases;
     }
-    
+
     public function doAction($action) {
         switch ($action) {
             case 'left':
-                
+                $this->cases[18][7]->setContent('');
+                $this->cases[18][7 - 1]->setContent('avion');
                 break;
             case 'right':
-                
+                $this->cases[18][7]->setContent('');
+                $this->cases[18][7 + 1]->setContent('avion');
+
                 break;
             case 'up':
-                
+                $this->cases[18][7]->setContent('');
+                $this->cases[18 - 1][7]->setContent('avion');
+
                 break;
             case 'down':
-                
+                $this->cases[18][7]->setContent('');
+                $this->cases[18 + 1][7]->setContent('avion');
+
                 break;
             case 'shoot':
-                
+
                 break;
         }
     }

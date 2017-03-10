@@ -1,7 +1,9 @@
-{% for ligne in plateau %}
-    <tr>
-       {% for case in ligne %}
-        <td class="{{ case.content }}"></td>
-        {% endfor %}
-    </tr>
-{% endfor %}
+<table  class="col-lg-9 col-lg-offset-1 table table-bordered text-center">
+    {% for ligne in plateau %}
+        <tr>
+            {% for case in ligne %}
+                <td class="{{ case.content }}"></td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>

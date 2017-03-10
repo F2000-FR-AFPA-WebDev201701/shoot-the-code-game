@@ -98,19 +98,28 @@ class GameController extends Controller {
      */
     public function controlsAction($idGame, $action) {
 
+        //On récupère la partie de l'action en cours
         $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
         $oGame = $rep->find($idGame);
 
-        $oGame->setBoard(unserialize($oGame->getBoard()));
+        //On récupère les infos du plateau
+        $oBoard = unserialize($oGame->getBoard());
 
-        $board = $oGame->getBoard();
+        //On effectue l'action demandée suite à l'entrée clavier
+        $oBoard->doAction($action);
 
-        $board->doAction($action);
-        // return $this->render(...);
+        //On récupère les nouvelles cases à jour
+        $cases = $oBoard->getCases();
+
+        //On recharger le nouveau plateau dans la base de données
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($oGame);
+        $oGame->setBoard(serialize($oBoard));
+        $em->flush();
 
         return $this->render(
                         'StcBundle:Game:plateau.html.twig', array(
-                    'plateau' => $board
+                    'plateau' => $cases
                         )
         );
     }
