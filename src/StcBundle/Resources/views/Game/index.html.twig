@@ -9,7 +9,7 @@
     <header>
         <div class="row margin-0">
             <div class="col-xs-12 padding-0">
-                <a href="#">
+                <a href="{{path('index')}}">
                     <img src="{{ asset('images/banniere.png') }}" alt="Bannière Shoot the code" title="Shoot the Code" />
                 </a>
             </div>
@@ -47,17 +47,17 @@
             <section id="jouer" class="row visible-lg">
                 <div class="col-lg-2 col-lg-offset-2 text-right">
                     <a href="#soloModal" data-toggle="modal">
-                        <img src="http://fakeimg.pl/200x100/?text=Solo" alt="Jouer en solo" title="Jouer en solo" />
+                        <img src="{{ asset('images/solo.png') }}" alt="Jouer en solo" title="Jouer en solo" class="radius1" />
                     </a>
                 </div>
                 <div class="col-lg-2 col-lg-offset-1 text-center">
                     <a href=#>
-                        <img src="http://fakeimg.pl/200x100/?text=Multi" alt="Créer une partie multijoueur" title="Créer une partie multijoueur" />
+                        <img src="{{ asset('images/multi.png') }}" alt="Créer une partie multijoueur" title="Créer une partie multijoueur" />
                     </a>
                 </div>
                 <div class="col-lg-2 col-lg-offset-1">
                     <a href=#>
-                        <img src="http://fakeimg.pl/200x100/?text=Rejoindre" alt="Rejoindre une partie" title="Rejoindre une partie" />
+                        <img src="{{ asset('images/rejoindre.png') }}" alt="Rejoindre une partie" title="Rejoindre une partie" class="radius2" />
                     </a>
                 </div>
             </section>
@@ -120,7 +120,7 @@
                 </h1>
             </div>
             <div id="objectif" class="row">
-                <img src="http://fakeimg.pl/320x150/?text=Objectif" alt="Objectif" title="Objectif" class="hidden-xs col-sm-3 col-sm-offset-1" />
+                <img src="{{ asset('images/objectif.png') }}" alt="Objectif" title="Objectif" class="hidden-xs col-sm-3 col-sm-offset-1" />
                 <p class="col-sm-7">
                     Bienvenue dans Shoot The Code, le Shoot’em Up le plus fun de tous les temps !<br/>
                     Vous allez contrôler un avion équipé d’armes, évoluant dans un univers de code informatique hostile.<br/>
@@ -130,7 +130,7 @@
                 </p>
             </div>
             <div id="howto" class="row">
-                <img src="http://fakeimg.pl/320x150/?text=Howto" alt="How to" title="How to" class="hidden-xs col-sm-3 col-sm-offset-1" />
+                <img src="{{ asset('images/howto.png') }}" alt="How to" title="How to" class="hidden-xs col-sm-3 col-sm-offset-1" />
                 <p class="col-sm-7">
                     Pour arriver à vos fins, utilisez les armes de votre avion pour tirer sur les blocs et les faire changer de couleur. Par défaut la touche pour tirer est « Espace », vous pouvez laisser appuyer : inutile de détruire votre clavier.
                     Si la couleur est bien placée vous aurez une indication autour du bloc, si elle est mal placée vous en aurez une autre, enfin si la couleur n’existe pas dans la solution vous n’aurez rien ;-P<br/>
@@ -139,7 +139,7 @@
                 </p>
             </div>
             <div id="astuces" class="row">
-                <img src="http://fakeimg.pl/320x150/?text=Astuces" alt="Astuces" title="Astuces" class="hidden-xs col-sm-3 col-sm-offset-1" />
+                <img src="{{ asset('images/astuces.png') }}" alt="Astuces" title="Astuces" class="hidden-xs col-sm-3 col-sm-offset-1" />
                 <p class="col-sm-7">
                     Enfin derniers conseils, essayez d’obtenir le plus rapidement des armes spéciales, vous pourrez ainsi augmenter votre pouvoir de destruction, votre vitesse de déplacement ou encore votre résistance.<br/>
                     Cela vous aidera certainement à rester en vie et vous serez plus à même de battre le boss.<br/>

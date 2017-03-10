@@ -56,6 +56,7 @@
         
         <script>
         $('body').keypress(function(key) {
+            key.preventDefault();
             switch (key.key) {
                 case 'q':
                     $.ajax({
