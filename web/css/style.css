@@ -4,10 +4,40 @@
 .padding-0 { padding: 0 }
 .margin-0 { margin: 0 }
 
+body {
+    background: #F5F5F5; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(white, #EDEDED); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(white, #EDEDED); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(white, #EDEDED); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(white, #EDEDED); /* Standard syntax */
+}
+
+.radius1 { border-radius: 0 0 0px 50px }
+.radius2 { border-radius: 0 0 50px 0 }
+
+#regles img { border-radius: 0 0 0 50px }
+
+#jouer img, #regles img
+{
+    padding: 0;
+    -moz-box-shadow: 0px 0px 7px 0px black;
+    -webkit-box-shadow: 0px 0px 7px 0px black;
+    -o-box-shadow: 0px 0px 7px 0px black;
+    box-shadow: 0px 0px 7px 0px black;
+}
+
+#jouer img:hover
+{
+    -moz-box-shadow: 0px 0px 20px 0px #003F00;
+    -webkit-box-shadow: 0px 0px 20px 0px #003F00;
+    -o-box-shadow: 0px 0px 20px 0px #003F00;
+    box-shadow: 0px 0px 20px 0px #003F00;
+}
+
 header img
 {
     width: 100%;
-    margin-bottom: 50px;
+    margin-bottom: 70px;
 }
 
 #objectif, #howto { margin-bottom: 30px }
@@ -24,7 +54,11 @@ h1
     font-size: 2em;
 }
 
-h2 { font-size: 1.3em }
+h2
+{
+    font-size: 1.3em;
+    margin-top: 0px;
+}
 
 #connexion p, #inscription p
 {
@@ -32,17 +66,14 @@ h2 { font-size: 1.3em }
     font-size: 0.9em;
 }
 
-#deconnexion
-{
-    margin-bottom: 50px;
-}
-
 #regles p
 {
     text-align: justify;
 }
 
+/***********/
 /* PLATEAU */
+/**********/
 
 #plateau { margin: 30px 0 }
 
