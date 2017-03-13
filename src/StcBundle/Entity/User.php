@@ -42,8 +42,7 @@ class User {
     private $mail;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Game", inversedBy="users")
-     * @ORM\JoinTable(name="users_games")
+     * @ORM\ManyToMany(targetEntity="Game", mappedBy="users")
      */
     private $games;
 
@@ -138,7 +137,7 @@ class User {
      * @return User
      */
     public function addGame(\StcBundle\Entity\Game $game) {
-        //$game->addUser($this);
+        $game->addUser($this);
         $this->games[] = $game;
 
         return $this;
@@ -150,6 +149,7 @@ class User {
      * @param \StcBundle\Entity\Game $game
      */
     public function removeGame(\StcBundle\Entity\Game $game) {
+        $game->removeUser($this);
         $this->games->removeElement($game);
     }
 
