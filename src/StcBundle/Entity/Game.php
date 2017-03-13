@@ -5,6 +5,9 @@ namespace StcBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use StcBundle\Model\Board;
+use StcBundle\Model\Movable;
+use StcBundle\Model\Plane;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -73,17 +76,19 @@ class Game {
         $this->score = $score;
         $this->maxPlayers = $maxPlayers;
         $this->createdDate = new \Datetime();
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new ArrayCollection();
         //Création du plateau de jeu
-        $this->board = new Board();
+        $this->board = serialize(new Board());
     }
+
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -94,7 +99,8 @@ class Game {
      *
      * @return Game
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
 
         return $this;
@@ -105,7 +111,8 @@ class Game {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -116,7 +123,8 @@ class Game {
      *
      * @return Game
      */
-    public function setState($state) {
+    public function setState($state)
+    {
         $this->state = $state;
 
         return $this;
@@ -127,7 +135,8 @@ class Game {
      *
      * @return integer
      */
-    public function getState() {
+    public function getState()
+    {
         return $this->state;
     }
 
@@ -138,7 +147,8 @@ class Game {
      *
      * @return Game
      */
-    public function setScore($score) {
+    public function setScore($score)
+    {
         $this->score = $score;
 
         return $this;
@@ -149,7 +159,8 @@ class Game {
      *
      * @return integer
      */
-    public function getScore() {
+    public function getScore()
+    {
         return $this->score;
     }
 
@@ -160,7 +171,8 @@ class Game {
      *
      * @return Game
      */
-    public function setMaxPlayers($maxPlayers) {
+    public function setMaxPlayers($maxPlayers)
+    {
         $this->maxPlayers = $maxPlayers;
 
         return $this;
@@ -171,7 +183,8 @@ class Game {
      *
      * @return integer
      */
-    public function getMaxPlayers() {
+    public function getMaxPlayers()
+    {
         return $this->maxPlayers;
     }
 
@@ -182,7 +195,8 @@ class Game {
      *
      * @return Game
      */
-    public function setCreatedDate($createdDate) {
+    public function setCreatedDate($createdDate)
+    {
         $this->createdDate = $createdDate;
 
         return $this;
@@ -193,7 +207,8 @@ class Game {
      *
      * @return \DateTime
      */
-    public function getCreatedDate() {
+    public function getCreatedDate()
+    {
         return $this->createdDate;
     }
 
@@ -204,7 +219,8 @@ class Game {
      *
      * @return Game
      */
-    public function setBoard($board) {
+    public function setBoard($board)
+    {
         $this->board = $board;
 
         return $this;
@@ -215,7 +231,8 @@ class Game {
      *
      * @return string
      */
-    public function getBoard() {
+    public function getBoard()
+    {
         return $this->board;
     }
 
@@ -226,7 +243,8 @@ class Game {
      *
      * @return Game
      */
-    public function addUser(\StcBundle\Entity\User $user) {
+    public function addUser(\StcBundle\Entity\User $user)
+    {
         $this->users[] = $user;
 
         return $this;
@@ -237,7 +255,8 @@ class Game {
      *
      * @param \StcBundle\Entity\User $user
      */
-    public function removeUser(\StcBundle\Entity\User $user) {
+    public function removeUser(\StcBundle\Entity\User $user)
+    {
         $this->users->removeElement($user);
     }
 
@@ -246,8 +265,8 @@ class Game {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUsers() {
+    public function getUsers()
+    {
         return $this->users;
     }
-
 }

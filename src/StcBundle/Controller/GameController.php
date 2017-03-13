@@ -13,7 +13,7 @@ use StcBundle\Form\InscriptionType;
 use StcBundle\Form\GameType;
 use StcBundle\Entity\Game;
 use StcBundle\Entity\User;
-use StcBundle\Model\Square;
+use StcBundle\Model\Board;
 
 class GameController extends Controller {
 
@@ -21,12 +21,12 @@ class GameController extends Controller {
      * @Route("/", name="index")
      */
     public function indexAction(Request $request) {
-        // gestion formulaire de contact
+// gestion formulaire de contact
         $oContactForm = $this->createForm(ContactType::class);
         $oContactForm->handleRequest($request);
         if ($oContactForm->isSubmitted() && $oContactForm->isValid()) {
-            //dump($oContactForm->getData());
-            // prévoir l'envoit d'un email à l'administrateur
+//dump($oContactForm->getData());
+// prévoir l'envoit d'un email à l'administrateur
         }
 
         return $this->render('StcBundle:Game:index.html.twig', array(
@@ -38,7 +38,7 @@ class GameController extends Controller {
      * @Route("/game", name="create_game")
      */
     public function createAction(Request $request) {
-        //On créé une nouvelle partie
+        //On créé une nouvelle partie : nom de la partie, maxPlayer, initialized board.
         $oGame = new Game();
         $oCreateGameForm = $this->createForm(GameType::class, $oGame, array('nom' => $request->getSession()->get('userName')));
         $oCreateGameForm->handleRequest($request);
@@ -47,14 +47,54 @@ class GameController extends Controller {
         if ($oCreateGameForm->isSubmitted() && $oCreateGameForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($oGame);
-            //On sérialize le plateau pour le stockage en base de données
-            $oGame->setBoard(serialize($oGame->getBoard()));
             $em->flush();
+
             // Redirection vers gameAction avec l'id de la partie
-            return $this->redirectToRoute('game', array('id' => $oGame->getId()));
+            return $this->redirectToRoute('join', array('idGame' => $oGame->getId()));
         }
         return $this->render('StcBundle:Game:creategame.html.twig', array(
-                    'createGameForm' => $oCreateGameForm->createView()));
+                    'createGameForm' => $oCreateGameForm->createView())
+        );
+    }
+
+    /**
+     * @Route("/join/{idGame}", name="join")
+     */
+    public function joinAction(request $request, $idGame) {
+        $sessionName = $request->getSession()->get('userName');
+
+        // On récupère la partie qui vient d'être crée et passée en paramètre.
+        $gameRep = $this->getDoctrine()->getRepository('StcBundle:Game');
+        $oGame = $gameRep->find($idGame);
+
+        // recherche de l'id du joueur
+        $userRep = $this->getDoctrine()->getRepository('StcBundle:User');
+        $oUser = $userRep->findOneBy(array('login' => $sessionName));
+        $oGame->addUser($oUser);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($oGame);
+        $em->flush();
+        // Cas de la partie solo
+        if ($oGame->getMaxPlayers() == count($oGame->getUsers())) {
+            $oGame->setState(Game::CURRENT_GAME);
+
+            // set Players
+            $oBoard = unserialize($oGame->getBoard());
+            $oBoard->setPlayers($oGame->getUsers());
+
+            // on serialize et on met à jour en base
+            $em = $this->getDoctrine()->getManager();
+            $oGame->setBoard(serialize($oBoard));
+            $em->flush();
+        }
+        //debug
+        return $this->render(
+                        'StcBundle:Game:test.html.twig', array(
+                    'game' => $oGame,
+                    'user' => $oUser)
+        );
+        // on redirige vers le plateau de jeux
+        //return $this->redirectToRoute('game', array('id' => $oGame->getId()));
     }
 
     /**
@@ -89,7 +129,7 @@ class GameController extends Controller {
         $board = $oGame->getBoard();
 
         $board->doAction($action);
-        // return $this->render(...);
+// return $this->render(...);
 
         return $this->render(
                         'StcBundle:Game:plateau.html.twig', array(
