@@ -45,7 +45,7 @@
                         <img src="{{ asset('images/creer.png') }}" alt="Créer une partie" title="Créer une partie" class="radius1" />
                     </a>
                 </div>
-                <div class="col-lg-2 text-center">
+                <div id="deconnexion" class="col-lg-2 text-center">
                     <p class="col-xs-12">Connecté sous {{app.request.session.get('userName')}}</p>
                     <a href="{{path('logout')}}"><button class="btn btn-primary">Se déconnecter</button></a>
                 </div>
