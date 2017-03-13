@@ -19,7 +19,7 @@ class User {
     private $id;
 
     /**
-     * @ORM\Column(name="login",type="string", length=20, nullable=false)
+     * @ORM\Column(name="login",type="string", length=20, nullable=false, unique=true)
      * @Assert\NotBlank()
      * @Assert\Type("string")
      */
@@ -138,6 +138,7 @@ class User {
      * @return User
      */
     public function addGame(\StcBundle\Entity\Game $game) {
+        //$game->addUser($this);
         $this->games[] = $game;
 
         return $this;
