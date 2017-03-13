@@ -12,6 +12,8 @@ class Board {
     private $cases = [];
 // tableau d'avion vide pour les futurs joueurs
     private $planeTab = [];
+    
+    private $combinaison;
 
 //Constructeur
     public function __construct() {
@@ -28,6 +30,13 @@ class Board {
         }
 
 //Tests affichage
+        // TODO : génération aléatoire de la combinaison
+        // TODO : case grise au départ
+        $blockInfo = [
+          'color'=> 'couleur1',
+           // 'status' => self::COLOR_ERR_PLACEMENT,
+        ];
+        
         $this->cases[1][2]->setContent('couleur1');
         $this->cases[1][5]->setContent('couleur4');
         $this->cases[1][9]->setContent('couleur5');
@@ -77,6 +86,7 @@ class Board {
             $oAvion->setPositiony(18);
             $oAvion->setIdUser($oUser->getId());
             $this->planeTab[] = $oAvion;
+            
             $this->cases[$oAvion->getPositiony()][$oAvion->getPositionx()]->setContent('avion');
         }
     }

@@ -70,10 +70,13 @@ class GameController extends Controller {
         // recherche de l'id du joueur
         $userRep = $this->getDoctrine()->getRepository('StcBundle:User');
         $oUser = $userRep->findOneBy(array('login' => $sessionName));
+        
         $oGame->addUser($oUser);
+        
         $em = $this->getDoctrine()->getManager();
         $em->persist($oGame);
         $em->flush();
+        
         // Cas de la partie solo
         if ($oGame->getMaxPlayers() == count($oGame->getUsers())) {
             $oGame->setState(Game::CURRENT_GAME);
