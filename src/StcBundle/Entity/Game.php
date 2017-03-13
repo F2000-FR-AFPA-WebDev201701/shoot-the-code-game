@@ -242,7 +242,6 @@ class Game {
      * @param \StcBundle\Entity\User $user
      */
     public function removeUser(\StcBundle\Entity\User $user) {
-        $user->removeGame($this);
         $this->users->removeElement($user);
     }
 
