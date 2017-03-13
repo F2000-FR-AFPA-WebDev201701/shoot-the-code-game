@@ -37,6 +37,7 @@ class UserController extends Controller {
             // auto-login
             $request->getSession()->set('userStatus', 'connected');
             $request->getSession()->set('userName', $oUser->getLogin());
+            $request->getSession()->set('userId', $oUser->getId());
 
             //on redirige l'utilisateur inscrit et connecté vers l'index
             return $this->redirectToRoute('index');
@@ -69,6 +70,7 @@ class UserController extends Controller {
             if ($oUserLogin instanceof User) {
                 $request->getSession()->set('userStatus', 'connected');
                 $request->getSession()->set('userName', $oUserLogin->getLogin());
+                $request->getSession()->set('userId', $oUserLogin->getId());
             }
 
             return $this->redirectToRoute('index');

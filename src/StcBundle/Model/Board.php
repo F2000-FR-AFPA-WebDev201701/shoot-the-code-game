@@ -85,9 +85,9 @@ class Board {
     }
 
     public function setPlayers($oUserTab) {
-        $startX = 5;
+        $startX = 4;
         foreach ($oUserTab as $oUser) {
-            // P1 case x=7, P2 case x=9
+// P1 case x=6, P2 case x=8
             $startX = $startX + 2;
             $oAvion = new Plane();
             $oAvion->setPositionx($startX);
@@ -99,28 +99,73 @@ class Board {
         }
     }
 
-    public function doAction($action) {
+    public function doAction($idUser, $action) {
+        // on récupère le bon avion, celui du l'utilisateur connecté sur le poste
+        $oUserPlane = null;
+        foreach ($this->planeTab as $oPlane) {
+            if ($oPlane->getIdUser() == $idUser) {
+                $oUserPlane = $oPlane;
+            }
+        }
+
+        // Si problème (ça ne devrait jamais arriver), au cas où on sort de la f°
+        if (!$oUserPlane) {
+            return;
+        }
 
         switch ($action) {
             case 'left':
-                $this->cases[18][7]->setContent('');
-                $this->cases[18][7 - 1]->setContent('avion');
+                $oldPosx = $oUserPlane->getPositionx();
+                $oldPosy = $oUserPlane->getPositiony();
+                if ($oldPosx > 0) {
+                    $newPosx = $oldPosx - 1;
+                } else {
+                    $newPosx = $oldPosx;
+                }
+                $oUserPlane->setPositionx($newPosx);
+                $this->cases[$oldPosy][$oldPosx]->setContent('');
+                $this->cases[$oldPosy][$newPosx]->setContent('avion');
                 break;
+
             case 'right':
-                $this->cases[18][7]->setContent('');
-                $this->cases[18][7 + 1]->setContent('avion');
-
+                $oldPosx = $oUserPlane->getPositionx();
+                $oldPosy = $oUserPlane->getPositiony();
+                if ($oldPosx < 14) {
+                    $newPosx = $oldPosx + 1;
+                } else {
+                    $newPosx = $oldPosx;
+                }
+                $oUserPlane->setPositionx($newPosx);
+                $this->cases[$oldPosy][$oldPosx]->setContent('');
+                $this->cases[$oldPosy][$newPosx]->setContent('avion');
                 break;
+
             case 'up':
-                $this->cases[18][7]->setContent('');
-                $this->cases[18 - 1][7]->setContent('avion');
-
+                $oldPosx = $oUserPlane->getPositionx();
+                $oldPosy = $oUserPlane->getPositiony();
+                if ($oldPosy > 2) {
+                    $newPosy = $oldPosy - 1;
+                } else {
+                    $newPosy = $oldPosy;
+                }
+                $oUserPlane->setPositiony($newPosy);
+                $this->cases[$oldPosy][$oldPosx]->setContent('');
+                $this->cases[$newPosy][$oldPosx]->setContent('avion');
                 break;
+
             case 'down':
-                $this->cases[18][7]->setContent('');
-                $this->cases[18 + 1][7]->setContent('avion');
-
+                $oldPosx = $oUserPlane->getPositionx();
+                $oldPosy = $oUserPlane->getPositiony();
+                if ($oldPosy < 19) {
+                    $newPosy = $oldPosy + 1;
+                } else {
+                    $newPosy = $oldPosy;
+                }
+                $oUserPlane->setPositiony($newPosy);
+                $this->cases[$oldPosy][$oldPosx]->setContent('');
+                $this->cases[$newPosy][$oldPosx]->setContent('avion');
                 break;
+
             case 'shoot':
                 switch ($this->planeTab[0]->getPositionx()) {
                     case 2:
