@@ -6,8 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 
 class Block
 {
+    const STATUS_WRONG = 1;
+    const STATUS_ALMOST = 2;
+    const STATUS_GOOD = 3;
+    
     // Initialisation à la couleur 0 (grise)
     private $color = 0;
+    
+    private $status = self::STATUS_WRONG;
 
     public function getId()
     {
@@ -17,7 +23,7 @@ class Block
     // Passe à la couleur suivante et se réinitialise après 8
     public function nextColor()
     {
-        $this->color = $this->color + 1;
+        $this->color++;
         
         if ($this->color == 9) {
             $this->color = 1;
