@@ -60,7 +60,7 @@ class GameController extends Controller {
     /**
      * @Route("/join/{idGame}", name="join")
      */
-    public function joinAction(request $request, $idGame) {
+    public function joinAction(Request $request, $idGame) {
         $sessionName = $request->getSession()->get('userName');
 
         // On récupère la partie qui vient d'être crée et passée en paramètre.
@@ -87,12 +87,6 @@ class GameController extends Controller {
         // on serialize et on met à jour en base
         $this->getDoctrine()->getManager()->flush();
 
-        //debug
-//        return $this->render(
-//                        'StcBundle:Game:test.html.twig', array(
-//                    'game' => $oGame,
-//                    'user' => $oUser)
-//        );
         // on redirige vers le plateau de jeux
         return $this->redirectToRoute('game', array('id' => $oGame->getId()));
     }
@@ -106,12 +100,12 @@ class GameController extends Controller {
         $oGame = $rep->find($id);
         //On désérialize les infos du plateau pour récupérer ses cases que l'on pourra lire
         $oGame->setBoard(unserialize($oGame->getBoard()));
-        $board = $oGame->getBoard()->getCases();
+        $oBoard = $oGame->getBoard()->getCases();
         //On retourne le tableau de cases
         return $this->render(
                         'StcBundle:Game:jouer.html.twig', array(
                     'idGame' => $oGame->getId(),
-                    'plateau' => $board
+                    'plateau' => $oBoard
                         )
         );
     }
@@ -119,17 +113,16 @@ class GameController extends Controller {
     /**
      * @Route("/controls/{idGame}/{action}", name="controls")
      */
-    public function controlsAction($idGame, $action) {
-
+    public function controlsAction($idGame, $action, Request $request) {
+        // Résoud les actions via doActions, met à jour l'affichage du plateau
         //On récupère la partie de l'action en cours
         $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
         $oGame = $rep->find($idGame);
 
         //On récupère les infos du plateau
         $oBoard = unserialize($oGame->getBoard());
-
         //On effectue l'action demandée suite à l'entrée clavier
-        $oBoard->doAction($action);
+        $oBoard->doAction($request->getSession()->get('userId'), $action);
 
         //On récupère les nouvelles cases à jour
         $cases = $oBoard->getCases();
@@ -139,7 +132,6 @@ class GameController extends Controller {
         $em->persist($oGame);
         $oGame->setBoard(serialize($oBoard));
         $em->flush();
-
         return $this->render(
                         'StcBundle:Game:plateau.html.twig', array(
                     'plateau' => $cases
