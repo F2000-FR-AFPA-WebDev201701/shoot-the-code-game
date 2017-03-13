@@ -2,7 +2,7 @@
 
 namespace StcBundle\Model;
 
-use Stc\Model\Movable;
+use StcBundle\Model\Movable;
 
 /**
  * Description of Plane

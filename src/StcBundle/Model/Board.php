@@ -75,7 +75,7 @@ class Board {
             $oAvion = new Plane();
             $oAvion->setPositionx($startX);
             $oAvion->setPositiony(18);
-            $oAvion->setUserId($oUser->getId());
+            $oAvion->setIdUser($oUser->getId());
             $this->planeTab[] = $oAvion;
             $this->cases[$oAvion->getPositiony()][$oAvion->getPositionx()]->setContent('avion');
         }

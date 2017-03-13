@@ -88,13 +88,13 @@ class GameController extends Controller {
             $em->flush();
         }
         //debug
-        return $this->render(
-                        'StcBundle:Game:test.html.twig', array(
-                    'game' => $oGame,
-                    'user' => $oUser)
-        );
+//        return $this->render(
+//                        'StcBundle:Game:test.html.twig', array(
+//                    'game' => $oGame,
+//                    'user' => $oUser)
+//        );
         // on redirige vers le plateau de jeux
-        //return $this->redirectToRoute('game', array('id' => $oGame->getId()));
+        return $this->redirectToRoute('game', array('id' => $oGame->getId()));
     }
 
     /**

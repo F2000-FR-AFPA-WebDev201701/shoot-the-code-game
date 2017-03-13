@@ -138,7 +138,7 @@ class User {
      * @return User
      */
     public function addGame(\StcBundle\Entity\Game $game) {
-        $game->addUser($this);
+        //$game->addUser($this);
         $this->games[] = $game;
 
         return $this;
