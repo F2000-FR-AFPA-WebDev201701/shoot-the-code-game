@@ -38,6 +38,21 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="multiModal"><div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <strong>Rejoindre une partie</strong>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="{{ asset('images/load.gif')}}" alt="Chargement ..."/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Jouer -->
             <section id="jouer" class="row visible-lg">
                 <div class="col-lg-2 col-lg-offset-3 text-right">
@@ -49,9 +64,9 @@
                     <p class="col-xs-12">Connecté sous {{app.request.session.get('userName')}}</p>
                     <a href="{{path('logout')}}"><button class="btn btn-primary">Se déconnecter</button></a>
                 </div>
-                <div class="col-lg-2">
-                    <a href=#>
-                        <img src="{{ asset('images/rejoindre.png') }}" alt="Rejoindre une partie" title="Rejoindre une partie" class="radius2" />
+                <div class="col-lg-2" id="listGame">
+                    <a href="#multiModal" data-toggle="modal">
+                        <img  src="{{ asset('images/rejoindre.png') }}" alt="Rejoindre une partie" title="Rejoindre une partie" class="radius2" />
                     </a>
                 </div>
             </section>
@@ -196,4 +211,12 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/script.js') }}"></script>
+    <script>
+        $('#listGame').click(function () {
+            $.ajax({
+                url: '{{ path("list") }}',
+                success: refreshList
+            });
+        });
+    </script>
 {% endblock %}

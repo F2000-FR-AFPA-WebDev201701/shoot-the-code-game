@@ -30,7 +30,7 @@ class GameController extends Controller {
         }
 
         return $this->render('StcBundle:Game:index.html.twig', array(
-                    'contactForm' => $oContactForm->createView(),
+                    'contactForm' => $oContactForm->createView()
         ));
     }
 
@@ -71,6 +71,7 @@ class GameController extends Controller {
         $userRep = $this->getDoctrine()->getRepository('StcBundle:User');
         $oUser = $userRep->findOneBy(array('login' => $sessionName));
 
+        //TODO : Ajouter utilisateur si seulement il n'existe pas déjà dans la partie
         $oGame->addUser($oUser);
 
         // Cas de la partie solo
@@ -114,6 +115,18 @@ class GameController extends Controller {
                     'plateau' => $board
                         )
         );
+    }
+
+    /**
+     * @Route("/list", name="list")
+     */
+    public function listAction() {
+        //On récupères les parties en attente de joueurs
+        $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
+        $oGame = $rep->findByState(Game::PENDING_GAME);
+        return $this->render(
+                        'StcBundle:Game:listgame.html.twig', array(
+                    'listGame' => $oGame));
     }
 
     /**
