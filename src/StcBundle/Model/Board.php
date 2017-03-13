@@ -4,6 +4,7 @@ namespace StcBundle\Model;
 
 use StcBundle\Model\Square;
 use StcBundle\Model\Plane;
+use StcBundle\Model\Block;
 
 class Board {
 
@@ -13,7 +14,9 @@ class Board {
 // tableau d'avion vide pour les futurs joueurs
     private $planeTab = [];
     
-    private $combinaison;
+    private $block = [];
+    
+    private $combinaison = [];
 
 //Constructeur
     public function __construct() {
@@ -28,19 +31,20 @@ class Board {
                 $this->cases[$y][$x] = new Square($x, $y);
             }
         }
-
-//Tests affichage
-        // TODO : génération aléatoire de la combinaison
-        // TODO : case grise au départ
-        $blockInfo = [
-          'color'=> 'couleur1',
-           // 'status' => self::COLOR_ERR_PLACEMENT,
-        ];
         
-        $this->cases[1][2]->setContent('couleur1');
-        $this->cases[1][5]->setContent('couleur4');
-        $this->cases[1][9]->setContent('couleur5');
-        $this->cases[1][12]->setContent('couleur7');
+        // Génération des 4 blocs
+        // Génération de la combinaison
+        for ($i = 0; $i < 4 ; $i++) {
+            $this->block[] = new Block();
+            $this->combinaison[] = mt_rand(1, 8);
+        }
+        
+        // Initialisation de la couleur
+        $this->cases[1][2]->setContent('couleur' . $this->block[0]->getColor());
+        $this->cases[1][5]->setContent('couleur' . $this->block[1]->getColor());
+        $this->cases[1][9]->setContent('couleur' . $this->block[2]->getColor());
+        $this->cases[1][12]->setContent('couleur' . $this->block[3]->getColor());
+               
     }
 
 //Getters et Setters
@@ -58,6 +62,10 @@ class Board {
 
     public function getCases() {
         return $this->cases;
+    }
+    
+    public function getCombinaison() {
+        return $this->combinaison;
     }
 
     public function setPlaneTab($planeTab) {
@@ -114,7 +122,24 @@ class Board {
 
                 break;
             case 'shoot':
-
+                switch ($this->planeTab[0]->getPositionx()) {
+                    case 2:
+                        $this->block[0]->nextColor();
+                        $this->cases[1][2]->setContent('couleur' . $this->block[0]->getColor());
+                        break;
+                    case 5:
+                        $this->block[1]->nextColor();
+                        $this->cases[1][5]->setContent('couleur' . $this->block[1]->getColor());
+                        break;
+                    case 9:
+                        $this->block[2]->nextColor();
+                        $this->cases[1][9]->setContent('couleur' . $this->block[2]->getColor());
+                        break;
+                    case 12:
+                        $this->block[3]->nextColor();
+                        $this->cases[1][12]->setContent('couleur' . $this->block[3]->getColor());
+                        break;
+                }
                 break;
         }
     }
