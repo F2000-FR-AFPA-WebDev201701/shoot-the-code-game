@@ -38,24 +38,18 @@
                 </div>
             </div>
 
-            <div id="deconnexion" class="row text-center">
-                <p class="col-xs-12">Connecté sous {{app.request.session.get('userName')}}</p>
-                <a href="{{path('logout')}}"><button class="btn btn-primary">Se déconnecter</button></a>
-            </div>
-
             <!-- Jouer -->
             <section id="jouer" class="row visible-lg">
-                <div class="col-lg-2 col-lg-offset-2 text-right">
+                <div class="col-lg-2 col-lg-offset-3 text-right">
                     <a href="#soloModal" data-toggle="modal">
-                        <img src="{{ asset('images/solo.png') }}" alt="Jouer en solo" title="Jouer en solo" class="radius1" />
+                        <img src="{{ asset('images/creer.png') }}" alt="Créer une partie" title="Créer une partie" class="radius1" />
                     </a>
                 </div>
-                <div class="col-lg-2 col-lg-offset-1 text-center">
-                    <a href=#>
-                        <img src="{{ asset('images/multi.png') }}" alt="Créer une partie multijoueur" title="Créer une partie multijoueur" />
-                    </a>
+                <div class="col-lg-2 text-center">
+                    <p class="col-xs-12">Connecté sous {{app.request.session.get('userName')}}</p>
+                    <a href="{{path('logout')}}"><button class="btn btn-primary">Se déconnecter</button></a>
                 </div>
-                <div class="col-lg-2 col-lg-offset-1">
+                <div class="col-lg-2">
                     <a href=#>
                         <img src="{{ asset('images/rejoindre.png') }}" alt="Rejoindre une partie" title="Rejoindre une partie" class="radius2" />
                     </a>
