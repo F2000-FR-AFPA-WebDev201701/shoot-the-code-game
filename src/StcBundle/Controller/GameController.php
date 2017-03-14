@@ -75,27 +75,29 @@ class GameController extends Controller {
             $userRep = $this->getDoctrine()->getRepository('StcBundle:User');
             $oUser = $userRep->findOneBy(array('login' => $sessionName));
 
-            //TODO : Ajouter utilisateur si seulement il n'existe pas déjà dans la partie et que la partie est en attente
-            $oGame->addUser($oUser);
-
+//            Ajouter utilisateur si seulement il n'existe pas déjà dans la partie et que la partie est en attente
+            if ($oGame->getState() == Game::PENDING_GAME && !($oGame->getUsers()->contains($oUser))) {
+                $oGame->addUser($oUser);
+            }
             // Si on a atteint le nombre de joueurs max de la partie
             if ($oGame->getMaxPlayers() == count($oGame->getUsers())) {
                 $oGame->setState(Game::CURRENT_GAME);
 
-                // set Players
+                // On met à jour les Players
                 $oBoard = unserialize($oGame->getBoard());
                 $oBoard->setPlayers($oGame->getUsers());
 
+                //on met à jour le board
                 $oGame->setBoard(serialize($oBoard));
             }
 
             // on serialize et on met à jour en base
             $this->getDoctrine()->getManager()->flush();
 
-
             // on redirige vers le plateau de jeux
             return $this->redirectToRoute('game', array('id' => $oGame->getId()));
         } else {
+            //Si on n'est pas connecté on est redirigé vers la page d'accueil
             return $this->redirectToRoute('index');
         }
     }
@@ -109,16 +111,22 @@ class GameController extends Controller {
             //On récupère les informations de la partie demandée
             $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
             $oGame = $rep->find($id);
-            //On désérialize les infos du plateau pour récupérer ses cases que l'on pourra lire
-            $oGame->setBoard(unserialize($oGame->getBoard()));
-            $board = $oGame->getBoard()->getCases();
-            //On retourne le tableau de cases
-            return $this->render(
-                            'StcBundle:Game:jouer.html.twig', array(
-                        'idGame' => $oGame->getId(),
-                        'plateau' => $board
-                            )
-            );
+
+            //si la partie est toujours en attente
+            if ($oGame->getState() == Game::PENDING_GAME) {
+                return $this->render('StcBundle:Game:jouer.html.twig', array());
+            } elseif (($oGame->getState() == Game::CURRENT_GAME)) {
+                //On désérialize les infos du plateau pour récupérer ses cases que l'on pourra lire
+                $oGame->setBoard(unserialize($oGame->getBoard()));
+                $board = $oGame->getBoard()->getCases();
+                //On retourne le tableau de cases
+                return $this->render(
+                                'StcBundle:Game:jouer.html.twig', array(
+                            'idGame' => $oGame->getId(),
+                            'plateau' => $board
+                                )
+                );
+            }
         } else {
             return $this->redirectToRoute('index');
         }

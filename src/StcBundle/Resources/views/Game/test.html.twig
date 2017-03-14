@@ -1,8 +1,12 @@
 <html>
     <body>
-        {{ dump(game) }}<br/>
+        {{ dump(users) }}<br/>
         <br/>
-        {{ dump(user) }}
+        {% if contain %}
+            vrai
+        {% else %}
+            faux
+        {% endif %}
     </body>
 </html>
 
