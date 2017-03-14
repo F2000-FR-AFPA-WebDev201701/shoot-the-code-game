@@ -57,34 +57,45 @@
     {% if plateau is defined %}
 
         <script>
+            var moveInProgress = false;
             $('body').keypress(function (e) {
                 e.preventDefault();
+
+                if (moveInProgress) {
+                    return;
+                }
+
                 switch (e.charCode) {
                     case 113:
+                        moveInProgress = true;
                         $.ajax({
                             url: '{{ path("controls", {"idGame" : idGame, "action" : "left"}) }}',
                             success: refreshTable
                         });
                         break;
                     case 100:
+                        moveInProgress = true;
                         $.ajax({
                             url: '{{ path("controls", {"idGame" : idGame, "action" : "right"}) }}',
                             success: refreshTable
                         });
                         break;
                     case 122:
+                        moveInProgress = true;
                         $.ajax({
                             url: '{{ path("controls", {"idGame" : idGame, "action" : "up"}) }}',
                             success: refreshTable
                         });
                         break;
                     case 115:
+                        moveInProgress = true;
                         $.ajax({
                             url: '{{ path("controls", {"idGame" : idGame, "action" : "down"}) }}',
                             success: refreshTable
                         });
                         break;
                     case 32:
+                        moveInProgress = true;
                         $.ajax({
                             url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
                             success: refreshTable
@@ -94,6 +105,7 @@
             });
 
             function refreshTable(view) {
+                moveInProgress = false;
                 $('#tableau').html(view);
             }
 
