@@ -98,8 +98,9 @@ h2
 
 #plateau table
 {
-    background: #D0D0D0;
     position: relative;
+    background: #E5E5E5;
+    table-layout: fixed;
 }
 
 #loading{
@@ -107,8 +108,6 @@ h2
     left:530px;
     top:280px;
     z-index: 3;
-    background: #E5E5E5;
-    table-layout: fixed;
 }
 
 .power { margin-top: 20px }
