@@ -92,6 +92,14 @@ h2
     width: 960px;
     height: 600px;
     background: #D0D0D0;
+    position: relative;
+}
+
+#loading{
+    position: absolute;
+    left:530px;
+    top:280px;
+    z-index: 3;
 }
 
 .power { margin-top: 20px }

@@ -1,9 +1,13 @@
+
 <table  class="col-lg-9 col-lg-offset-1 table table-bordered text-center">
-    {% for ligne in plateau %}
-        <tr>
-            {% for case in ligne %}
-                <td class="{{ case.content }}"></td>
-            {% endfor %}
-        </tr>
-    {% endfor %}
+    {% if plateau is defined %}
+        {% for ligne in plateau %}
+            <tr>
+                {% for case in ligne %}
+                    <td class="{{ case.content }}"></td>
+                {% endfor %}
+            </tr>
+    {% endfor %}{% else %}
+        <div id="loading"><img src="{{ asset('images/hourglass.gif')}}" alt="Chargement ..."/></div>
+        {% endif %}
 </table>
