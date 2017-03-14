@@ -42,10 +42,4 @@ class Block extends Movable {
         $this->status = $status;
     }
 
-// code temp pour dev / debug
-    public function setColor($value) {
-        $this->color = $value;
-    }
-
-// fin temp
 }

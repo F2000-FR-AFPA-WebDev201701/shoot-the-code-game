@@ -57,7 +57,7 @@
     <script>
         $('body').keypress(function (e) {
             e.preventDefault();
-            switch (e.keyCode) {
+            switch (e.charCode) {
                 case 113:
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : idGame, "action" : "left"}) }}',

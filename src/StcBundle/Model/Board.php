@@ -14,9 +14,6 @@ class Board {
 // tableau d'avion vide pour les futurs joueurs
     private $planeTab = [];
     private $block = [];
-    // temp dev / debug
-    private $blockTest = [];
-    // fin temp
     private $combinaison = [];
 
 //Constructeur
@@ -40,20 +37,6 @@ class Board {
             $this->block[] = new Block();
             $this->combinaison[] = mt_rand(1, 8);
         }
-        // code temporaire pour le dev / debug cheat
-        $this->blockTest[0] = new Block();
-        $this->blockTest[1] = new Block();
-        $this->blockTest[2] = new Block();
-        $this->blockTest[3] = new Block();
-        $this->blockTest[0]->setColor($this->combinaison[0]);
-        $this->blockTest[1]->setColor($this->combinaison[1]);
-        $this->blockTest[2]->setColor($this->combinaison[2]);
-        $this->blockTest[3]->setColor($this->combinaison[3]);
-        $this->cases[0][2]->setContent($this->blockTest[0]);
-        $this->cases[0][5]->setContent($this->blockTest[1]);
-        $this->cases[0][9]->setContent($this->blockTest[2]);
-        $this->cases[0][12]->setContent($this->blockTest[3]);
-        // fin temp
         // Initialisation de la couleur
         $this->cases[1][2]->setContent($this->block[0]);
         $this->cases[1][5]->setContent($this->block[1]);
@@ -113,13 +96,13 @@ class Board {
     }
 
     public function checkColor() {
-        foreach ($this->block as $key => $value) {
-            if ($value->color == $this->combinaison[$key]) {
-                $this->block[$key]->setStatus(3);
-            } elseif (in_array($value->color, $this->getCombinaison())) {
-                $this->block[$key]->setStatus(2);
+        foreach ($this->block as $key => $oBlock) {
+            if ($oBlock->getColor() == $this->combinaison[$key]) {
+                $oBlock->setStatus(Block::STATUS_GOOD);
+            } elseif (in_array($oBlock->getColor(), $this->combinaison)) {
+                $oBlock->setStatus(Block::STATUS_ALMOST);
             } else {
-                $this->block[$key]->setStatus(1);
+                $oBlock->setStatus(Block::STATUS_WRONG);
             }
         }
     }
@@ -211,7 +194,6 @@ class Board {
                         break;
                 }
                 $this->checkColor();
-
                 break;
         }
     }
