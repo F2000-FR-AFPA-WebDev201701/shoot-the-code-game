@@ -1,10 +1,13 @@
-<table  class="col-lg-9 col-lg-offset-1 table table-bordered text-center">
+<table  class="col-lg-9 col-lg-offset-1">
     {% for ligne in plateau %}
         <tr>
             {% for case in ligne %}
             
-                {% set class = '' %}            
+                {% set class = '' %}
+                {% set avion = '' %}
+                
                 {% if case.content.idUser is defined %}
+                    {% set avion = '<img src="' ~ asset('images/avion.png') ~ '" alt="Avion" />' %}
                     {% set class = 'avion' %}
                     {% if app.session.get('userId') == case.content.idUser %}
                         {% set class = class ~ ' my-plane' %}
@@ -20,9 +23,7 @@
                     {% endif %}
                 {% endif %}
             
-                <td class="{{ class }}">
-                    
-                </td>
+                <td class="{{ class }}">{{ avion|raw }}</td>
             {% endfor %}
         </tr>
     {% endfor %}
