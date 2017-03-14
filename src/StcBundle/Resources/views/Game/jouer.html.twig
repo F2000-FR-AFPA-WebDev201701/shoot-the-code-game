@@ -58,6 +58,7 @@
 
         <script>
             var moveInProgress = false;
+            var shootInProgress = false;
             $('body').keypress(function (e) {
                 e.preventDefault();
 
@@ -96,6 +97,7 @@
                         break;
                     case 32:
                         moveInProgress = true;
+                        shootInProgress = true;
                         $.ajax({
                             url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
                             success: refreshTable
@@ -105,6 +107,7 @@
             });
 
             function refreshTable(view) {
+                shootInProgress = false;
                 moveInProgress = false;
                 $('#tableau').html(view);
             }
