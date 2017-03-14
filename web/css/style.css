@@ -92,6 +92,14 @@ h2
     width: 960px;
     height: 600px;
     background: #D0D0D0;
+    position: relative;
+}
+
+#loading{
+    position: absolute;
+    left:530px;
+    top:280px;
+    z-index: 3;
 }
 
 .power { margin-top: 20px }
@@ -113,7 +121,12 @@ h2
 .couleur6 { background-color: #01A600 }
 .couleur7 { background-color: #D0EB0E }
 .couleur8 { background-color: #FF7600 }
-.avion { background-color: #000000 }
+
+.avion { background-color: #666666 }
+.avion.my-plane { background-color: #000000 }
+
+.status-almost { background-color: black }
+.status-good { background-color: white }
 
 /* [class*="col-"] { border: 1px solid black } */
 /* [class*="row"] { border: 1px solid red } */

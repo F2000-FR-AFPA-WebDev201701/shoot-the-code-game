@@ -13,9 +13,7 @@ class Board {
     private $cases = [];
 // tableau d'avion vide pour les futurs joueurs
     private $planeTab = [];
-    
     private $block = [];
-    
     private $combinaison = [];
 
 //Constructeur
@@ -31,20 +29,19 @@ class Board {
                 $this->cases[$y][$x] = new Square($x, $y);
             }
         }
-        
+
+
         // Génération des 4 blocs
         // Génération de la combinaison
-        for ($i = 0; $i < 4 ; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             $this->block[] = new Block();
             $this->combinaison[] = mt_rand(1, 8);
         }
-        
         // Initialisation de la couleur
-        $this->cases[1][2]->setContent('couleur' . $this->block[0]->getColor());
-        $this->cases[1][5]->setContent('couleur' . $this->block[1]->getColor());
-        $this->cases[1][9]->setContent('couleur' . $this->block[2]->getColor());
-        $this->cases[1][12]->setContent('couleur' . $this->block[3]->getColor());
-               
+        $this->cases[1][2]->setContent($this->block[0]);
+        $this->cases[1][5]->setContent($this->block[1]);
+        $this->cases[1][9]->setContent($this->block[2]);
+        $this->cases[1][12]->setContent($this->block[3]);
     }
 
 //Getters et Setters
@@ -63,7 +60,7 @@ class Board {
     public function getCases() {
         return $this->cases;
     }
-    
+
     public function getCombinaison() {
         return $this->combinaison;
     }
@@ -94,8 +91,19 @@ class Board {
             $oAvion->setPositiony(18);
             $oAvion->setIdUser($oUser->getId());
             $this->planeTab[] = $oAvion;
-            
-            $this->cases[$oAvion->getPositiony()][$oAvion->getPositionx()]->setContent('avion');
+            $this->cases[$oAvion->getPositiony()][$oAvion->getPositionx()]->setContent($oAvion);
+        }
+    }
+
+    public function checkColor() {
+        foreach ($this->block as $key => $oBlock) {
+            if ($oBlock->getColor() == $this->combinaison[$key]) {
+                $oBlock->setStatus(Block::STATUS_GOOD);
+            } elseif (in_array($oBlock->getColor(), $this->combinaison)) {
+                $oBlock->setStatus(Block::STATUS_ALMOST);
+            } else {
+                $oBlock->setStatus(Block::STATUS_WRONG);
+            }
         }
     }
 
@@ -123,8 +131,8 @@ class Board {
                     $newPosx = $oldPosx;
                 }
                 $oUserPlane->setPositionx($newPosx);
-                $this->cases[$oldPosy][$oldPosx]->setContent('');
-                $this->cases[$oldPosy][$newPosx]->setContent('avion');
+                $this->cases[$oldPosy][$oldPosx]->setContent();
+                $this->cases[$oldPosy][$newPosx]->setContent($oUserPlane);
                 break;
 
             case 'right':
@@ -136,8 +144,8 @@ class Board {
                     $newPosx = $oldPosx;
                 }
                 $oUserPlane->setPositionx($newPosx);
-                $this->cases[$oldPosy][$oldPosx]->setContent('');
-                $this->cases[$oldPosy][$newPosx]->setContent('avion');
+                $this->cases[$oldPosy][$oldPosx]->setContent();
+                $this->cases[$oldPosy][$newPosx]->setContent($oUserPlane);
                 break;
 
             case 'up':
@@ -149,8 +157,8 @@ class Board {
                     $newPosy = $oldPosy;
                 }
                 $oUserPlane->setPositiony($newPosy);
-                $this->cases[$oldPosy][$oldPosx]->setContent('');
-                $this->cases[$newPosy][$oldPosx]->setContent('avion');
+                $this->cases[$oldPosy][$oldPosx]->setContent();
+                $this->cases[$newPosy][$oldPosx]->setContent($oUserPlane);
                 break;
 
             case 'down':
@@ -162,29 +170,30 @@ class Board {
                     $newPosy = $oldPosy;
                 }
                 $oUserPlane->setPositiony($newPosy);
-                $this->cases[$oldPosy][$oldPosx]->setContent('');
-                $this->cases[$newPosy][$oldPosx]->setContent('avion');
+                $this->cases[$oldPosy][$oldPosx]->setContent();
+                $this->cases[$newPosy][$oldPosx]->setContent($oUserPlane);
                 break;
 
             case 'shoot':
-                switch ($this->planeTab[0]->getPositionx()) {
+                switch ($oUserPlane->getPositionx()) {
                     case 2:
                         $this->block[0]->nextColor();
-                        $this->cases[1][2]->setContent('couleur' . $this->block[0]->getColor());
+                        $this->cases[1][2]->setContent($this->block[0]);
                         break;
                     case 5:
                         $this->block[1]->nextColor();
-                        $this->cases[1][5]->setContent('couleur' . $this->block[1]->getColor());
+                        $this->cases[1][5]->setContent($this->block[1]);
                         break;
                     case 9:
                         $this->block[2]->nextColor();
-                        $this->cases[1][9]->setContent('couleur' . $this->block[2]->getColor());
+                        $this->cases[1][9]->setContent($this->block[2]);
                         break;
                     case 12:
                         $this->block[3]->nextColor();
-                        $this->cases[1][12]->setContent('couleur' . $this->block[3]->getColor());
+                        $this->cases[1][12]->setContent($this->block[3]);
                         break;
                 }
+                $this->checkColor();
                 break;
         }
     }

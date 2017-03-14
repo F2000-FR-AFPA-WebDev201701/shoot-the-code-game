@@ -1,9 +1,33 @@
+
 <table  class="col-lg-9 col-lg-offset-1 table table-bordered text-center">
-    {% for ligne in plateau %}
-        <tr>
-            {% for case in ligne %}
-                <td class="{{ case.content }}"></td>
-            {% endfor %}
-        </tr>
-    {% endfor %}
+    {% if plateau is defined %}
+        {% for ligne in plateau %}
+            <tr>
+                {% for case in ligne %}
+                    {% set class = '' %}
+                    {% if case.content.idUser is defined %}
+                        {% set class = 'avion' %}
+                        {% if app.session.get('userId') == case.content.idUser %}
+                            {% set class = class ~ ' my-plane' %}
+                        {% endif %}
+
+                    {% elseif case.content.color is defined %}
+                        {% set class = 'couleur' ~ case.content.color %}
+
+                        {% if case.content.status == constant('STATUS_ALMOST', case.content) %}
+                            {% set class = class ~ ' status-almost' %}
+                        {% elseif case.content.status == constant('STATUS_GOOD', case.content) %}
+                            {% set class = class ~ ' status-good' %}
+                        {% endif %}
+                    {% endif %}
+
+                    <td class="{{ class }}">
+
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    {% else %}
+        <div id="loading"><img src="{{ asset('images/hourglass.gif')}}" alt="Chargement ..."/></div>
+        {% endif %}
 </table>
