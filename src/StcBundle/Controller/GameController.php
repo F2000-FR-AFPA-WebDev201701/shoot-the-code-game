@@ -14,55 +14,55 @@ use StcBundle\Entity\Game;
 
 class GameController extends Controller {
 
-/**
- * @Route("/", name="index")
- */
-public function indexAction(Request $request) {
+    /**
+     * @Route("/", name="index")
+     */
+    public function indexAction(Request $request) {
 // gestion formulaire de contact
-$oContactForm = $this->createForm(ContactType::class);
-$oContactForm->handleRequest($request);
-if ($oContactForm->isSubmitted() && $oContactForm->isValid()) {
+        $oContactForm = $this->createForm(ContactType::class);
+        $oContactForm->handleRequest($request);
+        if ($oContactForm->isSubmitted() && $oContactForm->isValid()) {
 //dump($oContactForm->getData());
 // prévoir l'envoit d'un email à l'administrateur
-}
+        }
 
-return $this->render('StcBundle:Game:index.html.twig', array(
-'contactForm' => $oContactForm->createView()
-));
-}
+        return $this->render('StcBundle:Game:index.html.twig', array(
+                    'contactForm' => $oContactForm->createView()
+        ));
+    }
 
-/**
- * @Route("/game", name="create_game")
- */
-public function createAction(Request $request) {
+    /**
+     * @Route("/game", name="create_game")
+     */
+    public function createAction(Request $request) {
 // On vérifie que l'utilisateur est connecté
-if ($request->getSession()->get('userStatus') == 'connected') {
+        if ($request->getSession()->get('userStatus') == 'connected') {
 //On créé une nouvelle partie : nom de la partie, maxPlayer, initialized board.
-$oGame = new Game();
-$oCreateGameForm = $this->createForm(GameType::class, $oGame, array('nom' => $request->getSession()->get('userName')));
-$oCreateGameForm->handleRequest($request);
+            $oGame = new Game();
+            $oCreateGameForm = $this->createForm(GameType::class, $oGame, array('nom' => $request->getSession()->get('userName')));
+            $oCreateGameForm->handleRequest($request);
 
 //Si le formulaire est envoyé et valide
-if ($oCreateGameForm->isSubmitted() && $oCreateGameForm->isValid()) {
-$em = $this->getDoctrine()->getManager();
-$em->persist($oGame);
-$em->flush();
+            if ($oCreateGameForm->isSubmitted() && $oCreateGameForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($oGame);
+                $em->flush();
 
 // Redirection vers gameAction avec l'id de la partie
-return $this->redirectToRoute('join', array('idGame' => $oGame->getId()));
-}
-return $this->render('StcBundle:Game:creategame.html.twig', array(
-'createGameForm' => $oCreateGameForm->createView())
-);
-} else {
-return $this->redirectToRoute('index');
-}
-}
+                return $this->redirectToRoute('join', array('idGame' => $oGame->getId()));
+            }
+            return $this->render('StcBundle:Game:creategame.html.twig', array(
+                        'createGameForm' => $oCreateGameForm->createView())
+            );
+        } else {
+            return $this->redirectToRoute('index');
+        }
+    }
 
-/**
- * @Route("/join/{idGame}", name="join")
- */
-public function joinAction(Request $request, $idGame) {
+    /**
+     * @Route("/join/{idGame}", name="join")
+     */
+    public function joinAction(Request $request, $idGame) {
         // On vérifie que l'utilisateur est connecté
         if ($request->getSession()->get('userStatus') == 'connected') {
             $sessionName = $request->getSession()->get('userName');
@@ -156,7 +156,7 @@ public function joinAction(Request $request, $idGame) {
             $oBoard = unserialize($oGame->getBoard());
 
             //On effectue l'action demandée suite à l'entrée clavier
-            $oBoard->doAction($action);
+            $oBoard->doAction($request->getSession()->get('userId'), $action);
 
             //On récupère les nouvelles cases à jour
             $cases = $oBoard->getCases();
