@@ -36,5 +36,15 @@ class Block extends Movable {
     {
         return $this->color;
     }
+    
+    public function getStatus()
+    {
+        return $this->status;
+    }
+    
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
 }
 
