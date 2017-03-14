@@ -13,9 +13,7 @@ class Board {
     private $cases = [];
 // tableau d'avion vide pour les futurs joueurs
     private $planeTab = [];
-    
     private $block = [];
-    
     private $combinaison = [];
 
 //Constructeur
@@ -31,20 +29,22 @@ class Board {
                 $this->cases[$y][$x] = new Square($x, $y);
             }
         }
-        
+        // code temporaire pour le dev / debug cheat
+        $tempX = 2;
         // Génération des 4 blocs
         // Génération de la combinaison
-        for ($i = 0; $i < 4 ; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             $this->block[] = new Block();
             $this->combinaison[] = mt_rand(1, 8);
+            // debug cheat code
+            $this->cases[0][$tempX];
         }
-        
+
         // Initialisation de la couleur
         $this->cases[1][2]->setContent($this->block[0]);
         $this->cases[1][5]->setContent($this->block[1]);
         $this->cases[1][9]->setContent($this->block[2]);
         $this->cases[1][12]->setContent($this->block[3]);
-               
     }
 
 //Getters et Setters
@@ -63,7 +63,7 @@ class Board {
     public function getCases() {
         return $this->cases;
     }
-    
+
     public function getCombinaison() {
         return $this->combinaison;
     }
@@ -94,7 +94,6 @@ class Board {
             $oAvion->setPositiony(18);
             $oAvion->setIdUser($oUser->getId());
             $this->planeTab[] = $oAvion;
-            
             $this->cases[$oAvion->getPositiony()][$oAvion->getPositionx()]->setContent($oAvion);
         }
     }
@@ -189,6 +188,4 @@ class Board {
         }
     }
 
-    
-    
 }
