@@ -114,6 +114,7 @@ h2
 .couleur7 { background-color: #D0EB0E }
 .couleur8 { background-color: #FF7600 }
 .avion { background-color: #000000 }
+.autreAvion { opacity: 0.5 }
 
 /* [class*="col-"] { border: 1px solid black } */
 /* [class*="row"] { border: 1px solid red } */

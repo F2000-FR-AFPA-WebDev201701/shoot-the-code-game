@@ -55,34 +55,34 @@
     </main>
 
     <script>
-        $('body').keypress(function (key) {
-            key.preventDefault();
-            switch (key.key) {
-                case 'q':
+        $('body').keypress(function (e) {
+            e.preventDefault();
+            switch (e.keyCode) {
+                case 113:
                     $.ajax({
-                        url: '{{ path("controls", {"idGame" : idGame, "action" : 'left'}) }}',
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "left"}) }}',
                         success: refreshTable
                     });
                     break;
-                case 'd':
+                case 100:
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : idGame, "action" : "right"}) }}',
                         success: refreshTable
                     });
                     break;
-                case 'z':
+                case 122:
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : idGame, "action" : "up"}) }}',
                         success: refreshTable
                     });
                     break;
-                case 's':
+                case 115:
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : idGame, "action" : "down"}) }}',
                         success: refreshTable
                     });
                     break;
-                case ' ':
+                case 32:
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
                         success: refreshTable

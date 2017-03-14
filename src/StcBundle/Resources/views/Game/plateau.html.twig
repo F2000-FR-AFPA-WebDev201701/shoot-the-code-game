@@ -1,8 +1,21 @@
+{{ dump(app.session) }}
+
 <table  class="col-lg-9 col-lg-offset-1 table table-bordered text-center">
     {% for ligne in plateau %}
         <tr>
             {% for case in ligne %}
-                <td class="{{ case.content }}"></td>
+            
+            {% set content = '' %}
+            {% set otherPlane = '' %}
+            
+            {% if case.content.idUser is defined %}
+                {% set content = 'avion' %}
+                {# if app.request.session #}
+            {% elseif case.content.color is defined %}
+                {% set content = 'couleur' ~ case.content.color %}
+            {% endif %}
+            
+                <td class="{{ content }}{{ otherPlane }}"></td>
             {% endfor %}
         </tr>
     {% endfor %}

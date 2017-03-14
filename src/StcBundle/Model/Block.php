@@ -3,9 +3,9 @@
 namespace StcBundle\Model;
 
 use Doctrine\ORM\Mapping as ORM;
+use StcBundle\Model\Movable;
 
-class Block
-{
+class Block extends Movable {
     const STATUS_WRONG = 1;
     const STATUS_ALMOST = 2;
     const STATUS_GOOD = 3;

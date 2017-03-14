@@ -40,10 +40,10 @@ class Board {
         }
         
         // Initialisation de la couleur
-        $this->cases[1][2]->setContent('couleur' . $this->block[0]->getColor());
-        $this->cases[1][5]->setContent('couleur' . $this->block[1]->getColor());
-        $this->cases[1][9]->setContent('couleur' . $this->block[2]->getColor());
-        $this->cases[1][12]->setContent('couleur' . $this->block[3]->getColor());
+        $this->cases[1][2]->setContent($this->block[0]);
+        $this->cases[1][5]->setContent($this->block[1]);
+        $this->cases[1][9]->setContent($this->block[2]);
+        $this->cases[1][12]->setContent($this->block[3]);
                
     }
 
@@ -95,7 +95,7 @@ class Board {
             $oAvion->setIdUser($oUser->getId());
             $this->planeTab[] = $oAvion;
             
-            $this->cases[$oAvion->getPositiony()][$oAvion->getPositionx()]->setContent('avion');
+            $this->cases[$oAvion->getPositiony()][$oAvion->getPositionx()]->setContent($oAvion);
         }
     }
 
@@ -123,8 +123,8 @@ class Board {
                     $newPosx = $oldPosx;
                 }
                 $oUserPlane->setPositionx($newPosx);
-                $this->cases[$oldPosy][$oldPosx]->setContent('');
-                $this->cases[$oldPosy][$newPosx]->setContent('avion');
+                $this->cases[$oldPosy][$oldPosx]->setContent();
+                $this->cases[$oldPosy][$newPosx]->setContent($oUserPlane);
                 break;
 
             case 'right':
@@ -136,8 +136,8 @@ class Board {
                     $newPosx = $oldPosx;
                 }
                 $oUserPlane->setPositionx($newPosx);
-                $this->cases[$oldPosy][$oldPosx]->setContent('');
-                $this->cases[$oldPosy][$newPosx]->setContent('avion');
+                $this->cases[$oldPosy][$oldPosx]->setContent();
+                $this->cases[$oldPosy][$newPosx]->setContent($oUserPlane);
                 break;
 
             case 'up':
@@ -149,8 +149,8 @@ class Board {
                     $newPosy = $oldPosy;
                 }
                 $oUserPlane->setPositiony($newPosy);
-                $this->cases[$oldPosy][$oldPosx]->setContent('');
-                $this->cases[$newPosy][$oldPosx]->setContent('avion');
+                $this->cases[$oldPosy][$oldPosx]->setContent();
+                $this->cases[$newPosy][$oldPosx]->setContent($oUserPlane);
                 break;
 
             case 'down':
@@ -162,27 +162,27 @@ class Board {
                     $newPosy = $oldPosy;
                 }
                 $oUserPlane->setPositiony($newPosy);
-                $this->cases[$oldPosy][$oldPosx]->setContent('');
-                $this->cases[$newPosy][$oldPosx]->setContent('avion');
+                $this->cases[$oldPosy][$oldPosx]->setContent();
+                $this->cases[$newPosy][$oldPosx]->setContent($oUserPlane);
                 break;
 
             case 'shoot':
-                switch ($this->planeTab[0]->getPositionx()) {
+                switch ($oUserPlane->getPositionx()) {
                     case 2:
                         $this->block[0]->nextColor();
-                        $this->cases[1][2]->setContent('couleur' . $this->block[0]->getColor());
+                        $this->cases[1][2]->setContent($this->block[0]);
                         break;
                     case 5:
                         $this->block[1]->nextColor();
-                        $this->cases[1][5]->setContent('couleur' . $this->block[1]->getColor());
+                        $this->cases[1][5]->setContent($this->block[1]);
                         break;
                     case 9:
                         $this->block[2]->nextColor();
-                        $this->cases[1][9]->setContent('couleur' . $this->block[2]->getColor());
+                        $this->cases[1][9]->setContent($this->block[2]);
                         break;
                     case 12:
                         $this->block[3]->nextColor();
-                        $this->cases[1][12]->setContent('couleur' . $this->block[3]->getColor());
+                        $this->cases[1][12]->setContent($this->block[3]);
                         break;
                 }
                 break;
