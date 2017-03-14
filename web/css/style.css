@@ -4,6 +4,15 @@
 .padding-0 { padding: 0 }
 .margin-0 { margin: 0 }
 
+td
+{
+    border-left: 1px solid #C9C9C9;
+    border-right: 1px solid #C9C9C9;
+    width: 60px;
+    height: 30px;
+    box-sizing: border-box;
+}
+
 body {
     background: #F5F5F5;
     background: -webkit-linear-gradient(white, #EDEDED);
@@ -89,10 +98,9 @@ h2
 
 #plateau table
 {
-    width: 960px;
-    height: 600px;
-    background: #D0D0D0;
     position: relative;
+    background: #E5E5E5;
+    table-layout: fixed;
 }
 
 #loading{
@@ -134,7 +142,7 @@ h2
 {
     position: absolute;
     left: -27px;
-    bottom: -30px;
+    top: -30px;
 }
 
 .avion.my-plane { opacity: 1 !important}
@@ -143,7 +151,13 @@ h2
 {
     background-image: url('../images/almost.png'); background-size: 100% 100%;
 
+}
+.status-good
+{
+    background-color: white;
+    background-image: url('../images/good.png');
+    background-size: 100% 100%;
+}
 
-
-    /* [class*="col-"] { border: 1px solid black } */
-    /* [class*="row"] { border: 1px solid red } */
+/* [class*="col-"] { border: 1px solid black } */
+/* [class*="row"] { border: 1px solid red } */
