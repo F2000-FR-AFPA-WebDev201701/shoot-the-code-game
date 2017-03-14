@@ -5,12 +5,11 @@
 {% endblock %}
 
 {% block content %}
-
     <!-- Bannière -->
     <header>
         <div class="row margin-0">
             <div class="col-xs-12 padding-0">
-                <a href="#">
+                <a href="{{path('index')}}">
                     <img src="{{ asset('images/banniere.png') }}" alt="Bannière Shoot the code" title="Shoot the Code" />
                 </a>
             </div>
@@ -30,24 +29,44 @@
         </noscript>
         <!-- /Avertissement aux personnes n'ayant pas activé Javascript -->
 
+
         {% if (app.request.session.get('userStatus') == 'connected') %}
-            Connecté sous {{app.request.session.get('userName')}}<br />
-            <a href="{{path('logout')}}">Se déconnecter</a>
+
+            <div class="modal fade" id="soloModal">
+                <div class="modal-dialog">
+                    {{ render(controller('StcBundle:Game:create')) }}
+                </div>
+            </div>
+
+            <div class="modal fade" id="multiModal"><div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <strong>Rejoindre une partie</strong>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="{{ asset('images/load.gif')}}" alt="Chargement ..."/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Jouer -->
             <section id="jouer" class="row visible-lg">
-                <div class="col-lg-2 col-lg-offset-2 text-right">
-                    <a href="{{path('create_game')}}">
-                        <img src="http://fakeimg.pl/200x100/?text=Solo" alt="Jouer en solo" title="Jouer en solo" />
+                <div class="col-lg-2 col-lg-offset-3 text-right">
+                    <a href="#soloModal" data-toggle="modal">
+                        <img src="{{ asset('images/creer.png') }}" alt="Créer une partie" title="Créer une partie" class="radius1" />
                     </a>
                 </div>
-                <div class="col-lg-2 col-lg-offset-1 text-center">
-                    <a href="jouer.html">
-                        <img src="http://fakeimg.pl/200x100/?text=Multi" alt="Créer une partie multijoueur" title="Créer une partie multijoueur" />
-                    </a>
+                <div id="deconnexion" class="col-lg-2 text-center">
+                    <p class="col-xs-12">Connecté sous {{app.request.session.get('userName')}}</p>
+                    <a href="{{path('logout')}}"><button class="btn btn-primary">Se déconnecter</button></a>
                 </div>
-                <div class="col-lg-2 col-lg-offset-1">
-                    <a href="jouer.html">
-                        <img src="http://fakeimg.pl/200x100/?text=Rejoindre" alt="Rejoindre une partie" title="Rejoindre une partie" />
+                <div class="col-lg-2" id="listGame">
+                    <a href="#multiModal" data-toggle="modal">
+                        <img  src="{{ asset('images/rejoindre.png') }}" alt="Rejoindre une partie" title="Rejoindre une partie" class="radius2" />
                     </a>
                 </div>
             </section>
@@ -71,7 +90,6 @@
                 </p>
                 {{ render(controller('StcBundle:User:register')) }}
             </section>
-
             <!-- /Inscription -->
         {% endif %}
 
@@ -83,7 +101,7 @@
                 </h1>
             </div>
             <div id="objectif" class="row">
-                <img src="http://fakeimg.pl/320x150/?text=Objectif" alt="Objectif" title="Objectif" class="hidden-xs col-sm-3 col-sm-offset-1" />
+                <img src="{{ asset('images/objectif.png') }}" alt="Objectif" title="Objectif" class="hidden-xs col-sm-3 col-sm-offset-1" />
                 <p class="col-sm-7">
                     Bienvenue dans Shoot The Code, le Shoot’em Up le plus fun de tous les temps !<br/>
                     Vous allez contrôler un avion équipé d’armes, évoluant dans un univers de code informatique hostile.<br/>
@@ -93,7 +111,7 @@
                 </p>
             </div>
             <div id="howto" class="row">
-                <img src="http://fakeimg.pl/320x150/?text=Howto" alt="How to" title="How to" class="hidden-xs col-sm-3 col-sm-offset-1" />
+                <img src="{{ asset('images/howto.png') }}" alt="How to" title="How to" class="hidden-xs col-sm-3 col-sm-offset-1" />
                 <p class="col-sm-7">
                     Pour arriver à vos fins, utilisez les armes de votre avion pour tirer sur les blocs et les faire changer de couleur. Par défaut la touche pour tirer est « Espace », vous pouvez laisser appuyer : inutile de détruire votre clavier.
                     Si la couleur est bien placée vous aurez une indication autour du bloc, si elle est mal placée vous en aurez une autre, enfin si la couleur n’existe pas dans la solution vous n’aurez rien ;-P<br/>
@@ -102,7 +120,7 @@
                 </p>
             </div>
             <div id="astuces" class="row">
-                <img src="http://fakeimg.pl/320x150/?text=Astuces" alt="Astuces" title="Astuces" class="hidden-xs col-sm-3 col-sm-offset-1" />
+                <img src="{{ asset('images/astuces.png') }}" alt="Astuces" title="Astuces" class="hidden-xs col-sm-3 col-sm-offset-1" />
                 <p class="col-sm-7">
                     Enfin derniers conseils, essayez d’obtenir le plus rapidement des armes spéciales, vous pourrez ainsi augmenter votre pouvoir de destruction, votre vitesse de déplacement ou encore votre résistance.<br/>
                     Cela vous aidera certainement à rester en vie et vous serez plus à même de battre le boss.<br/>
@@ -193,4 +211,12 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/script.js') }}"></script>
+    <script>
+        $('#listGame').click(function () {
+            $.ajax({
+                url: '{{ path("list") }}',
+                success: refreshList
+            });
+        });
+    </script>
 {% endblock %}

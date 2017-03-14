@@ -10,53 +10,92 @@
         <div class="row">
 
             <!-- Plateau -->
-            <table class="col-lg-9 col-lg-offset-1 table table-bordered text-center">
-                {% for ligne in plateau %}
-                    <tr>{% for case in ligne %}
-                        <td>{{ case.content}}</td>
-                    {% endfor %}</tr>
-                    {% endfor %}
-
-                </table>
-                <!-- /Plateau -->
-
-                <!-- Menu latéral -->
-                <div class="col-lg-1">
-                    <div class="row">
-                        <a href="{{path('index')}}">
-
-                            <img src="http://fakeimg.pl/87x87/?text=Accueil" alt="Accueil" title="Accueil" class="col-lg-12" id="jouer_accueil" />
-                        </a>
-                        <img src="http://fakeimg.pl/87x87/?text=Pouvoir_1" alt="Pouvoir 1" title="Pouvoir 1" class="col-lg-12 power" />
-                        <img src="http://fakeimg.pl/87x87/?text=Pouvoir_2" alt="Pouvoir 2" title="Pouvoir 2" class="col-lg-12 power" />
-                        <img src="http://fakeimg.pl/87x87/?text=Pouvoir_3" alt="Pouvoir 3" title="Pouvoir 3" class="col-lg-12 power" />
-                    </div>
-                </div>
-                <!-- /Menu latéral -->
+            <div id="tableau">
+                {% include 'StcBundle:Game:plateau.html.twig' %}
             </div>
+            <!-- /Plateau -->
 
-            <!-- Indications -->
-            <div id="indications" class="row">
-                <div class="col-lg-1 col-lg-offset-2">
-                    <span class="glyphicon glyphicon-arrow-left"></span> Q
-                </div>
-                <div class="col-lg-1 col-lg-offset-1">
-                    <span class="glyphicon glyphicon-arrow-right"></span> S
-                </div>
-                <div class="col-lg-2 col-lg-offset-1">
-                    Espace <span class="glyphicon glyphicon-chevron-up"></span>
+            <!-- Menu latéral -->
+            <div class="col-lg-1">
+                <div class="row">
+                    <a href="{{path('index')}}">
+
+                        <img src="http://fakeimg.pl/87x87/?text=Accueil" alt="Accueil" title="Accueil" class="col-lg-12" id="jouer_accueil" />
+                    </a>
+                    <img src="http://fakeimg.pl/87x87/?text=Pouvoir_1" alt="Pouvoir 1" title="Pouvoir 1" class="col-lg-12 power" />
+                    <img src="http://fakeimg.pl/87x87/?text=Pouvoir_2" alt="Pouvoir 2" title="Pouvoir 2" class="col-lg-12 power" />
+                    <img src="http://fakeimg.pl/87x87/?text=Pouvoir_3" alt="Pouvoir 3" title="Pouvoir 3" class="col-lg-12 power" />
                 </div>
             </div>
-            <!-- /Indications -->
+            <!-- /Menu latéral -->
+        </div>
 
-        </main>
+        <!-- Indications -->
+        <div id="indications" class="row">
+            <div class="col-lg-1 col-lg-offset-2">
+                <span class="glyphicon glyphicon-arrow-left"></span> Q
+            </div>
+            <div class="col-lg-1 col-lg-offset-1">
+                <span class="glyphicon glyphicon-arrow-right"></span> S
+            </div>
+            <div class="col-lg-2 col-lg-offset-1">
+                Espace <span class="glyphicon glyphicon-chevron-up"></span>
+            </div>
+        </div>
+        <!-- /Indications -->
 
-        <!-- Résolution trop faible -->
-        <main class="hidden-lg text-center">
-            <h1>
-                Vous n'avez pas la résolution nécessaire pour jouer à ce jeu.
-            </h1>
-            <p><a href="index.html">Retourner à l'accueil.</a></p>
-        </main>
-        <!-- /Résolution trop faible -->
-        {% endblock %}
+    </main>
+
+    <!-- Résolution trop faible -->
+    <main class="hidden-lg text-center">
+        <h1>
+            Vous n'avez pas la résolution nécessaire pour jouer à ce jeu.
+        </h1>
+        <p><a href="index.html">Retourner à l'accueil.</a></p>
+    </main>
+
+    <script>
+        $('body').keypress(function (key) {
+            key.preventDefault();
+            switch (key.key) {
+                case 'q':
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : 'left'}) }}',
+                        success: refreshTable
+                    });
+                    break;
+                case 'd':
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "right"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+                case 'z':
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "up"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+                case 's':
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "down"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+                case ' ':
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+            }
+        });
+
+        function refreshTable(view) {
+            $('#tableau').html(view);
+        }
+
+    </script>
+    <!-- /Résolution trop faible -->
+{% endblock %}
+

@@ -5,6 +5,9 @@ namespace StcBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use StcBundle\Model\Board;
+use StcBundle\Model\Movable;
+use StcBundle\Model\Plane;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -56,7 +59,8 @@ class Game {
     private $board;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="games")
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="games")
+     * @ORM\JoinTable(name="users_games")
      */
     private $users;
 
@@ -73,9 +77,9 @@ class Game {
         $this->score = $score;
         $this->maxPlayers = $maxPlayers;
         $this->createdDate = new \Datetime();
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new ArrayCollection();
         //Création du plateau de jeu
-        $this->board = new Board();
+        $this->board = serialize(new Board());
     }
 
     /**

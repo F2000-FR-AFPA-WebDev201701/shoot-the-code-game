@@ -1,0 +1,24 @@
+<div class="modal-content">
+    {{form_start(createGameForm, {'attr' : {'action' : path('create_game')}})}}
+    <div class="modal-header">
+        <strong>Création de partie</strong>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                {{form_widget(createGameForm.name)}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                {{form_widget(createGameForm.maxPlayers)}}
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        {{form_widget(createGameForm.save)}}
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+    </div>
+    {{form_widget(createGameForm)}}
+    {{form_end(createGameForm)}}
+</div>
