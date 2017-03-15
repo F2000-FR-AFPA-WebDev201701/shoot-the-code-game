@@ -5,8 +5,6 @@ namespace StcBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use StcBundle\Model\Board;
-use StcBundle\Model\Movable;
-use StcBundle\Model\Plane;
 use \Doctrine\Common\Collections\ArrayCollection;
 
 /**

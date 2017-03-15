@@ -18,12 +18,11 @@ class GameController extends Controller {
      * @Route("/", name="index")
      */
     public function indexAction(Request $request) {
-        // gestion formulaire de contact
+        // Gestion formulaire de contact
         $oContactForm = $this->createForm(ContactType::class);
         $oContactForm->handleRequest($request);
         if ($oContactForm->isSubmitted() && $oContactForm->isValid()) {
-//dump($oContactForm->getData());
-// prévoir l'envoit d'un email à l'administrateur
+
         }
 
         return $this->render('StcBundle:Game:index.html.twig', array(
