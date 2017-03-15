@@ -114,7 +114,7 @@ class GameController extends Controller {
 
             //si la partie est toujours en attente
             if ($oGame->getState() == Game::PENDING_GAME) {
-                return $this->render('StcBundle:Game:jouer.html.twig', array());
+                return $this->render('StcBundle:Game:jouer.html.twig', array('idGame' => $oGame->getId()));
             } elseif (($oGame->getState() == Game::CURRENT_GAME)) {
                 //On désérialize les infos du plateau pour récupérer ses cases que l'on pourra lire
                 $oGame->setBoard(unserialize($oGame->getBoard()));
@@ -155,6 +155,8 @@ class GameController extends Controller {
     public function controlsAction(Request $request, $idGame, $action) {
         // On vérifie que l'utilisateur est autorisé à effectuer l'action
         if ($oUser = $this->isAuthorized($request, $idGame)) {
+            $aParams = [];
+            
             //On récupere l'id de l'user
             $idUser = $oUser->getId();
 
@@ -179,20 +181,10 @@ class GameController extends Controller {
                 $oGame->setBoard(serialize($oBoard));
                 $em->flush();
 
-                return $this->render(
-                                'StcBundle:Game:plateau.html.twig', array(
-                            'plateau' => $cases
-                                )
-                );
-//                return $this->render(
-//                                'StcBundle:Game:test.html.twig', array(
-//                            'contain' => $oGame->getUsers()->contains($oUser),
-//                            'users' => $sUser
-//                                )
-//                );
-            } else {
-                return $this->redirectToRoute('index');
+                $aParams['plateau'] = $cases;
             }
+                return $this->render('StcBundle:Game:plateau.html.twig', $aParams);
+            
         } else {
             return $this->redirectToRoute('index');
         }

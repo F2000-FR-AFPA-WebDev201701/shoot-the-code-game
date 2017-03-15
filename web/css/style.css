@@ -141,7 +141,7 @@ h2
 {
     position: absolute;
     left: -27px;
-    top: -30px;
+    bottom: -30px;
 }
 
 .avion.my-plane { opacity: 1 !important}

@@ -59,64 +59,71 @@
         </h1>
         <p><a href="index.html">Retourner à l'accueil.</a></p>
     </main>
+    <!-- /Résolution trop faible -->
 
-    {% if plateau is defined %}
+    <script>
 
-        <script>
-            var moveInProgress = false;
-            $('body').keypress(function (e) {
-                e.preventDefault();
+        var moveInProgress = false;
 
-                if (moveInProgress) {
-                    return;
-                }
+        $('body').keypress(function (e) {
+            console.log(e.charCode + ' ' + moveInProgress);
+            e.preventDefault();
 
-                switch (e.charCode) {
-                    case 113:
-                        moveInProgress = true;
-                        $.ajax({
-                            url: '{{ path("controls", {"idGame" : idGame, "action" : "left"}) }}',
-                            success: refreshTable
-                        });
-                        break;
-                    case 100:
-                        moveInProgress = true;
-                        $.ajax({
-                            url: '{{ path("controls", {"idGame" : idGame, "action" : "right"}) }}',
-                            success: refreshTable
-                        });
-                        break;
-                    case 122:
-                        moveInProgress = true;
-                        $.ajax({
-                            url: '{{ path("controls", {"idGame" : idGame, "action" : "up"}) }}',
-                            success: refreshTable
-                        });
-                        break;
-                    case 115:
-                        moveInProgress = true;
-                        $.ajax({
-                            url: '{{ path("controls", {"idGame" : idGame, "action" : "down"}) }}',
-                            success: refreshTable
-                        });
-                        break;
-                    case 32:
-                        moveInProgress = true;
-                        $.ajax({
-                            url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
-                            success: refreshTable
-                        });
-                        break;
-                }
-            });
-
-            function refreshTable(view) {
-                moveInProgress = false;
-                $('#tableau').html(view);
+            var gameWaiting = document.getElementById('#loading');
+            
+            if (moveInProgress || gameWaiting) {
+                return;
             }
 
-        </script>
-    {% endif %}
-    <!-- /Résolution trop faible -->
+            switch (e.charCode) {
+                case 113:
+                    moveInProgress = true;
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "left"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+                case 100:
+                    moveInProgress = true;
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "right"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+                case 122:
+                    moveInProgress = true;
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "up"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+                case 115:
+                    moveInProgress = true;
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "down"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+                case 32:
+                    moveInProgress = true;
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+            }
+        });
+
+        function refreshTable(view) {
+            moveInProgress = false;
+            $('#tableau').html(view);
+        }
+
+
+        setInterval(function(){
+            $('#tableau').load('{{ path("controls", {"idGame" : idGame, "action" : "null"}) }}');
+        }, 3000);
+    
+    </script>
 {% endblock %}
 
