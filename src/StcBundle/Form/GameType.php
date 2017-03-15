@@ -28,7 +28,9 @@ class GameType extends AbstractType {
                     'attr' => array(
                         'class' => 'form-control',
                         'placeholder' => 'Nombre de joueurs',
-                        'value' => 1
+                        'value' => 1,
+                        'min' => 1,
+                        'max' => 4
                     )
                 ))
                 ->add('save', FormType\SubmitType::class, array(

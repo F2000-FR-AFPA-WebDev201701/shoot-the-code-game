@@ -35,8 +35,14 @@
             <div class="col-lg-1 col-lg-offset-2">
                 <span class="glyphicon glyphicon-arrow-left"></span> Q
             </div>
-            <div class="col-lg-1 col-lg-offset-1">
-                <span class="glyphicon glyphicon-arrow-right"></span> S
+            <div class="col-lg-1">
+                <span class="glyphicon glyphicon-arrow-right"></span> D
+            </div>
+            <div class="col-lg-1">
+                <span class="glyphicon glyphicon-arrow-up"></span> Z
+            </div>
+            <div class="col-lg-1">
+                <span class="glyphicon glyphicon-arrow-down"></span> S
             </div>
             <div class="col-lg-2 col-lg-offset-1">
                 Espace <span class="glyphicon glyphicon-chevron-up"></span>
@@ -53,52 +59,83 @@
         </h1>
         <p><a href="index.html">Retourner à l'accueil.</a></p>
     </main>
+    <!-- /Résolution trop faible -->
 
-    {% if plateau is defined %}
+    <script>
+        // variable qui va recevoir la balise img pour l'animation de tir
+        var imgTir;
+        // booléen utilisé afin d'empécher l'empilement des déplacements en mémoire
+        var moveInProgress = false;
+        // variable de la distance entre le bloc couleur et l'avion utilisée pour le tir missile
+        var distanceTir;
 
-        <script>
-            $('body').keypress(function (e) {
-                e.preventDefault();
-                switch (e.charCode) {
-                    case 113:
-                        $.ajax({
-                            url: '{{ path("controls", {"idGame" : idGame, "action" : "left"}) }}',
-                            success: refreshTable
-                        });
-                        break;
-                    case 100:
-                        $.ajax({
-                            url: '{{ path("controls", {"idGame" : idGame, "action" : "right"}) }}',
-                            success: refreshTable
-                        });
-                        break;
-                    case 122:
-                        $.ajax({
-                            url: '{{ path("controls", {"idGame" : idGame, "action" : "up"}) }}',
-                            success: refreshTable
-                        });
-                        break;
-                    case 115:
-                        $.ajax({
-                            url: '{{ path("controls", {"idGame" : idGame, "action" : "down"}) }}',
-                            success: refreshTable
-                        });
-                        break;
-                    case 32:
-                        $.ajax({
-                            url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
-                            success: refreshTable
-                        });
-                        break;
-                }
-            });
+        $('body').keypress(function (e) {
+            e.preventDefault();
+            var gameWaiting = document.getElementById('#loading');
 
-            function refreshTable(view) {
-                $('#tableau').html(view);
+            if (moveInProgress || gameWaiting) {
+                return;
             }
 
-        </script>
-    {% endif %}
-    <!-- /Résolution trop faible -->
+            switch (e.charCode) {
+                case 113:
+                    moveInProgress = true;
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "left"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+                case 100:
+                    moveInProgress = true;
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "right"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+                case 122:
+                    moveInProgress = true;
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "up"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+                case 115:
+                    moveInProgress = true;
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "down"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+                case 32:
+                    moveInProgress = true;
+                    distanceTir = ($('.avion.my-plane').offset().top - $('tr:nth-child(3)').offset().top) + 2;
+                    //On cré la variable imgTir qui va contenir la balise img à injecter au DOM
+                    imgTir = $('<img />', {
+                        'src': '{{asset('images/missile_petit.jpg')}}',
+                        'style': '  left: 25px; position:absolute; z-index: 1;'
+                    });
+                    imgTir.appendTo($('.avion.my-plane'));
+                    //imgTir.animate({"top": "-=482px"}, "2500");
+                    imgTir.animate({"top": "-=" + distanceTir + "px"}, "2500");
+                    //affichage console de la balise imgTir rajoutée au DOM
+                    //console.log(imgTir);
+
+                    $.ajax({
+                        url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
+                        success: refreshTable
+                    });
+                    break;
+            }
+        });
+        function refreshTable(view) {
+            moveInProgress = false;
+            $('#tableau').html(view);
+        }
+
+        setInterval(function () {
+            $('#tableau').load('{{ path("controls", {"idGame" : idGame, "action" : "null"}) }}');
+        }, 3000);
+
+    </script>
 {% endblock %}
 

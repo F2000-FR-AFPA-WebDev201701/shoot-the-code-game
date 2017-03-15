@@ -1,29 +1,86 @@
 <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
-            <strong>Rejoindre une partie</strong>
-        </div>
-        <div class="modal-body">
-            <table class="table table-striped text-center">
-                {%if listGame is defined %}
-                    <tr>
-                        <td> <strong> Nom de la partie </strong> </td>
-                        <td> <strong> Nombres de joueurs </strong> </td>
-                        <td></td>
-                    </tr>
-                    {% for game in listGame %}
+        {% if not listGame %}
+            <div class="modal-body text-center">
+                Pas de partie en attente !
+            </div>
+        {% else %}
+            <div class="modal-header">
+                <strong>Rejoindre une partie</strong>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped text-center">
+                    {%if listGame is defined %}
                         <tr>
-                            <td> {{game.name}}  </td>
-                            <td> {{game.users|length }}/{{game.maxPlayers}} </td>
-                            <td> <a class="btn btn-primary" href="{{path('join', {'idGame':game.id})}}" role="button">Rejoindre</a></td>
+                            <td> <strong> Nom de la partie </strong> </td>
+                            <td> <strong> Nombres de joueurs </strong> </td>
+                            <td></td>
                         </tr>
-                    {% endfor  %}
+                        {% for game in listGame %}
+                            <tr>
+                                <td> {{game.name}}  </td>
+                                <td> {{game.users|length }}/{{game.maxPlayers}} </td>
+                                <td> <a class="btn btn-primary" href="{{path('join', {'idGame':game.id})}}" role="button">Rejoindre</a></td>
+                            </tr>
+                        {% endfor  %}
 
-                {% endif %}
-            </table>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-        </div>
+                    {% endif %}
+                </table>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">
+                    {% if page > 1 %}
+                        <div class="choicePageList btn btn-warning" role="button" value="1"> << </div>
+                        <div class="choicePageList btn btn-warning" role="button" value="{{page - 1}}"> < </div>
+                    {% endif%}
+                    {% if nbPages < 5 %}
+                        {% if nbPages == 1 %}
+                            <div class="choicePageList btn btn-primary" role="button" value="1"> 1 </div>
+                        {% else %}
+                            {% for i in 1..nbPages %}
+                                {% if i == page %}
+                                    <div class="choicePageList btn btn-primary" role="button" value=" {{ i }}"> {{ i }}</div>
+                                {% else %}
+                                    <div class="choicePageList btn btn-info" role="button" value=" {{ i }}"> {{ i }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% else %}
+                        {% if (page-3) <= 0 %}
+                            {% for i in 1..5 %}
+                                {% if i == page %}
+                                    <div class="choicePageList btn btn-primary" role="button" value=" {{ i }}"> {{ i }}</div>
+                                {% else %}
+                                    <div class="choicePageList btn btn-info" role="button" value=" {{ i }}"> {{ i }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% elseif page > (nbPages-3) %}
+                            {% for i in (nbPages-4)..nbPages %}
+                                {% if i == page %}
+                                    <div class="choicePageList btn btn-primary" role="button" value=" {{ i }}"> {{ i }}</div>
+                                {% else %}
+                                    <div class="choicePageList btn btn-info" role="button" value=" {{ i }}"> {{ i }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            {% for i in (page-2)..(page+2) %}
+                                {% if i == page %}
+                                    <div class="choicePageList btn btn-primary" role="button" value=" {{ i }}"> {{ i }}</div>
+                                {% else %}
+                                    <div class="choicePageList btn btn-info" role="button" value=" {{ i }}"> {{ i }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    {% if page < nbPages %}
+                        <div class="choicePageList btn btn-warning" role="button" value="{{page + 1}}"> > </div>
+                        <div class="choicePageList btn btn-warning" role="button" value="{{nbPages}}"> >> </div>
+                    {% endif %}
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>

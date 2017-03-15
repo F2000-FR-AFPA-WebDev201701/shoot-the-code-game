@@ -111,10 +111,9 @@ class GameController extends Controller {
             //On récupère les informations de la partie demandée
             $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
             $oGame = $rep->find($id);
-
             //si la partie est toujours en attente
             if ($oGame->getState() == Game::PENDING_GAME) {
-                return $this->render('StcBundle:Game:jouer.html.twig', array());
+                return $this->render('StcBundle:Game:jouer.html.twig', array('idGame' => $oGame->getId()));
             } elseif (($oGame->getState() == Game::CURRENT_GAME)) {
                 //On désérialize les infos du plateau pour récupérer ses cases que l'on pourra lire
                 $oGame->setBoard(unserialize($oGame->getBoard()));
@@ -127,23 +126,36 @@ class GameController extends Controller {
                                 )
                 );
             }
-        } else {
-            return $this->redirectToRoute('index');
         }
+        return $this->redirectToRoute('index');
     }
 
     /**
-     * @Route("/list", name="list")
+     * @Route("/list/{page}", name="list")
      */
-    public function listAction(Request $request) {
+    public function listAction(Request $request, $page) {
         // On vérifie que l'utilisateur est connecté
         if ($request->getSession()->get('userStatus') == 'connected') {
             //On récupères les parties en attente de joueurs
             $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
-            $oGame = $rep->findByState(Game::PENDING_GAME);
+
+            //On fixe le nombre de parties à afficher dans l'affichage des parties à rejoindre
+            $nbParties = 5;
+            //On compte le nombre de parties en attente
+            $nbPendingGame = count($rep->findByState(Game::PENDING_GAME));
+            //On calcul le nombre de pages à retourner
+            $nbPages = floor($nbPendingGame / $nbParties);
+            //On ajoute une page si on est compris dans le nombre de page à afficher
+            if ($nbPendingGame % 5 != 0) {
+                $nbPages += 1;
+            }
+            //On met à jour l'affichage en fonction de l'index
+            $oGame = $rep->findByState(Game::PENDING_GAME, null, $nbParties * $page, $nbParties * ($page - 1));
             return $this->render(
                             'StcBundle:Game:listgame.html.twig', array(
-                        'listGame' => $oGame));
+                        'listGame' => $oGame,
+                        'nbPages' => $nbPages,
+                        'page' => $page));
         } else {
             return $this->redirectToRoute('index');
         }
@@ -155,6 +167,8 @@ class GameController extends Controller {
     public function controlsAction(Request $request, $idGame, $action) {
         // On vérifie que l'utilisateur est autorisé à effectuer l'action
         if ($oUser = $this->isAuthorized($request, $idGame)) {
+            $aParams = [];
+
             //On récupere l'id de l'user
             $idUser = $oUser->getId();
 
@@ -179,25 +193,17 @@ class GameController extends Controller {
                 $oGame->setBoard(serialize($oBoard));
                 $em->flush();
 
-                return $this->render(
-                                'StcBundle:Game:plateau.html.twig', array(
-                            'plateau' => $cases
-                                )
-                );
-//                return $this->render(
-//                                'StcBundle:Game:test.html.twig', array(
-//                            'contain' => $oGame->getUsers()->contains($oUser),
-//                            'users' => $sUser
-//                                )
-//                );
-            } else {
-                return $this->redirectToRoute('index');
+                $aParams['plateau'] = $cases;
             }
+            return $this->render('StcBundle:Game:plateau.html.twig', $aParams);
         } else {
             return $this->redirectToRoute('index');
         }
     }
 
+    //Fonction permetttant d'autorisé ou non à effectuer des actions
+    //Retourn null si on n'autorise pas les actions
+    //Retourne les infos du joueur si l'utilisateur connecté à l'autorisation d'effectuer des actions sur la partie donnée
     private function isAuthorized(Request $request, $idGame) {
         $permission = null;
         if ($request->getSession()->get('userStatus') == 'connected') {
@@ -211,9 +217,12 @@ class GameController extends Controller {
             $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
             $oGame = $rep->find($idGame);
 
-            //Si la partie contient l'utilisateur on l'autorise à faire des actions
-            if ($oGame->getUsers()->contains($oUser)) {
-                $permission = $oUser;
+            //On bloque au cas ou la partie n'existe pas
+            if ($oGame) {
+                //Si la partie contient l'utilisateur on l'autorise à faire des actions
+                if ($oGame->getUsers()->contains($oUser)) {
+                    $permission = $oUser;
+                }
             }
         }
         return $permission;
