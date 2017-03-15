@@ -70,7 +70,9 @@
         var distanceTir;
 
         $('body').keypress(function (e) {
+
             e.preventDefault();
+            
             var gameWaiting = document.getElementById('#loading');
 
             if (moveInProgress || gameWaiting) {
