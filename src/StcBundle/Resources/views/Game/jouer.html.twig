@@ -72,7 +72,7 @@
         $('body').keypress(function (e) {
 
             e.preventDefault();
-            
+
             var gameWaiting = document.getElementById('#loading');
 
             if (moveInProgress || gameWaiting) {
@@ -146,9 +146,9 @@
             $('#tableau').html(view);
         }
 
-        /*setInterval(function () {
-         $('#tableau').load('{{ path("controls", {"idGame" : idGame, "action" : "null"}) }}');
-         }, 3000);*/
+        setInterval(function () {
+            $('#tableau').load('{{ path("controls", {"idGame" : idGame, "action" : "null"}) }}');
+        }, 3000);
 
     </script>
 {% endblock %}

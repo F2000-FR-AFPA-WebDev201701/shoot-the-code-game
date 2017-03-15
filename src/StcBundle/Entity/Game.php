@@ -9,7 +9,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="Games")
+ * @ORM\Table(name="Stc_Games")
  */
 class Game {
 
@@ -58,7 +58,7 @@ class Game {
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="games")
-     * @ORM\JoinTable(name="users_games")
+     * @ORM\JoinTable(name="Stc_users_games")
      */
     private $users;
 
