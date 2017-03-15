@@ -30,7 +30,6 @@ class Board {
             }
         }
 
-
         // Génération des 4 blocs
         // Génération de la combinaison
         for ($i = 0; $i < 4; $i++) {
