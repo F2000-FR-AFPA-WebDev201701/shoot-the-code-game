@@ -23,8 +23,4 @@ class Plane extends Movable {
         $this->idUser = $idUser;
     }
 
-    function __construct() {
-
-    }
-
 }
