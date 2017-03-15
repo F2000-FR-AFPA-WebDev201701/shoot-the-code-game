@@ -35,8 +35,14 @@
             <div class="col-lg-1 col-lg-offset-2">
                 <span class="glyphicon glyphicon-arrow-left"></span> Q
             </div>
-            <div class="col-lg-1 col-lg-offset-1">
-                <span class="glyphicon glyphicon-arrow-right"></span> S
+            <div class="col-lg-1">
+                <span class="glyphicon glyphicon-arrow-right"></span> D
+            </div>
+            <div class="col-lg-1">
+                <span class="glyphicon glyphicon-arrow-up"></span> Z
+            </div>
+            <div class="col-lg-1">
+                <span class="glyphicon glyphicon-arrow-down"></span> S
             </div>
             <div class="col-lg-2 col-lg-offset-1">
                 Espace <span class="glyphicon glyphicon-chevron-up"></span>
@@ -55,35 +61,47 @@
     </main>
 
     {% if plateau is defined %}
+
         <script>
-            $('body').keypress(function (key) {
-                key.preventDefault();
-                switch (key.key) {
-                    case 'q':
+            var moveInProgress = false;
+            $('body').keypress(function (e) {
+                e.preventDefault();
+
+                if (moveInProgress) {
+                    return;
+                }
+
+                switch (e.charCode) {
+                    case 113:
+                        moveInProgress = true;
                         $.ajax({
-                            url: '{{ path("controls", {"idGame" : idGame, "action" : 'left'}) }}',
+                            url: '{{ path("controls", {"idGame" : idGame, "action" : "left"}) }}',
                             success: refreshTable
                         });
                         break;
-                    case 'd':
+                    case 100:
+                        moveInProgress = true;
                         $.ajax({
                             url: '{{ path("controls", {"idGame" : idGame, "action" : "right"}) }}',
                             success: refreshTable
                         });
                         break;
-                    case 'z':
+                    case 122:
+                        moveInProgress = true;
                         $.ajax({
                             url: '{{ path("controls", {"idGame" : idGame, "action" : "up"}) }}',
                             success: refreshTable
                         });
                         break;
-                    case 's':
+                    case 115:
+                        moveInProgress = true;
                         $.ajax({
                             url: '{{ path("controls", {"idGame" : idGame, "action" : "down"}) }}',
                             success: refreshTable
                         });
                         break;
-                    case ' ':
+                    case 32:
+                        moveInProgress = true;
                         $.ajax({
                             url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
                             success: refreshTable
@@ -93,6 +111,7 @@
             });
 
             function refreshTable(view) {
+                moveInProgress = false;
                 $('#tableau').html(view);
             }
 
