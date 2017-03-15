@@ -23,7 +23,52 @@
             </table>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            <div class="text-center">
+                {% if page > 1 %}
+                    <div class="choicePageList btn btn-warning" role="button" value="1"> << </div>
+                    <div class="choicePageList btn btn-warning" role="button" value="{{page - 1}}"> < </div>
+                {% endif%}
+                {% if nbPages < 5 %}
+                    {% for i in 1..nbPages %}
+                        {% if i == page %}
+                            <div class="choicePageList btn btn-primary" role="button" value=" {{ i }}"> {{ i }}</div>
+                        {% else %}
+                            <div class="choicePageList btn btn-info" role="button" value=" {{ i }}"> {{ i }}</div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {% if (page-3) <= 0 %}
+                        {% for i in 1..5 %}
+                            {% if i == page %}
+                                <div class="choicePageList btn btn-primary" role="button" value=" {{ i }}"> {{ i }}</div>
+                            {% else %}
+                                <div class="choicePageList btn btn-info" role="button" value=" {{ i }}"> {{ i }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% elseif page > (nbPages-3) %}
+                        {% for i in (nbPages-4)..nbPages %}
+                            {% if i == page %}
+                                <div class="choicePageList btn btn-primary" role="button" value=" {{ i }}"> {{ i }}</div>
+                            {% else %}
+                                <div class="choicePageList btn btn-info" role="button" value=" {{ i }}"> {{ i }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {% for i in (page-2)..(page+2) %}
+                            {% if i == page %}
+                                <div class="choicePageList btn btn-primary" role="button" value=" {{ i }}"> {{ i }}</div>
+                            {% else %}
+                                <div class="choicePageList btn btn-info" role="button" value=" {{ i }}"> {{ i }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+                {% if page < nbPages %}
+                    <div class="choicePageList btn btn-warning" role="button" value="{{page + 1}}"> > </div>
+                    <div class="choicePageList btn btn-warning" role="button" value="{{nbPages}}"> >> </div>
+                {% endif %}
+            </div>
+            <div>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            </div>
         </div>
-    </div>
-</div>

@@ -133,17 +133,24 @@ class GameController extends Controller {
     }
 
     /**
-     * @Route("/list", name="list")
+     * @Route("/list/{page}", name="list")
      */
-    public function listAction(Request $request) {
+    public function listAction(Request $request, $page) {
         // On vérifie que l'utilisateur est connecté
         if ($request->getSession()->get('userStatus') == 'connected') {
             //On récupères les parties en attente de joueurs
             $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
-            $oGame = $rep->findByState(Game::PENDING_GAME);
+
+            //On compte le nombre de pages possible
+            $nbParties = 5;
+            $nbPages = (count($rep->findByState(Game::PENDING_GAME)) % $nbParties) + 1;
+            //On met à jour l'affichage en fonction de l'index
+            $oGame = $rep->findByState(Game::PENDING_GAME, null, $nbParties * $page, $nbParties * ($page - 1));
             return $this->render(
                             'StcBundle:Game:listgame.html.twig', array(
-                        'listGame' => $oGame));
+                        'listGame' => $oGame,
+                        'nbPages' => $nbPages,
+                        'page' => $page));
         } else {
             return $this->redirectToRoute('index');
         }

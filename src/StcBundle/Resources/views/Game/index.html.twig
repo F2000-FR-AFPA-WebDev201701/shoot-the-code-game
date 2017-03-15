@@ -214,7 +214,13 @@
     <script>
         $('#listGame').click(function () {
             $.ajax({
-                url: '{{ path("list") }}',
+                url: '{{ path("list",{'page':1}) }}',
+                success: refreshList
+            });
+        });
+        $('#multiModal').on('click', '.choicePageList', function () {
+            $.ajax({
+                url: document.location.href + 'list/' + $(this).attr('value'),
                 success: refreshList
             });
         });
