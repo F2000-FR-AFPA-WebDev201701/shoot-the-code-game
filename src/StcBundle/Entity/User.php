@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="Users")
+ * @ORM\Table(name="Stc_Users")
  */
 class User {
 
@@ -93,7 +93,6 @@ class User {
      */
     public function setPassword($password) {
         $this->password = $password;
-        //$this->password = sha1($password);
 
         return $this;
     }

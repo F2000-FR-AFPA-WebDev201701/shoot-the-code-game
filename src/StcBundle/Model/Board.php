@@ -83,7 +83,7 @@ class Board {
     public function setPlayers($oUserTab) {
         $startX = 4;
         foreach ($oUserTab as $oUser) {
-// P1 case x=6, P2 case x=8
+            // P1 case x=6, P2 case x=8
             $startX = $startX + 2;
             $oAvion = new Plane();
             $oAvion->setPositionx($startX);

@@ -2,7 +2,6 @@
 
 namespace StcBundle\Model;
 
-use Doctrine\ORM\Mapping as ORM;
 use StcBundle\Model\Movable;
 
 class Block extends Movable {
