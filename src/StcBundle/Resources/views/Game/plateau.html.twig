@@ -3,27 +3,38 @@
         {% for ligne in plateau %}
             <tr>
                 {% for case in ligne %}
+                    {# 2 paramètres du td renseignés par les tests si dessous : avion, avion du joueur, bloc couleur #}
                     {% set class = '' %}
                     {% set avion = '' %}
-                
+
+                    {# Pour chaque case de la ligne en cours, on cherche on a un avion présnet #}
                     {% if case.content.idUser is defined %}
-                        {% set avion = '<img src="' ~ asset('images/avion.png') ~ '" alt="Avion" />' %}
+                        {% set avion = '<img id="my-plane-img" src="' ~ asset('images/avion.png') ~ '" alt="Avion" />' %}
                         {% set class = 'avion' %}
+
+                        {# Si on a un avion, on vérifie si c'est celui du joueur #}
                         {% if app.session.get('userId') == case.content.idUser %}
                             {% set class = class ~ ' my-plane' %}
                         {% endif %}
-                    
-                {% elseif case.content.color is defined %}
-                    {% set class = 'couleur' ~ case.content.color %}
-                    
-                    {% if case.content.status == constant('STATUS_ALMOST', case.content) %}
-                        {% set class = class ~ ' status-almost' %}
-                    {% elseif case.content.status == constant('STATUS_GOOD', case.content) %}
-                        {% set class = class ~ ' status-good' %}
+
+                        {# Sinon on cherche si c'est un bloc couleur #}
+                    {% elseif case.content.color is defined %}
+                        {% set class = 'couleur' ~ case.content.color %}
+
+                        {# On récupère la propriété status du contenu de la case si c'est un bloc couleur de status ALMOST
+                        ou GOOD, on màj la class du td afin de màj le CSS et de donner un indicateur visuel de status#}
+                        {% if case.content.status == constant('STATUS_ALMOST', case.content) %}
+                            {% set class = class ~ ' status-almost' %}
+                        {% elseif case.content.status == constant('STATUS_GOOD', case.content) %}
+                            {% set class = class ~ ' status-good' %}
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-            
-                <td class="{{ class }}">{{ avion|raw }}</td>
+
+                    {# On crée la case avec la classe adaptée et la balise img si nécessaire,
+                    le raw signifie que le contenu est interprété et pas simplement affiché #}
+                    <td class="{{ class }}">
+                        {{ avion|raw }}
+                    </td>
                 {% endfor %}
             </tr>
         {% endfor %}

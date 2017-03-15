@@ -142,6 +142,7 @@ h2
     position: absolute;
     left: -27px;
     bottom: -30px;
+    z-index: 2;
 }
 
 .avion.my-plane { opacity: 1 !important}
