@@ -110,17 +110,16 @@
                     break;
                 case 32:
                     moveInProgress = true;
-                    distanceTir = ($('.avion.my-plane').offset().top - $('tr:nth-child(3)').offset().top) + 2;
+
+                    // tir jusqu'au bout du plateau ou jusqu'au bloc
+                    var distanceTir = distance();
                     //On cré la variable imgTir qui va contenir la balise img à injecter au DOM
                     imgTir = $('<img />', {
                         'src': '{{asset('images/missile_petit.png')}}',
                         'style': '  left: 25px; position:absolute; z-index: 1;'
                     });
                     imgTir.appendTo($('.avion.my-plane'));
-                    //imgTir.animate({"top": "-=482px"}, "2500");
                     imgTir.animate({"top": "-=" + distanceTir + "px"}, "2500");
-                    //affichage console de la balise imgTir rajoutée au DOM
-                    //console.log(imgTir);
 
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
@@ -129,14 +128,27 @@
                     break;
             }
         });
+        // function de calcul de la distance de tir
+        function distance() {
+            // sélecteur complexe : pour chaque tr (ligne), récupère les 3è td (cellules) dont la classe est
+            // my-plane => si on en trouve une c'est que l'avion est en colonne 3! On restreint la longueur
+            // de tir car on a un bloc couleur sur cette colonne.
+            if ($('#plateau td:nth-child(3).my-plane').length === 1 || $('#plateau td:nth-child(6).my-plane').length === 1 ||
+                    $('#plateau td:nth-child(10).my-plane').length === 1 || $('#plateau td:nth-child(13).my-plane').length === 1) {
+                return (($('.avion.my-plane').offset().top - $('tr:nth-child(3)').offset().top) + 3);
+            } else {
+                return (($('.avion.my-plane').offset().top - $('tr:nth-child(1)').offset().top) + 3);
+            }
+        }
+
         function refreshTable(view) {
             moveInProgress = false;
             $('#tableau').html(view);
         }
 
-        setInterval(function () {
-            $('#tableau').load('{{ path("controls", {"idGame" : idGame, "action" : "null"}) }}');
-        }, 3000);
+        /*setInterval(function () {
+         $('#tableau').load('{{ path("controls", {"idGame" : idGame, "action" : "null"}) }}');
+         }, 3000);*/
 
     </script>
 {% endblock %}
