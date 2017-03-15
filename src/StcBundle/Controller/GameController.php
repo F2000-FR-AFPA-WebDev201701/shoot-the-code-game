@@ -113,7 +113,8 @@ class GameController extends Controller {
             $oGame = $rep->find($id);
             //si la partie est toujours en attente
             if ($oGame->getState() == Game::PENDING_GAME) {
-                return $this->render('StcBundle:Game:jouer.html.twig', array('idGame' => $oGame->getId()));
+                return $this->render('StcBundle:Game:jouer.html.twig', array(
+                            'game' => $oGame));
             } elseif (($oGame->getState() == Game::CURRENT_GAME)) {
                 //On désérialize les infos du plateau pour récupérer ses cases que l'on pourra lire
                 $oGame->setBoard(unserialize($oGame->getBoard()));
@@ -121,7 +122,7 @@ class GameController extends Controller {
                 //On retourne le tableau de cases
                 return $this->render(
                                 'StcBundle:Game:jouer.html.twig', array(
-                            'idGame' => $oGame->getId(),
+                            'game' => $oGame,
                             'plateau' => $board
                                 )
                 );
@@ -196,6 +197,23 @@ class GameController extends Controller {
                 $aParams['plateau'] = $cases;
             }
             return $this->render('StcBundle:Game:plateau.html.twig', $aParams);
+        } else {
+            return $this->redirectToRoute('index');
+        }
+    }
+
+    /**
+     * @Route("/player/{idGame}", name="players")
+     */
+    public function viewPlayersAction(Request $request, $idGame) {
+        // On vérifie que l'utilisateur est autorisé à effectuer l'action
+        if ($this->isAuthorized($request, $idGame)) {
+            //On récupère la partie en cours
+            $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
+            $oGame = $rep->find($idGame);
+            //On renvoi les infos de la partie pour l'affichage
+            return $this->render('StcBundle:Game:players.html.twig', array(
+                        'game' => $oGame));
         } else {
             return $this->redirectToRoute('index');
         }

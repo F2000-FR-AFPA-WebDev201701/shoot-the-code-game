@@ -22,6 +22,9 @@
 
                         <img src="http://fakeimg.pl/87x87/?text=Accueil" alt="Accueil" title="Accueil" class="col-lg-12" id="jouer_accueil" />
                     </a>
+                    <div id ="players" class="col-lg-12">
+                        {% include 'StcBundle:Game:players.html.twig' %}
+                    </div>
                     <img src="http://fakeimg.pl/87x87/?text=Pouvoir_1" alt="Pouvoir 1" title="Pouvoir 1" class="col-lg-12 power" />
                     <img src="http://fakeimg.pl/87x87/?text=Pouvoir_2" alt="Pouvoir 2" title="Pouvoir 2" class="col-lg-12 power" />
                     <img src="http://fakeimg.pl/87x87/?text=Pouvoir_3" alt="Pouvoir 3" title="Pouvoir 3" class="col-lg-12 power" />
@@ -72,7 +75,7 @@
         $('body').keypress(function (e) {
 
             e.preventDefault();
-            
+
             var gameWaiting = document.getElementById('#loading');
 
             if (moveInProgress || gameWaiting) {
@@ -83,28 +86,28 @@
                 case 113:
                     moveInProgress = true;
                     $.ajax({
-                        url: '{{ path("controls", {"idGame" : idGame, "action" : "left"}) }}',
+                        url: '{{ path("controls", {"idGame" : game.id, "action" : "left"}) }}',
                         success: refreshTable
                     });
                     break;
                 case 100:
                     moveInProgress = true;
                     $.ajax({
-                        url: '{{ path("controls", {"idGame" : idGame, "action" : "right"}) }}',
+                        url: '{{ path("controls", {"idGame" : game.id, "action" : "right"}) }}',
                         success: refreshTable
                     });
                     break;
                 case 122:
                     moveInProgress = true;
                     $.ajax({
-                        url: '{{ path("controls", {"idGame" : idGame, "action" : "up"}) }}',
+                        url: '{{ path("controls", {"idGame" : game.id, "action" : "up"}) }}',
                         success: refreshTable
                     });
                     break;
                 case 115:
                     moveInProgress = true;
                     $.ajax({
-                        url: '{{ path("controls", {"idGame" : idGame, "action" : "down"}) }}',
+                        url: '{{ path("controls", {"idGame" : game.id, "action" : "down"}) }}',
                         success: refreshTable
                     });
                     break;
@@ -123,7 +126,7 @@
                     //console.log(imgTir);
 
                     $.ajax({
-                        url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
+                        url: '{{ path("controls", {"idGame" : game.id, "action" : "shoot"}) }}',
                         success: refreshTable
                     });
                     break;
@@ -135,7 +138,8 @@
         }
 
         setInterval(function () {
-            $('#tableau').load('{{ path("controls", {"idGame" : idGame, "action" : "null"}) }}');
+            $('#tableau').load('{{ path("controls", {"idGame" : game.id, "action" : "null"}) }}');
+            $('#players').load('{{ path("players", {"idGame" : game.id}) }}');
         }, 3000);
 
     </script>
