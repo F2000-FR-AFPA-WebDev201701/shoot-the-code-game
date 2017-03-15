@@ -82,6 +82,16 @@
             switch (e.charCode) {
                 case 113:
                     moveInProgress = true;
+
+                    // animate du déplacement, on cré une variable recevant une balise img
+                    imgDeplace = $('<img />', {
+                        'src': '{{asset('images/avion.png')}}',
+                        'style': '  left: -26px; position:absolute;'
+                    });
+                    // on remplace la balise img my-plane par notre balise temp que l'on va animate
+                    $('.avion.my-plane').html(imgDeplace);
+                    imgDeplace.animate({"left": "-=69px"}, "300");
+
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : idGame, "action" : "left"}) }}',
                         success: refreshTable
@@ -89,6 +99,15 @@
                     break;
                 case 100:
                     moveInProgress = true;
+
+                    // animate du déplacement
+                    imgDeplace = $('<img />', {
+                        'src': '{{asset('images/avion.png')}}',
+                        'style': '  left: -26px; position:absolute;'
+                    });
+                    $('.avion.my-plane').html(imgDeplace);
+                    imgDeplace.animate({"left": "+=65px"}, "300");
+
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : idGame, "action" : "right"}) }}',
                         success: refreshTable
@@ -96,6 +115,15 @@
                     break;
                 case 122:
                     moveInProgress = true;
+
+                    // animate du déplacement
+                    imgDeplace = $('<img />', {
+                        'src': '{{asset('images/avion.png')}}',
+                        'style': '  left: -27px; position:absolute;'
+                    });
+                    $('.avion.my-plane').html(imgDeplace);
+                    imgDeplace.animate({"top": "-=30px"}, "300");
+
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : idGame, "action" : "up"}) }}',
                         success: refreshTable
@@ -103,6 +131,15 @@
                     break;
                 case 115:
                     moveInProgress = true;
+
+                    // animate du déplacement
+                    imgDeplace = $('<img />', {
+                        'src': '{{asset('images/avion.png')}}',
+                        'style': '  left: -27px; position:absolute;'
+                    });
+                    $('.avion.my-plane').html(imgDeplace);
+                    imgDeplace.animate({"top": "+=30px"}, "300");
+
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : idGame, "action" : "down"}) }}',
                         success: refreshTable
@@ -116,10 +153,10 @@
                     //On cré la variable imgTir qui va contenir la balise img à injecter au DOM
                     imgTir = $('<img />', {
                         'src': '{{asset('images/missile_petit.png')}}',
-                        'style': '  left: 25px; position:absolute; z-index: 1;'
+                        'style': '  left: 27px; position:absolute; z-index: 1;'
                     });
                     imgTir.appendTo($('.avion.my-plane'));
-                    imgTir.animate({"top": "-=" + distanceTir + "px"}, "2500");
+                    imgTir.animate({"top": "-=" + distanceTir + "px"}, "500");
 
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
