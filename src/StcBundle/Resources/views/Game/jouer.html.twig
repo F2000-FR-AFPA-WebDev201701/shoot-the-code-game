@@ -63,11 +63,15 @@
     {% if plateau is defined %}
 
         <script>
+            // variable qui va recevoir la balise img pour l'animation de tir
+            var imgTir;
+            // booléen utilisé afin d'empécher l'empilement des déplacements en mémoire
             var moveInProgress = false;
-            var shootInProgress = false;
+            // variable de la distance entre le bloc couleur et l'avion utilisée pour le tir missile
+            var distanceTir;
+
             $('body').keypress(function (e) {
                 e.preventDefault();
-
                 if (moveInProgress) {
                     return;
                 }
@@ -103,7 +107,18 @@
                         break;
                     case 32:
                         moveInProgress = true;
-                        shootInProgress = true;
+                        distanceTir = ($('.avion.my-plane').offset().top - $('tr:nth-child(3)').offset().top) + 2;
+                        //On cré la variable imgTir qui va contenir la balise img à injecter au DOM
+                        imgTir = $('<img />', {
+                            'src': '{{asset('images/missile_petit.jpg')}}',
+                            'style': '  left: 25px; position:absolute; z-index: 1;'
+                        });
+                        imgTir.appendTo($('.avion.my-plane'));
+                        //imgTir.animate({"top": "-=482px"}, "2500");
+                        imgTir.animate({"top": "-=" + distanceTir + "px"}, "2500");
+                        //affichage console de la balise imgTir rajoutée au DOM
+                        //console.log(imgTir);
+
                         $.ajax({
                             url: '{{ path("controls", {"idGame" : idGame, "action" : "shoot"}) }}',
                             success: refreshTable
@@ -111,9 +126,7 @@
                         break;
                 }
             });
-
             function refreshTable(view) {
-                shootInProgress = false;
                 moveInProgress = false;
                 $('#tableau').html(view);
             }
