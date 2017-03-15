@@ -1,0 +1,10 @@
+{% if game.users is defined %}
+    Joueurs présents {{game.users|length}}/{{game.maxPlayers}}:
+    {% for player in game.users %}
+        {% if app.request.session.get('userName') == player.login %}
+            <br> - <strong>{{player.login }}</strong> </br>
+        {% else %}
+            <br> -{{player.login }} </br>
+        {% endif %}
+    {% endfor  %}
+{% endif %}
