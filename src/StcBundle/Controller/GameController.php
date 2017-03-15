@@ -144,7 +144,7 @@ class GameController extends Controller {
             //On compte le nombre de parties en attente
             $nbPendingGame = count($rep->findByState(Game::PENDING_GAME));
             //On calcul le nombre de pages à retourner
-            $nbPages = $nbPendingGame / $nbParties;
+            $nbPages = floor($nbPendingGame / $nbParties);
             //On ajoute une page si on est compris dans le nombre de page à afficher
             if ($nbPendingGame % 5 != 0) {
                 $nbPages += 1;
@@ -168,7 +168,7 @@ class GameController extends Controller {
         // On vérifie que l'utilisateur est autorisé à effectuer l'action
         if ($oUser = $this->isAuthorized($request, $idGame)) {
             $aParams = [];
-            
+
             //On récupere l'id de l'user
             $idUser = $oUser->getId();
 
@@ -195,8 +195,7 @@ class GameController extends Controller {
 
                 $aParams['plateau'] = $cases;
             }
-                return $this->render('StcBundle:Game:plateau.html.twig', $aParams);
-            
+            return $this->render('StcBundle:Game:plateau.html.twig', $aParams);
         } else {
             return $this->redirectToRoute('index');
         }
