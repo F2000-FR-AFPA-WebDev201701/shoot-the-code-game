@@ -9,6 +9,8 @@
 # Vendors
 /vendor
 
+app/config/parameters.yml
+
 # Netbeans
 /nbproject
 

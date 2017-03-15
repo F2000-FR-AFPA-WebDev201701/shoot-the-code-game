@@ -2,6 +2,7 @@
     "name": "f2000/shoot-the-code-game",
     "license": "proprietary",
     "type": "project",
+    "description": "Jeu de shootermind futuriste en 2D",
     "autoload": {
         "psr-4": {
             "": "src/"
