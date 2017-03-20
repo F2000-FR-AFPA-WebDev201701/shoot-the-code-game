@@ -8,13 +8,18 @@ use StcBundle\Model\Block;
 
 class Board {
 
+    // le board : hauteur, longueur et tableau de cases à 2 dimensions
     private $hauteur = 20;
     private $longueur = 15;
     private $cases = [];
-// tableau d'avion vide pour les futurs joueurs
+    // tableau d'avion vide pour les futurs joueurs
     private $planeTab = [];
+    // tableau des blocs couleurs
     private $block = [];
+    // tableau avec la combinaison réponse
     private $combinaison = [];
+    // booléen true si la partie est terminée
+    private $isEndGame;
 
 //Constructeur
     public function __construct() {
@@ -64,6 +69,10 @@ class Board {
         return $this->combinaison;
     }
 
+    public function getIsEndGame() {
+        return $this->isEndGame;
+    }
+
     public function setPlaneTab($planeTab) {
         $this->planeTab = $planeTab;
     }
@@ -94,14 +103,18 @@ class Board {
         }
     }
 
+    // met à jour le status de chaque bloc couleur et renvoie un booléen fin de partie true si la combinaison est ok
     public function checkColor() {
+        $this->isEndGame = true;
         foreach ($this->block as $key => $oBlock) {
             if ($oBlock->getColor() == $this->combinaison[$key]) {
                 $oBlock->setStatus(Block::STATUS_GOOD);
             } elseif (in_array($oBlock->getColor(), $this->combinaison)) {
                 $oBlock->setStatus(Block::STATUS_ALMOST);
+                $this->isEndGame = false;
             } else {
                 $oBlock->setStatus(Block::STATUS_WRONG);
+                $this->isEndGame = false;
             }
         }
     }
@@ -177,19 +190,15 @@ class Board {
                 switch ($oUserPlane->getPositionx()) {
                     case 2:
                         $this->block[0]->nextColor();
-                        $this->cases[1][2]->setContent($this->block[0]);
                         break;
                     case 5:
                         $this->block[1]->nextColor();
-                        $this->cases[1][5]->setContent($this->block[1]);
                         break;
                     case 9:
                         $this->block[2]->nextColor();
-                        $this->cases[1][9]->setContent($this->block[2]);
                         break;
                     case 12:
                         $this->block[3]->nextColor();
-                        $this->cases[1][12]->setContent($this->block[3]);
                         break;
                 }
                 $this->checkColor();

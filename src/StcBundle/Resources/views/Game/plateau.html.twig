@@ -1,4 +1,40 @@
-<table  class="col-lg-9 col-lg-offset-1">
+{% if isEndGame %}
+    {# Popup modal de fin de partie #}
+    <div class="modal fade" id="EndGameModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <strong>Fin de la partie</strong>
+                </div>
+                <div class="modal-body text-center row">
+                    <img src="{{ asset('images/golden-thophy.jpg')}}" alt="Victoire!"/>
+                    <br />
+                    <table class="col-lg-6 col-lg-offset-3">
+                        {% for player in players %}
+                            <tr>
+                                <td>
+                                    <p>{{ player.login }}</p>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        <tr>
+                            <td>
+                                <p>{{ score }}</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{path('index')}}" class="btn btn-info" role="button">Retour acceuil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{# fin popup modal fin de partie #}
+
+<table class="col-lg-9 col-lg-offset-1">
     {% if plateau is defined %}
         {% for ligne in plateau %}
             <tr>
@@ -39,6 +75,15 @@
             </tr>
         {% endfor %}
     {% else %}
-        <div id="loading"><img src="{{ asset('images/hourglass.gif')}}" alt="Chargement ..."/></div>
+        <div id="loading">
+            <img src="{{ asset('images/hourglass.gif')}}" alt="Chargement ..."/>
+        </div>
     {% endif %}
 </table>
+
+<script src="{{ asset('js/script.js') }}"></script>
+<script>
+    {% if isEndGame %}
+        $('#EndGameModal').modal();
+    {% endif %}
+</script>
