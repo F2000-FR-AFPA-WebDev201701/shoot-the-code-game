@@ -191,10 +191,10 @@
             $('#tableau').html(view);
         }
 
-        setInterval(function () {
+        {#setInterval(function () {
             $('#tableau').load('{{ path("controls", {"idGame" : game.id, "action" : "null"}) }}');
             $('#players').load('{{ path("players", {"idGame" : game.id}) }}');
-        }, 3000);
+        }, 3000);#}
 
     </script>
 {% endblock %}
