@@ -1,5 +1,9 @@
 {% if isEndGame %}
     {# Popup modal de fin de partie #}
+    <script>
+        clearInterval(pageRefresh);
+        $('#fond').stop(true, false);
+    </script>
     <div class="modal fade" id="EndGameModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -31,10 +35,6 @@
             </div>
         </div>
     </div>
-<script>
-    clearInterval(pageRefresh);
-    $('#fond').css('background-image', 'none');
-</script>
 {% endif %}
 {# fin popup modal fin de partie #}
 
@@ -80,6 +80,9 @@
         {% endfor %}
     {% else %}
         <div id="loading">
+            <script>
+                $('#fond').stop(true, false);
+            </script>
             <img src="{{ asset('images/hourglass.gif')}}" alt="Chargement ..."/>
         </div>
     {% endif %}
