@@ -20,8 +20,11 @@ class Block extends Movable {
 
 // Passe à la couleur suivante et se réinitialise après 8
     public function nextColor() {
-        $this->color++;
+        if ($this->status === self::STATUS_GOOD) {
+            return $this;
+        }
 
+        $this->color++;
         if ($this->color == 9) {
             $this->color = 1;
         }

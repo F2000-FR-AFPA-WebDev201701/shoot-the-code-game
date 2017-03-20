@@ -102,35 +102,6 @@ class GameController extends Controller {
     }
 
     /**
-     * @Route("/game/{id}", name="game")
-     */
-    public function gameAction(Request $request, $id) {
-        // On vérifie que l'utilisateur est autorisé à effectuer l'action
-        if ($this->isAuthorized($request, $id)) {
-            //On récupère les informations de la partie demandée
-            $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
-            $oGame = $rep->find($id);
-            //si la partie est toujours en attente
-            if ($oGame->getState() == Game::PENDING_GAME) {
-                return $this->render('StcBundle:Game:jouer.html.twig', array(
-                            'game' => $oGame));
-            } elseif (($oGame->getState() == Game::CURRENT_GAME)) {
-                //On désérialize les infos du plateau pour récupérer ses cases que l'on pourra lire
-                $oGame->setBoard(unserialize($oGame->getBoard()));
-                $board = $oGame->getBoard()->getCases();
-                //On retourne le tableau de cases
-                return $this->render(
-                                'StcBundle:Game:jouer.html.twig', array(
-                            'game' => $oGame,
-                            'plateau' => $board
-                                )
-                );
-            }
-        }
-        return $this->redirectToRoute('index');
-    }
-
-    /**
      * @Route("/list/{page}", name="list")
      */
     public function listAction(Request $request, $page) {
@@ -162,55 +133,83 @@ class GameController extends Controller {
     }
 
     /**
-     * @Route("/controls/{idGame}/{action}", name="controls")
+     * @Route("/game/{id}", name="game")
      */
-    public function controlsAction(Request $request, $idGame, $action) {
-        // On vérifie que l'utilisateur est autorisé à effectuer l'action
-        if ($oUser = $this->isAuthorized($request, $idGame)) {
-            $aParams = [];
-
-            //On récupere l'id de l'user
-            $idUser = $oUser->getId();
-
-            //On récupère la partie de l'action en cours
-            $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
-            $oGame = $rep->find($idGame);
-
-            // Si la partie est en cours, l'utilisateur peut alors effectuer des actions
-            if ($oGame->getState() == Game::CURRENT_GAME) {
-                //On récupère les infos du plateau
-                $oBoard = unserialize($oGame->getBoard());
-
-                //On effectue l'action demandée suite à l'entrée clavier
-                $oBoard->doAction($idUser, $action);
-
-                //On récupère les nouvelles cases à jour
-                $cases = $oBoard->getCases();
-
-                //On recharger le nouveau plateau dans la base de données
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($oGame);
-                $oGame->setBoard(serialize($oBoard));
-                $em->flush();
-
-                $aParams['plateau'] = $cases;
-            }
-            return $this->render('StcBundle:Game:plateau.html.twig', $aParams);
-        } else {
+    public function gameAction(Request $request, $id) {
+        // fonction qui affiche la page jouer sauf le plateau
+        // On vérifie que l'utilisateur est autorisé à rejoindre la vue jouer
+        if (!$this->isAuthorized($request, $id)) {
             return $this->redirectToRoute('index');
         }
+
+        //On récupère les informations de la partie demandée
+        $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
+        $oGame = $rep->find($id);
+
+        return $this->render('StcBundle:Game:jouer.html.twig', ['game' => $oGame]);
+    }
+
+    /**
+     * @Route("/controls/{idGame}/{action}", name="controls")
+     */
+    public function controlsAction(Request $request, $idGame, $action = null) {
+        // fonction qui soit:
+        //  - fait un refresh du plateau si action n'est pas renseigné
+        //  - soit met à jour le board en fonction de l'action et affiche un plateau à jour.
+        // On vérifie que l'utilisateur est autorisé à effectuer l'action sinon => index
+        if (!$oUser = $this->isAuthorized($request, $idGame)) {
+            return $this->redirectToRoute('index');
+        }
+
+        // On récupère la partie correspondant à l'action en cours
+        $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
+        $oGame = $rep->find($idGame);
+
+        // l'utilisateur peut alors effectuer des actions
+        //On récupère les infos du plateau
+        $oBoard = unserialize($oGame->getBoard());
+
+        // On effectue l'action demandée suite à l'entrée clavier
+        if ($oGame->getState() == Game::CURRENT_GAME && !is_null($action)) {
+            $oBoard->doAction($oUser->getId(), $action);
+            $oGame->setBoard(serialize($oBoard));
+        }
+
+        // on vérifie si la partie est terminée
+        if ($oBoard->getIsEndGame()) {
+            $oGame->setState(Game::END_GAME);
+        }
+
+        //On recharge le nouveau plateau dans la base de données
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($oGame);
+        $em->flush();
+
+        // paramètres communs aux cas refresh et actions
+        $aParams = [
+            'plateau' => $oBoard->getCases(),
+            'isEndGame' => ($oGame->getState() == Game::END_GAME)
+        ];
+
+        // ajout des params joueurs et le score si la partie est terminée
+        if ($oGame->getState() == Game::END_GAME) {
+            $aParams['players'] = $oGame->getUsers();
+            $aParams['score'] = $oGame->getScore();
+        }
+
+        return $this->render('StcBundle:Game:plateau.html.twig', $aParams);
     }
 
     /**
      * @Route("/player/{idGame}", name="players")
      */
     public function viewPlayersAction(Request $request, $idGame) {
-        // On vérifie que l'utilisateur est autorisé à effectuer l'action
+// On vérifie que l'utilisateur est autorisé à effectuer l'action
         if ($this->isAuthorized($request, $idGame)) {
-            //On récupère la partie en cours
+//On récupère la partie en cours
             $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
             $oGame = $rep->find($idGame);
-            //On renvoi les infos de la partie pour l'affichage
+//On renvoi les infos de la partie pour l'affichage
             return $this->render('StcBundle:Game:players.html.twig', array(
                         'game' => $oGame));
         } else {
@@ -218,25 +217,25 @@ class GameController extends Controller {
         }
     }
 
-    //Fonction permetttant d'autorisé ou non à effectuer des actions
-    //Retourn null si on n'autorise pas les actions
-    //Retourne les infos du joueur si l'utilisateur connecté à l'autorisation d'effectuer des actions sur la partie donnée
+//Fonction permetttant d'autorisé ou non à effectuer des actions
+//Retourn null si on n'autorise pas les actions
+//Retourne les infos du joueur si l'utilisateur connecté à l'autorisation d'effectuer des actions sur la partie donnée
     private function isAuthorized(Request $request, $idGame) {
         $permission = null;
         if ($request->getSession()->get('userStatus') == 'connected') {
             $iUser = $request->getSession()->get('userId');
 
-            // On récupère les informations du joueur connecté
+// On récupère les informations du joueur connecté
             $userRep = $this->getDoctrine()->getRepository('StcBundle:User');
             $oUser = $userRep->find($iUser);
 
-            //On récupère la partie passée en parametre
+//On récupère la partie passée en parametre
             $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
             $oGame = $rep->find($idGame);
 
-            //On bloque au cas ou la partie n'existe pas
+//On bloque au cas ou la partie n'existe pas
             if ($oGame) {
-                //Si la partie contient l'utilisateur on l'autorise à faire des actions
+//Si la partie contient l'utilisateur on l'autorise à faire des actions
                 if ($oGame->getUsers()->contains($oUser)) {
                     $permission = $oUser;
                 }
