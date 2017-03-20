@@ -8,16 +8,16 @@
     <main id="plateau" class="container-fluid visible-lg">
 
         <div class="row">
-            
+
             <div id="fond"></div>
-            
+
             <!-- Plateau -->
             <div id="tableau">
-                {% include 'StcBundle:Game:plateau.html.twig' %}
+                {{ render(controller ('StcBundle:Game:controls', { 'idGame' : game.id })) }}
             </div>
             <!-- /Plateau -->
-            
-            
+
+
 
             <!-- Menu latéral -->
             <div class="col-lg-1">
@@ -75,19 +75,18 @@
         var moveInProgress = false;
         // variable de la distance entre le bloc couleur et l'avion utilisée pour le tir missile
         var distanceTir;
-        
+
         function animationFond() {
-            $('#fond').animate({"background-position-y" : "0%"}, 5000, "linear").animate({"background-position-y" : "100%"}, 0, animationFond);
+            $('#fond').animate({"background-position-y": "0%"}, 5000, "linear").animate({"background-position-y": "100%"}, 0, animationFond);
         }
-        
+
         animationFond();
+
 
         $('body').keypress(function (e) {
 
             e.preventDefault();
-
             var gameWaiting = document.getElementById('#loading');
-
             if (moveInProgress || gameWaiting) {
                 return;
             }
@@ -95,7 +94,6 @@
             switch (e.charCode) {
                 case 113:
                     moveInProgress = true;
-
                     // animate du déplacement, on cré une variable recevant une balise img
                     imgDeplace = $('<img />', {
                         'src': '{{asset('images/avion.png')}}',
@@ -103,8 +101,7 @@
                     });
                     // on remplace la balise img my-plane par notre balise temp que l'on va animate
                     $('.avion.my-plane').html(imgDeplace);
-                    imgDeplace.animate({"left": "-=69px"}, "300");
-
+                    imgDeplace.animate({"left": "-=69px"}, 200);
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : game.id, "action" : "left"}) }}',
                         success: refreshTable
@@ -112,15 +109,13 @@
                     break;
                 case 100:
                     moveInProgress = true;
-
                     // animate du déplacement
                     imgDeplace = $('<img />', {
                         'src': '{{asset('images/avion.png')}}',
                         'style': '  left: -26px; position:absolute;'
                     });
                     $('.avion.my-plane').html(imgDeplace);
-                    imgDeplace.animate({"left": "+=65px"}, "300");
-
+                    imgDeplace.animate({"left": "+=65px"}, 200);
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : game.id, "action" : "right"}) }}',
                         success: refreshTable
@@ -128,15 +123,13 @@
                     break;
                 case 122:
                     moveInProgress = true;
-
                     // animate du déplacement
                     imgDeplace = $('<img />', {
                         'src': '{{asset('images/avion.png')}}',
                         'style': '  left: -27px; position:absolute;'
                     });
                     $('.avion.my-plane').html(imgDeplace);
-                    imgDeplace.animate({"top": "-=30px"}, "300");
-
+                    imgDeplace.animate({"top": "-=30px"}, 200);
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : game.id, "action" : "up"}) }}',
                         success: refreshTable
@@ -144,15 +137,13 @@
                     break;
                 case 115:
                     moveInProgress = true;
-
                     // animate du déplacement
                     imgDeplace = $('<img />', {
                         'src': '{{asset('images/avion.png')}}',
                         'style': '  left: -27px; position:absolute;'
                     });
                     $('.avion.my-plane').html(imgDeplace);
-                    imgDeplace.animate({"top": "+=30px"}, "300");
-
+                    imgDeplace.animate({"top": "+=30px"}, 200);
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : game.id, "action" : "down"}) }}',
                         success: refreshTable
@@ -160,7 +151,6 @@
                     break;
                 case 32:
                     moveInProgress = true;
-
                     // tir jusqu'au bout du plateau ou jusqu'au bloc
                     var distanceTir = distance();
                     //On cré la variable imgTir qui va contenir la balise img à injecter au DOM
@@ -170,7 +160,11 @@
                     });
                     imgTir.appendTo($('.avion.my-plane'));
 
-                    imgTir.animate({"top": "-=" + distanceTir + "px"}, 200, "linear");
+                    imgTir.animate({"top": "-=" + distanceTir + "px"}, 200, "linear",
+                            function () {
+                                imgTir.attr({'src': '{{asset('images/bang.png')}}', 'style': 'left:12px; top: -' + distanceTir + 'px;'});
+                            }
+                    );
 
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : game.id, "action" : "shoot"}) }}',
