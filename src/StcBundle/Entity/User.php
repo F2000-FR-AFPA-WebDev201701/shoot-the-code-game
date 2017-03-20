@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="Users")
+ * @ORM\Table(name="Stc_Users")
  */
 class User {
 
@@ -27,7 +27,7 @@ class User {
 
     /**
      * @ORM\Column(name="password",type="string", length=100, nullable=false)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Les mots de passe ne sont pas valides.")
      * @Assert\Type("string")
      */
     private $password;
@@ -35,7 +35,7 @@ class User {
     /**
      * @ORM\Column(name="mail",type="string", length=100, nullable=false)
      * @Assert\Email(
-     *     message = "L'email '{{ value }}' n'est pas valide.",
+     *     message = "L'email {{ value }} n'est pas valide.",
      *     checkMX = true
      * )
      */

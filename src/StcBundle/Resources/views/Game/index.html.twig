@@ -29,6 +29,13 @@
         </noscript>
         <!-- /Avertissement aux personnes n'ayant pas activé Javascript -->
 
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <p class="alert alert-success">{{ flashMessage }}</p>
+        {% endfor %}
+
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <p class="alert alert-danger">{{ flashMessage }}</p>
+        {% endfor %}
 
         {% if (app.request.session.get('userStatus') == 'connected') %}
 
