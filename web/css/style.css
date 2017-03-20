@@ -163,7 +163,6 @@ h2
 }
 .status-good
 {
-    background-color: white;
     background-image: url('../images/good.png');
     background-size: 100% 100%;
 }
