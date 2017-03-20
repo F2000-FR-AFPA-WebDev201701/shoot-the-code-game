@@ -4,15 +4,6 @@
 .padding-0 { padding: 0 }
 .margin-0 { margin: 0 }
 
-#plateau td
-{
-    border-left: 1px solid #C9C9C9;
-    border-right: 1px solid #C9C9C9;
-    width: 60px;
-    height: 30px;
-    box-sizing: border-box;
-}
-
 body {
     background: #F5F5F5;
     background: -webkit-linear-gradient(white, #EDEDED);
@@ -99,8 +90,14 @@ h2
 #plateau table
 {
     position: relative;
-    background: #E5E5E5;
     table-layout: fixed;
+}
+
+#plateau td
+{
+    width: 60px;
+    height: 30px;
+    box-sizing: border-box;
 }
 
 #loading{
@@ -108,6 +105,18 @@ h2
     left:530px;
     top:280px;
     z-index: 3;
+}
+
+#fond
+{
+    width: 75%;
+    height: 600px;
+    background-image: url('../images/fond.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+    position: absolute;
+    left: 8.27%;
 }
 
 .power { margin-top: 20px }
