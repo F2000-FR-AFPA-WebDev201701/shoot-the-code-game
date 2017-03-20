@@ -170,7 +170,7 @@
                     });
                     imgTir.appendTo($('.avion.my-plane'));
 
-                    imgTir.animate({"top": "-=" + distanceTir + "px"}, 200);
+                    imgTir.animate({"top": "-=" + distanceTir + "px"}, 200, "linear");
 
                     $.ajax({
                         url: '{{ path("controls", {"idGame" : game.id, "action" : "shoot"}) }}',
