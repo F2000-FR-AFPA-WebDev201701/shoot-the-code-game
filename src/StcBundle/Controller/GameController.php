@@ -84,6 +84,7 @@ class GameController extends Controller {
 
             // On met à jour les Players
             $oBoard = unserialize($oGame->getBoard());
+            //$oBoard->setLastMoveEnemy(new \DateTime());
             $oBoard->setPlayers($oGame->getUsers());
 
             //on met à jour le board
@@ -168,10 +169,26 @@ class GameController extends Controller {
         $oBoard = unserialize($oGame->getBoard());
 
         // On effectue l'action demandée suite à l'entrée clavier
-        if ($oGame->getState() == Game::CURRENT_GAME && !is_null($action)) {
+        //dump($oGame->getState());
+        if ($oGame->getState() == Game::CURRENT_GAME ) { //&& !is_null($action)
             $oBoard->doAction($oUser->getId(), $action);
-            $oGame->setBoard(serialize($oBoard));
+            //On met à jour les déplacements des ennemis si nécessaire
+//            $now = new \DateTime();
+//            $secondes = 2;
+//            $lastMove = $oBoard->getLastMoveEnemy();
+//            $expireMove = $lastMove->add(new \DateInterval('PT' . $secondes . 'S'));
+//            dump($expireMove < $now);
+//            if ($expireMove < $now) {
+//                //Faire bouger les ennemis
+//                dump($oBoard->getEnemy()[0]);
+//                $oBoard->getEnemy()[0]->move();
+//                //Mise à jour de la derniere action ennemi
+//                $oBoard->setLastMoveEnemy(new \DateTime());
+//            }
+            
         }
+        $oGame->setBoard(serialize($oBoard));
+        
         // on vérifie si la partie est terminée
         if ($oBoard->isEndGame()) {
             $oGame->setState(Game::END_GAME);

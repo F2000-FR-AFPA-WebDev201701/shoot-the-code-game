@@ -102,7 +102,7 @@ h2
 
 #loading{
     position: absolute;
-    left:530px;
+    left:40%;
     top:280px;
     z-index: 3;
 }

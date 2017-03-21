@@ -23,6 +23,8 @@ class Board {
     private $combinaison = [];
     // booléen true si la partie est terminée
     private $endGame;
+    //date du dernier déplacement d'ennemi
+    private $lastMoveEnemy;
 
 //Constructeur
     public function __construct() {
@@ -50,6 +52,14 @@ class Board {
         $this->cases[1][5]->setContent($this->block[1]);
         $this->cases[1][9]->setContent($this->block[2]);
         $this->cases[1][12]->setContent($this->block[3]);
+
+        // Génération d'un nombre variable d'ennemis
+        $nbEnemy = mt_rand(0, 15);
+
+        for ($i = 0; $i < $nbEnemy; $i++) {
+            $this->enemy[] = new Enemy();
+            $this->cases[$this->enemy[$i]->getPositiony()][$this->enemy[$i]->getPositionx()]->setContent($this->enemy[$i]->getTypeEnemy());
+        }
     }
 
 //Getters et Setters
@@ -235,6 +245,38 @@ class Board {
                 $this->checkColor();
                 break;
         }
+    }
+
+    function getLastMoveEnemy() {
+        return $this->lastMoveEnemy;
+    }
+
+    function setLastMoveEnemy($lastMoveEnemy) {
+        $this->lastMoveEnemy = $lastMoveEnemy;
+    }
+
+    function getBlock() {
+        return $this->block;
+    }
+
+    function getEnemy() {
+        return $this->enemy;
+    }
+
+    function getEndGame() {
+        return $this->endGame;
+    }
+
+    function setBlock($block) {
+        $this->block = $block;
+    }
+
+    function setEnemy($enemy) {
+        $this->enemy = $enemy;
+    }
+
+    function setEndGame($endGame) {
+        $this->endGame = $endGame;
     }
 
 }
