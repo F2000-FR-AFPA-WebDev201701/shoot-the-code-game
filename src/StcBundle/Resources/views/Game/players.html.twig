@@ -2,9 +2,9 @@
     Joueurs présents {{game.users|length}}/{{game.maxPlayers}}:
     {% for player in game.users %}
         {% if app.request.session.get('userName') == player.login %}
-            <br> - <strong>{{player.login }}</strong> </br>
+            <br> - <strong>{{player.login | upper }}</strong> </br>
         {% else %}
-            <br> -{{player.login }} </br>
+            <br> -{{player.login | upper }} </br>
         {% endif %}
     {% endfor  %}
 {% endif %}

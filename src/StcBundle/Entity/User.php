@@ -42,6 +42,12 @@ class User {
     private $mail;
 
     /**
+     * @ORM\Column(name="lastActionDate",type="datetime", nullable=false)
+     * @Assert\Type("\DateTime")
+     */
+    private $lastActionDate;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Game", mappedBy="users")
      */
     private $games;
@@ -51,6 +57,7 @@ class User {
      */
     public function __construct() {
         $this->games = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->lastActionDate = new \DateTime();
     }
 
     /**
@@ -162,4 +169,28 @@ class User {
         return $this->games;
     }
 
+
+    /**
+     * Set lastActionDate
+     *
+     * @param \DateTime $lastActionDate
+     *
+     * @return User
+     */
+    public function setLastActionDate($lastActionDate)
+    {
+        $this->lastActionDate = $lastActionDate;
+
+        return $this;
+    }
+
+    /**
+     * Get lastActionDate
+     *
+     * @return \DateTime
+     */
+    public function getLastActionDate()
+    {
+        return $this->lastActionDate;
+    }
 }

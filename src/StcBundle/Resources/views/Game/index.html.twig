@@ -226,8 +226,10 @@
             });
         });
         $('#multiModal').on('click', '.choicePageList', function () {
+            var base_site = document.location + '/list/';
+            base_site = base_site.replace('//list', '/list');
             $.ajax({
-                url: document.location.href + 'list/' + $(this).attr('value'),
+                url: base_site + $(this).attr('value'),
                 success: refreshList
             });
         });
