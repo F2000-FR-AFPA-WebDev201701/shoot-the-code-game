@@ -176,7 +176,7 @@ class GameController extends Controller {
         }
 
         // on vérifie si la partie est terminée
-        if ($oBoard->getIsEndGame()) {
+        if ($oBoard->isEndGame()) {
             $oGame->setState(Game::END_GAME);
         }
 
