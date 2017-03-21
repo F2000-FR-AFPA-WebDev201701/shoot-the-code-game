@@ -4,22 +4,21 @@
 }}
 <div class="row">
     <div class="col-xs-12">
-        {{form_widget(inscriptionForm.login)}}
+        {{ form_errors(inscriptionForm.login) }}
+        {{ form_widget(inscriptionForm.login) }}
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        {{form_widget(inscriptionForm.password)}}
+        {{ form_errors(inscriptionForm.password) }}
+        {{ form_widget(inscriptionForm.password) }}
     </div>
 </div>
+
 <div class="row">
     <div class="col-xs-12">
-        {{form_widget(inscriptionForm.password2)}}
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        {{form_widget(inscriptionForm.mail_inscription)}}
+        {{ form_errors(inscriptionForm.mail) }}
+        {{ form_widget(inscriptionForm.mail) }}
     </div>
 </div>
 <div class="row">
