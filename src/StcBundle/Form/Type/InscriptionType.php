@@ -1,6 +1,6 @@
 <?php
 
-namespace StcBundle\Form;
+namespace StcBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,15 +16,19 @@ class InscriptionType extends AbstractType {
                     'attr' => array('class' => 'form-control',
                         'placeholder' => 'Entrez votre pseudo',
                         'required' => 'true')))
-                ->add('password', FormType\PasswordType::class, array(
-                    'attr' => array('class' => 'form-control',
-                        'placeholder' => 'Entrez un mot de passe',
-                        'required' => 'true')))
-                ->add('password2', FormType\PasswordType::class, array(
-                    'attr' => array('class' => 'form-control',
-                        'placeholder' => 'Retapez votre mot de passe',
-                        'required' => 'true')))
-                ->add('mail_inscription', FormType\EmailType::class, array(
+                ->add('password', FormType\RepeatedType::class, array(
+                    'type' => FormType\PasswordType::class,
+                    'invalid_message' => 'Les mots de passe ne sont pas identiques',
+                    'first_options' => array('label' => false,
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'placeholder' => 'Entrez un mot de passe',
+                            'required' => 'true')),
+                    'second_options' => array('label' => false,
+                        'attr' => array('class' => 'form-control',
+                            'placeholder' => 'Retapez votre mot de passe',
+                            'required' => 'true'))))
+                ->add('mail', FormType\EmailType::class, array(
                     'attr' => array('class' => 'form-control',
                         'placeholder' => 'Entrez votre adresse email',
                         'required' => 'true')))

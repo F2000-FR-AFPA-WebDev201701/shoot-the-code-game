@@ -7,6 +7,10 @@ use StcBundle\Model\Movable;
 class Square extends Movable {
     private $content;
     
+    public function isVide () {
+        return empty($this->content);
+    }
+    
     public function getContent() {
         return $this->content;
     }

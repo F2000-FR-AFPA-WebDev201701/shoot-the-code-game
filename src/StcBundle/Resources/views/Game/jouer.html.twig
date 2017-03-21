@@ -76,12 +76,7 @@
         // variable de la distance entre le bloc couleur et l'avion utilisée pour le tir missile
         var distanceTir;
 
-        function animationFond() {
-            $('#fond').animate({"background-position-y": "0%"}, 5000, "linear").animate({"background-position-y": "100%"}, 0, animationFond);
-        }
-
-        animationFond();
-
+        
 
         $('body').keypress(function (e) {
 
@@ -156,7 +151,7 @@
                     //On cré la variable imgTir qui va contenir la balise img à injecter au DOM
                     imgTir = $('<img />', {
                         'src': '{{asset('images/missile_petit.png')}}',
-                        'style': '  left: 27px; position:absolute; z-index: 1;'
+                        'style': '  left: 25px; position:absolute; z-index: 1;'
                     });
                     imgTir.appendTo($('.avion.my-plane'));
 
@@ -191,7 +186,7 @@
             $('#tableau').html(view);
         }
 
-        setInterval(function () {
+        var pageRefresh = setInterval(function () {
             $('#tableau').load('{{ path("controls", {"idGame" : game.id, "action" : "null"}) }}');
             $('#players').load('{{ path("players", {"idGame" : game.id}) }}');
         }, 3000);
