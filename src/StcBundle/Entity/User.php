@@ -27,7 +27,7 @@ class User {
 
     /**
      * @ORM\Column(name="password",type="string", length=100, nullable=false)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Les mots de passe ne sont pas valides.")
      * @Assert\Type("string")
      */
     private $password;
@@ -35,11 +35,17 @@ class User {
     /**
      * @ORM\Column(name="mail",type="string", length=100, nullable=false)
      * @Assert\Email(
-     *     message = "L'email '{{ value }}' n'est pas valide.",
+     *     message = "L'email {{ value }} n'est pas valide.",
      *     checkMX = true
      * )
      */
     private $mail;
+
+    /**
+     * @ORM\Column(name="lastActionDate",type="datetime", nullable=false)
+     * @Assert\Type("\DateTime")
+     */
+    private $lastActionDate;
 
     /**
      * @ORM\ManyToMany(targetEntity="Game", mappedBy="users")
@@ -51,6 +57,7 @@ class User {
      */
     public function __construct() {
         $this->games = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->lastActionDate = new \DateTime();
     }
 
     /**
@@ -161,4 +168,28 @@ class User {
         return $this->games;
     }
 
+
+    /**
+     * Set lastActionDate
+     *
+     * @param \DateTime $lastActionDate
+     *
+     * @return User
+     */
+    public function setLastActionDate($lastActionDate)
+    {
+        $this->lastActionDate = $lastActionDate;
+
+        return $this;
+    }
+
+     /**
+     * Get lastActionDate
+     *
+     * @return \DateTime
+     */
+    public function getLastActionDate()
+    {
+        return $this->lastActionDate;
+    }
 }

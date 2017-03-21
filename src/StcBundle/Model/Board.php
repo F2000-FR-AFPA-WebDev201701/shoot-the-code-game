@@ -5,6 +5,7 @@ namespace StcBundle\Model;
 use StcBundle\Model\Square;
 use StcBundle\Model\Plane;
 use StcBundle\Model\Block;
+use StcBundle\Model\Enemy;
 
 class Board {
 
@@ -21,7 +22,7 @@ class Board {
     // tableau avec la combinaison réponse
     private $combinaison = [];
     // booléen true si la partie est terminée
-    private $isEndGame;
+    private $endGame;
 
 //Constructeur
     public function __construct() {
@@ -55,7 +56,7 @@ class Board {
         for ($i = 0 ; $i < $nbEnemy ; $i++)
         {
             $this->enemy[] = new Enemy();
-            $this->cases[$enemy->getPositiony()][$enemy->getPositiony()]->setContent($enemy->getTypeEnemy());
+            $this->cases[$this->enemy[$i]->getPositiony()][$this->enemy[$i]->getPositionx()]->setContent($this->enemy[$i]->getTypeEnemy());
         }
         
     }
@@ -81,8 +82,8 @@ class Board {
         return $this->combinaison;
     }
 
-    public function getIsEndGame() {
-        return $this->isEndGame;
+    public function isEndGame() {
+        return $this->endGame;
     }
 
     public function setPlaneTab($planeTab) {
@@ -117,16 +118,16 @@ class Board {
 
     // met à jour le status de chaque bloc couleur et renvoie un booléen fin de partie true si la combinaison est ok
     public function checkColor() {
-        $this->isEndGame = true;
+        $this->endGame = true;
         foreach ($this->block as $key => $oBlock) {
             if ($oBlock->getColor() == $this->combinaison[$key]) {
                 $oBlock->setStatus(Block::STATUS_GOOD);
             } elseif (in_array($oBlock->getColor(), $this->combinaison)) {
                 $oBlock->setStatus(Block::STATUS_ALMOST);
-                $this->isEndGame = false;
+                $this->endGame = false;
             } else {
                 $oBlock->setStatus(Block::STATUS_WRONG);
-                $this->isEndGame = false;
+                $this->endGame = false;
             }
         }
     }
