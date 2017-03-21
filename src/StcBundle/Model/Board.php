@@ -16,6 +16,8 @@ class Board {
     private $planeTab = [];
     // tableau des blocs couleurs
     private $block = [];
+    // Tableau des ennemis
+    private $enemy = [];
     // tableau avec la combinaison réponse
     private $combinaison = [];
     // booléen true si la partie est terminée
@@ -46,6 +48,16 @@ class Board {
         $this->cases[1][5]->setContent($this->block[1]);
         $this->cases[1][9]->setContent($this->block[2]);
         $this->cases[1][12]->setContent($this->block[3]);
+        
+        // Génération d'un nombre variable d'ennemis
+        $nbEnemy = mt_rand(0,15);
+        
+        for ($i = 0 ; $i < $nbEnemy ; $i++)
+        {
+            $this->enemy[] = new Enemy();
+            $this->cases[$enemy->getPositiony()][$enemy->getPositiony()]->setContent($enemy->getTypeEnemy());
+        }
+        
     }
 
 //Getters et Setters

@@ -1,9 +1,5 @@
 {% if status == constant('StcBundle\\Entity\\Game::END_GAME') %}
     {# Popup modal de fin de partie #}
-    <script>
-        clearInterval(pageRefresh);
-        $('#fond').stop(true, false);
-    </script>
     <div class="modal fade" id="EndGameModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -38,7 +34,15 @@
 {% endif %}
 {# fin popup modal fin de partie #}
 
+{% if status == constant('StcBundle\\Entity\\Game::CURRENT_GAME') %}
+<script>
+    function animationFond() {
+            $('#fond').animate({"background-position-y": "0%"}, 5000, "linear").animate({"background-position-y": "100%"}, 0, animationFond);
+        }
 
+        animationFond();
+</script>
+{% endif %}
 <table class="col-lg-9 col-lg-offset-1">
     {% for ligne in plateau %}
         <tr>
@@ -80,18 +84,16 @@
     {% endfor %}
     {% if status == constant('StcBundle\\Entity\\Game::PENDING_GAME') %}
         <div id="loading">
-            <script>
-                $('#fond').stop(true, false);
-            </script>
             <img src="{{ asset('images/hourglass.gif')}}" alt="Chargement ..."/>
         </div>
     {% endif %}
 </table>
 
-
 <script src="{{ asset('js/script.js') }}"></script>
 <script>
     {% if status == constant('StcBundle\\Entity\\Game::END_GAME') %}
+        clearInterval(pageRefresh);
+        $('#fond').stop(true, false);
         $('#EndGameModal').modal();
     {% endif %}
 </script>
