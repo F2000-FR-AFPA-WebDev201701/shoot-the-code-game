@@ -15,13 +15,13 @@ class Enemy extends Movable {
     private $idEnemy;
     private $typeEnemy;
     
+    const TYPES = ['html', 'css', 'js', 'php', 'sql'];
+    
     public function __construct()
     {
-        $type = ['html', 'css', 'js', 'php', 'sql'];
-        $randomPosy = mt_rand(0, 15);
-        $this->setPositiony($randomPosy);
+        $this->setPositiony(mt_rand(0,15));
         $this->setPositionx(2);
-        $this->typeEnemy = $type[mt_rand(0,4)];
+        $this->typeEnemy = self::TYPES[mt_rand(0, count(self::TYPES)-1)];
     }
 
 //Getters et Setters

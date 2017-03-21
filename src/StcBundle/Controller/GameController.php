@@ -8,8 +8,8 @@ namespace StcBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use StcBundle\Form\ContactType;
-use StcBundle\Form\GameType;
+use StcBundle\Form\Type\ContactType;
+use StcBundle\Form\Type\GameType;
 use StcBundle\Entity\Game;
 
 class GameController extends Controller {
