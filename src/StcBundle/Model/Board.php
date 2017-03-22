@@ -46,6 +46,7 @@ class Board {
             $this->block[] = new Block();
             $this->combinaison[] = mt_rand(1, 8);
         }
+        
         // Initialisation de la couleur
         $this->cases[1][2]->setContent($this->block[0]);
         $this->cases[1][5]->setContent($this->block[1]);
@@ -113,9 +114,36 @@ class Board {
             $oAvion->setIdUser($oUser->getId());
             $this->planeTab[] = $oAvion;
             $this->cases[$oAvion->getPositiony()][$oAvion->getPositionx()]->setContent($oAvion);
-        }
+        }        
+        
+        // Génération d'un nombre variable d'ennemis
+        $this->generateEnemies(mt_rand(0,15));
     }
 
+    public function generateEnemies($nbEnemy) {
+        // Génération des ennemis
+        for ($i = 0 ; $i < $nbEnemy ; $i++)
+        {
+            $oEnemy = new Enemy();
+            $x = $oEnemy->getPositionx();
+            $y = $oEnemy->getPositiony();
+            
+            // Tant que la position actuelle est occupée par un autre ennemi
+            while(!$this->cases[$y][$x]->isVide()) {
+                // On lui attribue une nouvelle position aléatoire
+                $oEnemy->setPositiony(mt_rand(0,15));
+                
+                $x = $oEnemy->getPositionx();
+                $y = $oEnemy->getPositiony();
+            }
+            
+            // On assigne le type d'ennemi à la case correspondant à sa position
+            $this->cases[$y][$x]->setContent($oEnemy);
+            
+            $this->enemy[] = $oEnemy;
+        }
+    }
+    
     // met à jour le status de chaque bloc couleur et renvoie un booléen fin de partie true si la combinaison est ok
     public function checkColor() {
         $this->endGame = true;

@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use StcBundle\Entity\User;
-use StcBundle\Form\UserType;
-use StcBundle\Form\InscriptionType;
+use StcBundle\Form\Type\UserType;
+use StcBundle\Form\Type\InscriptionType;
 
 class UserController extends Controller {
 
