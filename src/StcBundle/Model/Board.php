@@ -117,8 +117,7 @@ class Board {
         }
 
         // Génération d'un nombre variable d'ennemis
-        //$this->generateEnemies(mt_rand(0, ($this->longueur - 1)));
-        $this->generateEnemies(3);
+        $this->generateEnemies(mt_rand(4, ($this->longueur - 1)));
     }
 
     public function setChronometer() {
@@ -164,7 +163,13 @@ class Board {
         }
     }
 
+    public function deleteEnemy($enemy) {
+        $offset = array_search($enemy, $this->enemy);
+        array_splice($this->enemy, $offset, 1);
+    }
+
     public function doAction($idUser, $action) {
+
         // on récupère le bon avion, celui du l'utilisateur connecté sur le poste
         $oUserPlane = null;
         foreach ($this->planeTab as $oPlane) {
@@ -185,9 +190,7 @@ class Board {
             // on vérifie qu'on a dépassé le temps minimum autorisé
             $lastMove = $enemy->getLastMoveEnemy();
             $expireMove = clone $lastMove;
-            dump($lastMove);
             $expireMove = $expireMove->add(new \DateInterval('PT' . $enemy->getVitesseEnemy() . 'S'));
-            dump($expireMove);
             if ($expireMove < $now) {
                 // retourne la nouvelle position pour contrôle : $newPos[$newPosy][$newPsox]
                 $nextPos = $enemy->calculNextPosition();
@@ -203,31 +206,41 @@ class Board {
                 }
             }
         }
-
         // met à null l'ancienne case du user avion
         $this->cases[$oUserPlane->getPositiony()][$oUserPlane->getPositionx()]->setContent();
         $oUserPlane->move($action);
         // alimente la nouvelle case
         $this->cases[$oUserPlane->getPositiony()][$oUserPlane->getPositionx()]->setContent($oUserPlane);
-
         switch ($action) {
             case 'shoot':
-                switch ($oUserPlane->getPositionx()) {
-                    case 2:
-                        $this->block[0]->nextColor();
-                        break;
-                    case 5:
-                        $this->block[1]->nextColor();
-                        break;
-                    case 9:
-                        $this->block[2]->nextColor();
-                        break;
-                    case 12:
-                        $this->block[3]->nextColor();
-                        break;
+                //Tir sur le premier ennemi aligné
+                $oTarget = $oUserPlane->shootFirstEnemy($enemys);
+                //Si on a trouvé une cible
+                if ($oTarget instanceof Enemy) {
+                    //Si la cible est morte
+                    if (!$oTarget->isAlive()) {
+                        $this->cases[$oTarget->getPositiony()][$oTarget->getPositionx()]->setContent();
+                        $this->deleteEnemy($oTarget);
+                    }
+                } else {
+                    switch ($oUserPlane->getPositionx()) {
+                        case 2:
+                            $this->block[0]->nextColor();
+                            break;
+                        case 5:
+                            //$oTarget = $oUserPlane->shootFirstEnemy($enemys);
+
+                            $this->block[1]->nextColor();
+                            break;
+                        case 9:
+                            $this->block[2]->nextColor();
+                            break;
+                        case 12:
+                            $this->block[3]->nextColor();
+                            break;
+                    }
+                    $this->checkColor();
                 }
-                $this->checkColor();
-                break;
         }
     }
 
