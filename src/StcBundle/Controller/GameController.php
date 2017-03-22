@@ -6,6 +6,7 @@ namespace StcBundle\Controller;
 # sinon @Template(name="@STC/Game/maVue.html.twig
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use StcBundle\Form\Type\ContactType;
@@ -16,6 +17,7 @@ class GameController extends Controller {
 
     /**
      * @Route("/", name="index")
+     * @Method({"SESSION", "POST", "GET"})
      */
     public function indexAction(Request $request) {
         // Gestion formulaire de contact
@@ -30,6 +32,7 @@ class GameController extends Controller {
 
     /**
      * @Route("/game", name="create_game")
+     * @Method({"SESSION", "POST", "GET"})
      */
     public function createAction(Request $request) {
         if ($request->getSession()->get('userStatus') != 'connected') {
@@ -58,6 +61,7 @@ class GameController extends Controller {
 
     /**
      * @Route("/join/{idGame}", name="join")
+     * @Method({"SESSION", "POST", "GET"})
      */
     public function joinAction(Request $request, $idGame) {
         if ($request->getSession()->get('userStatus') != 'connected') {
@@ -103,6 +107,7 @@ class GameController extends Controller {
     /**
 
      * @Route("/game/{id}", name="game")
+     * @Method({"SESSION", "POST", "GET"})
      */
     public function gameAction(Request $request, $id) {
         // fonction qui affiche la page jouer sauf le plateau
@@ -119,6 +124,7 @@ class GameController extends Controller {
 
     /**
      * @Route("/list/{page}", name="list")
+     * @Method({"SESSION", "POST", "GET"})
      */
     public function listAction(Request $request, $page) {
         if ($request->getSession()->get('userStatus') != 'connected') {
@@ -150,6 +156,7 @@ class GameController extends Controller {
 
     /**
      * @Route("/controls/{idGame}/{action}", name="controls")
+     * @Method({"SESSION", "POST", "GET"})
      */
     public function controlsAction(Request $request, $idGame, $action = null) {
         // fonction qui soit:
@@ -166,7 +173,7 @@ class GameController extends Controller {
         $oBoard = unserialize($oGame->getBoard());
 
         // On effectue l'action demandée suite à l'entrée clavier
-        if ($oGame->getState() == Game::CURRENT_GAME && !is_null($action)) {
+        if ($oGame->getState() == Game::CURRENT_GAME) {
             $oBoard->doAction($oUser->getId(), $action);
         }
 
@@ -195,6 +202,7 @@ class GameController extends Controller {
 
     /**
      * @Route("/player/{idGame}", name="players")
+     * @Method({"SESSION", "POST", "GET"})
      */
     public function viewPlayersAction(Request $request, $idGame) {
         // On vérifie que l'utilisateur est autorisé à effectuer l'action
