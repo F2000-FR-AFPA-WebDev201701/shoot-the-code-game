@@ -117,7 +117,8 @@ class Board {
         }
 
         // Génération d'un nombre variable d'ennemis
-        $this->generateEnemies(mt_rand(0, 15));
+        //$this->generateEnemies(mt_rand(0, ($this->longueur - 1)));
+        $this->generateEnemies(3);
     }
 
     public function setChronometer() {
@@ -134,7 +135,7 @@ class Board {
             // Tant que la position actuelle est occupée par un autre ennemi
             while (!$this->cases[$y][$x]->getContent() === null) {
                 // On lui attribue une nouvelle position aléatoire
-                $oEnemy->setPositionx(mt_rand(0, 14));
+                $oEnemy->setPositionx(mt_rand(0, ($this->longueur - 1)));
 
                 $x = $oEnemy->getPositionx();
                 $y = $oEnemy->getPositiony();
@@ -178,18 +179,26 @@ class Board {
 
         // on récupère les ennemis et on met à jour leurs anciennes et nouvelles cases
         $enemys = $this->getEnemy();
+        $now = new \DateTime();
         foreach ($enemys as $enemy) {
-
-            // retourne la nouvelle position pour contrôle : $newPos[$newPosy][$newPsox]
-            $nextPos = $enemy->calculNextPosition();
-            // on vérifie si la case est disponible
-            if ($this->cases[$nextPos['y']][$nextPos['x']]->getContent() === null) {
-                // met à null l'ancienne case de chaque ennemi.
-                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
-                // met à jour les positions x,y
-                $enemy->move($nextPos['x'], $nextPos['y']);
-                // alimente le contenu de la nouvelle case
-                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
+            // Pour mettre à jour le déplacement des ennemis,
+            // on vérifie qu'on a dépassé le temps minimum autorisé
+            $lastMove = $enemy->getLastMoveEnemy();
+            $expireMove = clone $lastMove;
+            $expireMove = $expireMove->add(new \DateInterval('PT' . $enemy->getVitesseEnemy() . 'S'));
+            if ($expireMove < $now) {
+                // retourne la nouvelle position pour contrôle : $newPos[$newPosy][$newPsox]
+                $nextPos = $enemy->calculNextPosition();
+                // on vérifie si la case est disponible
+                if ($this->cases[$nextPos['y']][$nextPos['x']]->getContent() == null) {
+                    // met à null l'ancienne case de chaque ennemi.
+                    $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+                    $enemy->move($nextPos['x'], $nextPos['y']);
+                    // alimente la nouvelle case
+                    $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
+                    //Mise à jour de la derniere action ennemi
+                    $enemy->setLastMoveEnemy($now);
+                }
             }
         }
 

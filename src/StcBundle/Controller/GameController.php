@@ -104,7 +104,8 @@ class GameController extends Controller {
         return $this->redirectToRoute('game', array('id' => $oGame->getId()));
     }
 
-     /**
+    /**
+
      * @Route("/game/{id}", name="game")
      * @Method({"SESSION", "POST", "GET"})
      */
@@ -121,7 +122,7 @@ class GameController extends Controller {
         return $this->render('StcBundle:Game:jouer.html.twig', ['game' => $oGame]);
     }
 
-     /**
+    /**
      * @Route("/list/{page}", name="list")
      * @Method({"SESSION", "POST", "GET"})
      */
@@ -153,7 +154,7 @@ class GameController extends Controller {
                     'page' => $page));
     }
 
-     /**
+    /**
      * @Route("/controls/{idGame}/{action}", name="controls")
      * @Method({"SESSION", "POST", "GET"})
      */
@@ -172,7 +173,7 @@ class GameController extends Controller {
         $oBoard = unserialize($oGame->getBoard());
 
         // On effectue l'action demandée suite à l'entrée clavier
-        if ($oGame->getState() == Game::CURRENT_GAME && !is_null($action)) {
+        if ($oGame->getState() == Game::CURRENT_GAME) {
             $oBoard->doAction($oUser->getId(), $action);
         }
 
@@ -199,7 +200,7 @@ class GameController extends Controller {
         return $this->render('StcBundle:Game:plateau.html.twig', $aParams);
     }
 
-     /**
+    /**
      * @Route("/player/{idGame}", name="players")
      * @Method({"SESSION", "POST", "GET"})
      */
