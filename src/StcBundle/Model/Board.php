@@ -117,7 +117,8 @@ class Board {
         }
 
         // Génération d'un nombre variable d'ennemis
-        $this->generateEnemies(mt_rand(0, 15));
+        //$this->generateEnemies(mt_rand(0, 15));
+        $this->generateEnemies(15);
     }
 
     public function setChronometer() {
@@ -175,23 +176,9 @@ class Board {
         if (!$oUserPlane) {
             return;
         }
+        // déplacement des ennemis
+        $this->moveEnnemies();
 
-        // on récupère les ennemis et on met à jour leurs anciennes et nouvelles cases
-        $enemys = $this->getEnemy();
-        foreach ($enemys as $enemy) {
-
-            // retourne la nouvelle position pour contrôle : $newPos[$newPosy][$newPsox]
-            $nextPos = $enemy->calculNextPosition();
-            // on vérifie si la case est disponible
-            if ($this->cases[$nextPos['y']][$nextPos['x']]->getContent() == null) {
-                // met à null l'ancienne case de chaque ennemi.
-                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
-                // met à jour les positions x,y
-                $enemy->move($nextPos['x'], $nextPos['y']);
-                // alimente le contenu de la nouvelle case
-                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
-            }
-        }
 
         // met à null l'ancienne case du user avion
         $this->cases[$oUserPlane->getPositiony()][$oUserPlane->getPositionx()]->setContent();
@@ -217,6 +204,42 @@ class Board {
                 }
                 $this->checkColor();
                 break;
+        }
+    }
+
+    private function moveEnnemies() {
+        // on récupère les ennemis et on met à jour leurs anciennes et nouvelles cases
+        $enemys = $this->getEnemy();
+        foreach ($enemys as $enemy) {
+            // init vars
+            $moved = false;
+            $dirPossible = ['left', 'right', 'down'];
+
+            while (!$moved) {
+                // on choisi une direction aléatoire parmi les possibles restantes
+                // on mélange le tableau des positions
+                shuffle($dirPossible);
+                // on retire et on teste les dernier élément du tableau des positions restantes
+                $direction = array_pop($dirPossible);
+
+                if ($direction) {
+                    // retourne la nouvelle position pour contrôle : return ['x' => $newPosx, 'y' => $newPosy]
+                    $nextPos = $enemy->calculNextPosition($direction);
+                    // on vérifie si la case est disponible
+                    if ($this->cases[$nextPos['y']][$nextPos['x']]->getContent() == null) {
+                        // met à null l'ancienne case de chaque ennemi.
+                        $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+                        // met à jour les positions x,y
+                        $enemy->move($nextPos['x'], $nextPos['y']);
+                        // alimente le contenu de la nouvelle case
+                        $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
+                        $moved = true;
+                    }
+                } else {
+                    //si on a testé tous les déplacements, on sort et donc l'enemi reste sur place
+                    $moved = true;
+                }
+            }
         }
     }
 

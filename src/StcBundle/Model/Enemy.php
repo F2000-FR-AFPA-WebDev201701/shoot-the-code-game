@@ -44,8 +44,7 @@ class Enemy extends Movable {
         $this->typeEnemy = $typeEnemy;
     }
 
-    public function calculNextPosition() {
-        $direction = self::MOVES[mt_rand(0, count(self::MOVES) - 1)];
+    public function calculNextPosition($direction) {
         $oldPosx = $this->getPositionx();
         $oldPosy = $this->getPositiony();
         switch ($direction) {
