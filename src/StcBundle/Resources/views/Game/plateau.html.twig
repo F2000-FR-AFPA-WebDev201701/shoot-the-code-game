@@ -35,25 +35,32 @@
 {# fin popup modal fin de partie #}
 
 {% if status == constant('StcBundle\\Entity\\Game::CURRENT_GAME') %}
-<script>
-    function animationFond() {
+    <script>
+        function animationFond() {
             $('#fond').animate({"background-position-y": "0%"}, 5000, "linear").animate({"background-position-y": "100%"}, 0, animationFond);
         }
 
         animationFond();
-</script>
+    </script>
 {% endif %}
 <table class="col-lg-9 col-lg-offset-1">
     {% for ligne in plateau %}
         <tr>
             {% for case in ligne %}
-                {# 2 paramètres du td renseignés par les tests si dessous : avion, avion du joueur, bloc couleur #}
+                {# 2 paramètres du td renseignés par les tests si dessous : avion, avion du joueur, bloc couleur, enemy #}
                 {% set class = '' %}
-                {% set avion = '' %}
+                {% set movable = '' %}
 
-                {# Pour chaque case de la ligne en cours, on cherche on a un avion présnet #}
-                {% if case.content.idUser is defined %}
-                    {% set avion = '<img id="my-plane-img" src="' ~ asset('images/avion.png') ~ '" alt="Avion" />' %}
+                {# Pour chaque case de la ligne en cours, on cherche si on a un enemy #}
+                {% if case.content.idEnemy is defined %}
+                    {% if case.content.typeEnemy == 'php' %}
+                        {% set movable = '<img id="" src="' ~ asset('images/enemyPhp.png') ~ '" alt="Enemy PHP" />' %}
+                        {% set class = 'enemyPhp' %}
+                    {% endif %}
+
+                    {# sinon on cherche si on a un avion présent #}
+                {% elseif case.content.idUser is defined %}
+                    {% set movable = '<img id="my-plane-img" src="' ~ asset('images/avion.png') ~ '" alt="Avion" />' %}
                     {% set class = 'avion' %}
 
                     {# Si on a un avion, on vérifie si c'est celui du joueur #}
@@ -77,7 +84,7 @@
                 {# On crée la case avec la classe adaptée et la balise img si nécessaire,
                 le raw signifie que le contenu est interprété et pas simplement affiché #}
                 <td class="{{ class }}">
-                    {{ avion|raw }}
+                    {{ movable|raw }}
                 </td>
             {% endfor %}
         </tr>

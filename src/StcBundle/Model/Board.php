@@ -44,15 +44,28 @@ class Board {
             $this->block[] = new Block();
             $this->combinaison[] = mt_rand(1, 8);
         }
-        
+
         // Initialisation de la couleur
         $this->cases[1][2]->setContent($this->block[0]);
         $this->cases[1][5]->setContent($this->block[1]);
         $this->cases[1][9]->setContent($this->block[2]);
         $this->cases[1][12]->setContent($this->block[3]);
+
+        // Génération d'un nombre variable d'ennemis
+        //$nbEnemy = mt_rand(0, 15);
+        $nbEnemy = 15;
+
+        for ($i = 0; $i < $nbEnemy; $i++) {
+            $this->enemy[] = new Enemy();
+            $this->cases[$this->enemy[$i]->getPositiony()][$this->enemy[$i]->getPositionx()]->setContent($this->enemy[$i]);
+        }
     }
 
 //Getters et Setters
+    public function getEnemy() {
+        return $this->enemy;
+    }
+
     public function getPlaneTab() {
         return $this->planeTab;
     }
@@ -104,36 +117,35 @@ class Board {
             $oAvion->setIdUser($oUser->getId());
             $this->planeTab[] = $oAvion;
             $this->cases[$oAvion->getPositiony()][$oAvion->getPositionx()]->setContent($oAvion);
-        }        
-        
+        }
+
         // Génération d'un nombre variable d'ennemis
-        $this->generateEnemies(mt_rand(0,15));
+        $this->generateEnemies(mt_rand(0, 15));
     }
 
     public function generateEnemies($nbEnemy) {
         // Génération des ennemis
-        for ($i = 0 ; $i < $nbEnemy ; $i++)
-        {
+        for ($i = 0; $i < $nbEnemy; $i++) {
             $oEnemy = new Enemy();
             $x = $oEnemy->getPositionx();
             $y = $oEnemy->getPositiony();
-            
+
             // Tant que la position actuelle est occupée par un autre ennemi
-            while(!$this->cases[$y][$x]->isVide()) {
+            while (!$this->cases[$y][$x]->isVide()) {
                 // On lui attribue une nouvelle position aléatoire
-                $oEnemy->setPositiony(mt_rand(0,15));
-                
+                $oEnemy->setPositiony(mt_rand(0, 15));
+
                 $x = $oEnemy->getPositionx();
                 $y = $oEnemy->getPositiony();
             }
-            
+
             // On assigne le type d'ennemi à la case correspondant à sa position
             $this->cases[$y][$x]->setContent($oEnemy);
-            
+
             $this->enemy[] = $oEnemy;
         }
     }
-    
+
     // met à jour le status de chaque bloc couleur et renvoie un booléen fin de partie true si la combinaison est ok
     public function checkColor() {
         $this->endGame = true;
@@ -150,6 +162,15 @@ class Board {
         }
     }
 
+    public function move($enemy) {
+        $oldPosx = $enemy->getPositionx();
+        $oldPosy = $enemy->getPositiony();
+        $newPosy = $oldPosy + 1;
+        //s$newPosx = $newPosx;
+        $this->cases[$newPosy][$oldPosx]->setContent();
+        $this->cases[$oldPosy][$oldPosx]->setContent(null);
+    }
+
     public function doAction($idUser, $action) {
         // on récupère le bon avion, celui du l'utilisateur connecté sur le poste
         $oUserPlane = null;
@@ -158,65 +179,28 @@ class Board {
                 $oUserPlane = $oPlane;
             }
         }
-
         // Si problème (ça ne devrait jamais arriver), au cas où on sort de la f°
         if (!$oUserPlane) {
             return;
         }
 
+        // on récupère les ennemis et on met à jour leurs anciennes et nouvelles cases
+        $enemys = $this->getEnemy;
+        foreach ($enemys as $enemy) {
+            // met à null l'ancienne case de chaque ennemi.
+            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+            $enemy->move();
+            // alimente la nouvelle case
+            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
+        }
+
+        // met à null l'ancienne case du user avion
+        $this->cases[$oUserPlane->getPositiony()][$oUserPlane->getPositionx()]->setContent();
+        $oUserPlane->move($action);
+        // alimente la nouvelle case
+        $this->cases[$oUserPlane->getPositiony()][$oUserPlane->getPositionx()]->setContent($oUserPlane);
+
         switch ($action) {
-            case 'left':
-                $oldPosx = $oUserPlane->getPositionx();
-                $oldPosy = $oUserPlane->getPositiony();
-                if ($oldPosx > 0) {
-                    $newPosx = $oldPosx - 1;
-                } else {
-                    $newPosx = $oldPosx;
-                }
-                $oUserPlane->setPositionx($newPosx);
-                $this->cases[$oldPosy][$oldPosx]->setContent();
-                $this->cases[$oldPosy][$newPosx]->setContent($oUserPlane);
-                break;
-
-            case 'right':
-                $oldPosx = $oUserPlane->getPositionx();
-                $oldPosy = $oUserPlane->getPositiony();
-                if ($oldPosx < 14) {
-                    $newPosx = $oldPosx + 1;
-                } else {
-                    $newPosx = $oldPosx;
-                }
-                $oUserPlane->setPositionx($newPosx);
-                $this->cases[$oldPosy][$oldPosx]->setContent();
-                $this->cases[$oldPosy][$newPosx]->setContent($oUserPlane);
-                break;
-
-            case 'up':
-                $oldPosx = $oUserPlane->getPositionx();
-                $oldPosy = $oUserPlane->getPositiony();
-                if ($oldPosy > 2) {
-                    $newPosy = $oldPosy - 1;
-                } else {
-                    $newPosy = $oldPosy;
-                }
-                $oUserPlane->setPositiony($newPosy);
-                $this->cases[$oldPosy][$oldPosx]->setContent();
-                $this->cases[$newPosy][$oldPosx]->setContent($oUserPlane);
-                break;
-
-            case 'down':
-                $oldPosx = $oUserPlane->getPositionx();
-                $oldPosy = $oUserPlane->getPositiony();
-                if ($oldPosy < 19) {
-                    $newPosy = $oldPosy + 1;
-                } else {
-                    $newPosy = $oldPosy;
-                }
-                $oUserPlane->setPositiony($newPosy);
-                $this->cases[$oldPosy][$oldPosx]->setContent();
-                $this->cases[$newPosy][$oldPosx]->setContent($oUserPlane);
-                break;
-
             case 'shoot':
                 switch ($oUserPlane->getPositionx()) {
                     case 2:
