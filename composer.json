@@ -5,7 +5,7 @@
     "description": "Jeu de shootermind futuriste en 2D",
     "autoload": {
         "psr-4": {
-            "StcBundle\\": "src/StcBundle/"
+            "StcBundle\\": "src/StcBundle"
         },
         "classmap": [
             "app/AppKernel.php",
