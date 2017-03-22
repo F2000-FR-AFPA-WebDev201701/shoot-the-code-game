@@ -77,7 +77,9 @@
                 {# On crée la case avec la classe adaptée et la balise img si nécessaire,
                 le raw signifie que le contenu est interprété et pas simplement affiché #}
                 <td class="{{ class }}">
-                    {{ avion|raw }}
+                    {% autoescape %}
+                        {{ avion|raw }}
+                    {% endautoescape %}
                 </td>
             {% endfor %}
         </tr>
