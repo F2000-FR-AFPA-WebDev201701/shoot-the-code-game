@@ -14,7 +14,7 @@ class UserController extends Controller {
 
      /**
      * @Route("/register", name = "register")
-     * @Method({"SESSION", "POST", "GET"})
+     * @Method({"POST", "GET"})
      */
     public function registerAction(Request $request) {
 
@@ -59,7 +59,7 @@ class UserController extends Controller {
 
      /**
      * @Route("/login", name = "login")
-     * @Method({"SESSION", "POST", "GET"})
+     * @Method({"POST", "GET"})
      */
     public function loginAction(Request $request) {
 
@@ -95,7 +95,7 @@ class UserController extends Controller {
 
      /**
      * @Route("/logout", name = "logout")
-     * @Method({"SESSION", "POST", "GET"})
+     * @Method({"POST", "GET"})
      */
     public function logoutAction(Request $request) {
         // Si l'utilisateur souhaite se déconnecter, on efface la session
