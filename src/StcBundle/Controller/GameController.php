@@ -85,6 +85,9 @@ class GameController extends Controller {
             $oBoard = unserialize($oGame->getBoard());
             $oBoard->setPlayers($oGame->getUsers());
 
+            // On déclenche le chronomètre de la partie
+            $oBoard->setChronometer();
+
             //on met à jour le board
             $oGame->setBoard(serialize($oBoard));
         }
@@ -112,7 +115,6 @@ class GameController extends Controller {
         $oGame = $rep->find($id);
         $this->updateAction($request, $id);
         return $this->render('StcBundle:Game:jouer.html.twig', ['game' => $oGame]);
-        ;
     }
 
     /**

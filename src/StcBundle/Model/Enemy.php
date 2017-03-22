@@ -16,6 +16,7 @@ class Enemy extends Movable {
     private $typeEnemy;
 
     const TYPES = ['html', 'css', 'js', 'php', 'sql'];
+    const MOVES = ['left', 'right', 'down'];
 
     public function __construct() {
         $type = ['html', 'css', 'js', 'php', 'sql'];
@@ -43,9 +44,45 @@ class Enemy extends Movable {
         $this->typeEnemy = $typeEnemy;
     }
 
-    public function move() {
-        $newPosy = $this->getPositiony() + 1;
-        $this->setPositiony($newPosy);
+    public function calculNextPosition() {
+        $direction = self::MOVES[mt_rand(0, count(self::MOVES) - 1)];
+        $oldPosx = $this->getPositionx();
+        $oldPosy = $this->getPositiony();
+        switch ($direction) {
+            case 'left':
+                if ($oldPosx > 0) {
+                    $newPosx = $oldPosx - 1;
+                } else {
+                    $newPosx = $oldPosx;
+                }
+                $newPosy = $oldPosy;
+                break;
+            case 'right':
+                if ($oldPosx < 14) {
+                    $newPosx = $oldPosx + 1;
+                } else {
+                    $newPosx = $oldPosx;
+                }
+                $newPosy = $oldPosy;
+                break;
+            case 'down':
+                if ($oldPosy < 19) {
+                    $newPosy = $oldPosy + 1;
+                } else {
+                    $newPosy = $oldPosy;
+                }
+                $newPosx = $oldPosx;
+                break;
+        }
+        return [
+            'x' => $newPosx,
+            'y' => $newPosy,
+        ];
+    }
+
+    public function move($posx, $posy) {
+        $this->setPositionx($posx);
+        $this->setPositiony($posy);
     }
 
 }
