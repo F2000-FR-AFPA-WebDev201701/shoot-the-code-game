@@ -1,0 +1,31 @@
+<div class="row">
+    <h1 class="col-sm-2 col-sm-offset-1">
+        Contact
+    </h1>
+</div>
+<div class="row">
+    {{form_start(contactForm, {'attr' : {'class' : 'col-sm-10 col-sm-offset-1'}})}}
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="row">
+                <div class="col-sm-12">
+                    {{form_widget(contactForm.name)}}
+                </div>
+                <div class="col-sm-12">
+                    {{form_widget(contactForm.email)}}
+                </div>
+                <div class="col-sm-12">
+                    {{form_widget(contactForm.submit,{
+                        'label' : 'Envoyer le message'
+                            })
+                    }}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7">
+            {{form_widget(contactForm.message)}}
+        </div>
+        {{form_widget(contactForm)}}
+    </div>
+    {{form_end(contactForm)}}
+</div>

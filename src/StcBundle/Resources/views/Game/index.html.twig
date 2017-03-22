@@ -102,114 +102,19 @@
 
         <!-- Règles -->
         <section id="regles">
-            <div class="row">
-                <h1 class="col-sm-2 col-sm-offset-1">
-                    Règles
-                </h1>
-            </div>
-            <div id="objectif" class="row">
-                <img src="{{ asset('images/objectif.png') }}" alt="Objectif" title="Objectif" class="hidden-xs col-sm-3 col-sm-offset-1" />
-                <p class="col-sm-7">
-                    Bienvenue dans Shoot The Code, le Shoot’em Up le plus fun de tous les temps !<br/>
-                    Vous allez contrôler un avion équipé d’armes, évoluant dans un univers de code informatique hostile.<br/>
-                    L’objectif de ce jeu de tir et de logique est de trouver la combinaison de couleurs des blocs situés en haut de l’écran de jeu. Des ennemis seront là pour vous gêner et rendre votre tâche plus difficile, ne les laissez pas vous détruire !
-                    Si vous avez connus le jeu Mastermind™ cela vous aidera ;-)<br/>
-                    Une fois la bonne combinaison de couleur trouvée, vous accéderez au boss final, un challenge sans précédent.
-                </p>
-            </div>
-            <div id="howto" class="row">
-                <img src="{{ asset('images/howto.png') }}" alt="How to" title="How to" class="hidden-xs col-sm-3 col-sm-offset-1" />
-                <p class="col-sm-7">
-                    Pour arriver à vos fins, utilisez les armes de votre avion pour tirer sur les blocs et les faire changer de couleur. Par défaut la touche pour tirer est « Espace », vous pouvez laisser appuyer : inutile de détruire votre clavier.
-                    Si la couleur est bien placée vous aurez une indication autour du bloc, si elle est mal placée vous en aurez une autre, enfin si la couleur n’existe pas dans la solution vous n’aurez rien ;-P<br/>
-                    Avec les touches de déplacement « Q et D par défaut », vous devrez éviter et détruire des ennemis en tout genre, ne vous laissez pas toucher par leurs projectiles, votre barre de vie n’est pas infinie.
-                    Et qui sait vous obtiendrez peut-être des power-up légendaires pour vous aider à vaincre le code et le boss de fin !
-                </p>
-            </div>
-            <div id="astuces" class="row">
-                <img src="{{ asset('images/astuces.png') }}" alt="Astuces" title="Astuces" class="hidden-xs col-sm-3 col-sm-offset-1" />
-                <p class="col-sm-7">
-                    Enfin derniers conseils, essayez d’obtenir le plus rapidement des armes spéciales, vous pourrez ainsi augmenter votre pouvoir de destruction, votre vitesse de déplacement ou encore votre résistance.<br/>
-                    Cela vous aidera certainement à rester en vie et vous serez plus à même de battre le boss.<br/>
-                    Testez les couleurs autant que possible, ou si vous êtes un dieu de la destruction et de la logique, faites durer le plaisir et détruisez un maximum d’ennemis afin de d’obtenir le meilleur score du jeu !
-                </p>
-            </div>
+            {% include 'StcBundle:Game:regles.html.twig' %} 
         </section>
         <!-- /Règles -->
 
         <!-- Scores -->
         <section id="scores">
-            <div class="row">
-                <h1 class="col-sm-2 col-sm-offset-1">
-                    Scores
-                </h1>
-            </div>
-            <div class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Position</th>
-                                <th>Joueur</th>
-                                <th>Temps</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Yoshi</td>
-                                <td>00:00:05</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Dorian</td>
-                                <td>00:05:42</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Julien</td>
-                                <td>04:46:10</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            {% include 'StcBundle:Game:score.html.twig' %} 
         </section>
         <!-- /Scores -->
 
         <!-- Contact -->
         <section id="contact">
-            <div class="row">
-                <h1 class="col-sm-2 col-sm-offset-1">
-                    Contact
-                </h1>
-            </div>
-            <div class="row">
-                {{form_start(contactForm, {'attr' : {'class' : 'col-sm-10 col-sm-offset-1'}})}}
-                <div class="row">
-                    <div class="col-sm-5">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                {{form_widget(contactForm.name)}}
-                            </div>
-                            <div class="col-sm-12">
-                                {{form_widget(contactForm.email)}}
-                            </div>
-                            <div class="col-sm-12">
-                                {{form_widget(contactForm.submit,{
-                                    'label' : 'Envoyer le message'
-                                        })
-                                }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-7">
-                        {{form_widget(contactForm.message)}}
-                    </div>
-                    {{form_widget(contactForm)}}
-                </div>
-                {{form_end(contactForm)}}
-            </div>
+            {% include 'StcBundle:Game:contact.html.twig' %} 
         </section>
         <!-- /Contact -->
 

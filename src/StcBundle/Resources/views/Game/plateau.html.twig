@@ -1,98 +1,23 @@
 {% if status == constant('StcBundle\\Entity\\Game::END_GAME') %}
-    {# Popup modal de fin de partie #}
-    <div class="modal fade" id="EndGameModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <strong>Fin de la partie</strong>
-                </div>
-                <div class="modal-body text-center row">
-                    <img src="{{ asset('images/golden-thophy.jpg')}}" alt="Victoire!"/>
-                    <br />
-                    <table class="col-lg-6 col-lg-offset-3">
-                        {% for player in players %}
-                            <tr>
-                                <td>
-                                    <p>{{ player.login }}</p>
-                                </td>
-                            </tr>
-                        {% endfor %}
-
-                        <tr>
-                            <td>
-                                <p>{{ score }}</p>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <a href="{{path('index')}}" class="btn btn-info" role="button">Retour accueil</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include 'StcBundle:Game:modalendgame.html.twig' with {'players': players, 'score' : score} %} 
 {% endif %}
-{# fin popup modal fin de partie #}
 
 {% if status == constant('StcBundle\\Entity\\Game::CURRENT_GAME') %}
     <script>
         function animationFond() {
             $('#fond').animate({"background-position-y": "0%"}, 5000, "linear").animate({"background-position-y": "100%"}, 0, animationFond);
         }
-
         animationFond();
     </script>
 {% endif %}
+
 <table class="col-lg-9 col-lg-offset-1">
     {% for ligne in plateau %}
         <tr>
-            {% for case in ligne %}
-                {# 2 paramètres du td renseignés par les tests si dessous : avion, avion du joueur, bloc couleur, enemy #}
-                {% set class = '' %}
-                {% set movable = '' %}
-
-                {# Pour chaque case de la ligne en cours, on cherche si on a un enemy #}
-                {% if case.content.idEnemy is defined %}
-                    {% if case.content.typeEnemy == 'php' %}
-                        {% set movable = asset('images/enemyPhp.png') %}
-                        {% set class = 'enemyPhp' %}
-                    {% endif %}
-
-                    {# sinon on cherche si on a un avion présent #}
-                {% elseif case.content.idUser is defined %}
-                    {% set movable = asset('images/avion.png') %}
-                    {% set class = 'avion' %}
-
-                    {# Si on a un avion, on vérifie si c'est celui du joueur #}
-                    {% if app.session.get('userId') == case.content.idUser %}
-                        {% set class = class ~ ' my-plane' %}
-                    {% endif %}
-
-                    {# Sinon on cherche si c'est un bloc couleur #}
-                {% elseif case.content.color is defined %}
-                    {% set class = 'couleur' ~ case.content.color %}
-
-                    {# On récupère la propriété status du contenu de la case si c'est un bloc couleur de status ALMOST
-                    ou GOOD, on màj la class du td afin de màj le CSS et de donner un indicateur visuel de status#}
-                    {% if case.content.status == constant('STATUS_ALMOST', case.content) %}
-                        {% set class = class ~ ' status-almost' %}
-                    {% elseif case.content.status == constant('STATUS_GOOD', case.content) %}
-                        {% set class = class ~ ' status-good' %}
-                    {% endif %}
-                {% endif %}
-
-                {# On crée la case avec la classe adaptée et la balise img si nécessaire,
-                le raw signifie que le contenu est interprété et pas simplement affiché #}
-                <td class="{{ class }}">
-
-                        {% if case.content.idEnemy is defined or case.content.idUser is defined %}
-                            <img src="{{ movable }}" alt="" />
-                        {% endif %}
-
-                </td>
-            {% endfor %}
+            {% include 'StcBundle:Game:case.html.twig' %}
         </tr>
     {% endfor %}
+    
     {% if status == constant('StcBundle\\Entity\\Game::PENDING_GAME') %}
         <div id="loading">
             <img src="{{ asset('images/hourglass.gif')}}" alt="Chargement ..."/>
@@ -106,5 +31,8 @@
         clearInterval(pageRefresh);
         $('#fond').stop(true, false);
         $('#EndGameModal').modal();
+        $(window).keypress(function (e) {
+            e.preventDefault();
+        });
     {% endif %}
 </script>
