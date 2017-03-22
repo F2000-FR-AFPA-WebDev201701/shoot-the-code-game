@@ -162,15 +162,6 @@ class Board {
         }
     }
 
-    public function move($enemy) {
-        $oldPosx = $enemy->getPositionx();
-        $oldPosy = $enemy->getPositiony();
-        $newPosy = $oldPosy + 1;
-        //s$newPosx = $newPosx;
-        $this->cases[$newPosy][$oldPosx]->setContent();
-        $this->cases[$oldPosy][$oldPosx]->setContent(null);
-    }
-
     public function doAction($idUser, $action) {
         // on récupère le bon avion, celui du l'utilisateur connecté sur le poste
         $oUserPlane = null;
