@@ -17,7 +17,7 @@ class GameController extends Controller {
 
     /**
      * @Route("/", name="index")
-     * @Method({"SESSION", "POST", "GET"})
+     * @Method({"POST", "GET"})
      */
     public function indexAction(Request $request) {
         // Gestion formulaire de contact
@@ -32,7 +32,7 @@ class GameController extends Controller {
 
     /**
      * @Route("/game", name="create_game")
-     * @Method({"SESSION", "POST", "GET"})
+     * @Method({"POST", "GET"})
      */
     public function createAction(Request $request) {
         if ($request->getSession()->get('userStatus') != 'connected') {
@@ -61,7 +61,7 @@ class GameController extends Controller {
 
     /**
      * @Route("/join/{idGame}", name="join")
-     * @Method({"SESSION", "POST", "GET"})
+     * @Method({"POST", "GET"})
      */
     public function joinAction(Request $request, $idGame) {
         if ($request->getSession()->get('userStatus') != 'connected') {
@@ -107,7 +107,7 @@ class GameController extends Controller {
     /**
 
      * @Route("/game/{id}", name="game")
-     * @Method({"SESSION", "POST", "GET"})
+     * @Method({"POST", "GET"})
      */
     public function gameAction(Request $request, $id) {
         // fonction qui affiche la page jouer sauf le plateau
@@ -124,7 +124,7 @@ class GameController extends Controller {
 
     /**
      * @Route("/list/{page}", name="list")
-     * @Method({"SESSION", "POST", "GET"})
+     * @Method({"POST", "GET"})
      */
     public function listAction(Request $request, $page) {
         if ($request->getSession()->get('userStatus') != 'connected') {
@@ -156,7 +156,7 @@ class GameController extends Controller {
 
     /**
      * @Route("/controls/{idGame}/{action}", name="controls")
-     * @Method({"SESSION", "POST", "GET"})
+     * @Method({"POST", "GET"})
      */
     public function controlsAction(Request $request, $idGame, $action = null) {
         // fonction qui soit:
@@ -202,7 +202,7 @@ class GameController extends Controller {
 
     /**
      * @Route("/player/{idGame}", name="players")
-     * @Method({"SESSION", "POST", "GET"})
+     * @Method({"POST", "GET"})
      */
     public function viewPlayersAction(Request $request, $idGame) {
         // On vérifie que l'utilisateur est autorisé à effectuer l'action
