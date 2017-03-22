@@ -50,15 +50,6 @@ class Board {
         $this->cases[1][5]->setContent($this->block[1]);
         $this->cases[1][9]->setContent($this->block[2]);
         $this->cases[1][12]->setContent($this->block[3]);
-
-        // Génération d'un nombre variable d'ennemis
-        //$nbEnemy = mt_rand(0, 15);
-        $nbEnemy = 15;
-
-        for ($i = 0; $i < $nbEnemy; $i++) {
-            $this->enemy[] = new Enemy();
-            $this->cases[$this->enemy[$i]->getPositiony()][$this->enemy[$i]->getPositionx()]->setContent($this->enemy[$i]);
-        }
     }
 
 //Getters et Setters
@@ -131,9 +122,9 @@ class Board {
             $y = $oEnemy->getPositiony();
 
             // Tant que la position actuelle est occupée par un autre ennemi
-            while (!$this->cases[$y][$x]->isVide()) {
+            while (!$this->cases[$y][$x]->getContent() == null) {
                 // On lui attribue une nouvelle position aléatoire
-                $oEnemy->setPositiony(mt_rand(0, 15));
+                $oEnemy->setPositionx(mt_rand(0, 15));
 
                 $x = $oEnemy->getPositionx();
                 $y = $oEnemy->getPositiony();
@@ -177,12 +168,22 @@ class Board {
 
         // on récupère les ennemis et on met à jour leurs anciennes et nouvelles cases
         $enemys = $this->getEnemy();
+        $now = new \DateTime();
         foreach ($enemys as $enemy) {
-            // met à null l'ancienne case de chaque ennemi.
-            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
-            $enemy->move();
-            // alimente la nouvelle case
-            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
+            // Pour mettre à jour le déplacement des ennemis,
+            // on vérifie qu'on a dépassé le temps minimum autorisé
+            $lastMove = $enemy->getLastMoveEnemy();
+            $expireMove = $lastMove->add(new \DateInterval('PT' . $enemy->getVitesseEnemy() . 'S'));
+            dump($expireMove < $now);
+            if ($expireMove < $now) {
+                // met à null l'ancienne case de chaque ennemi.
+                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+                $enemy->move();
+                // alimente la nouvelle case
+                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
+                //Mise à jour de la derniere action ennemi
+                $enemy->setLastMoveEnemy($now);
+            }
         }
 
         // met à null l'ancienne case du user avion
