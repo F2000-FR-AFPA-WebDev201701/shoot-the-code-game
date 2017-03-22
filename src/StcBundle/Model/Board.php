@@ -176,7 +176,7 @@ class Board {
         }
 
         // on récupère les ennemis et on met à jour leurs anciennes et nouvelles cases
-        $enemys = $this->getEnemy;
+        $enemys = $this->getEnemy();
         foreach ($enemys as $enemy) {
             // met à null l'ancienne case de chaque ennemi.
             $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
