@@ -23,13 +23,15 @@ class Board {
     private $combinaison = [];
     // booléen true si la partie est terminée
     private $endGame;
+    // variable temps de jeu
+    private $chronometer;
 
-//Constructeur
+    //Constructeur
     public function __construct() {
         $this->init();
     }
 
-//Fonctions
+    //Fonctions
     public function init() {
         for ($y = 0; $y < $this->hauteur; $y++) {
             $this->cases[$y] = [];
@@ -50,18 +52,9 @@ class Board {
         $this->cases[1][5]->setContent($this->block[1]);
         $this->cases[1][9]->setContent($this->block[2]);
         $this->cases[1][12]->setContent($this->block[3]);
-
-        // Génération d'un nombre variable d'ennemis
-        //$nbEnemy = mt_rand(0, 15);
-        $nbEnemy = 15;
-
-        for ($i = 0; $i < $nbEnemy; $i++) {
-            $this->enemy[] = new Enemy();
-            $this->cases[$this->enemy[$i]->getPositiony()][$this->enemy[$i]->getPositionx()]->setContent($this->enemy[$i]);
-        }
     }
 
-//Getters et Setters
+    //Getters et Setters
     public function getEnemy() {
         return $this->enemy;
     }
@@ -84,6 +77,10 @@ class Board {
 
     public function getCombinaison() {
         return $this->combinaison;
+    }
+
+    public function getChronometer() {
+        return $this->chronometer;
     }
 
     public function isEndGame() {
@@ -123,6 +120,10 @@ class Board {
         $this->generateEnemies(mt_rand(0, 15));
     }
 
+    public function setChronometer() {
+        $this->chronometer = new \DateTime('now');
+    }
+
     public function generateEnemies($nbEnemy) {
         // Génération des ennemis
         for ($i = 0; $i < $nbEnemy; $i++) {
@@ -131,9 +132,9 @@ class Board {
             $y = $oEnemy->getPositiony();
 
             // Tant que la position actuelle est occupée par un autre ennemi
-            while (!$this->cases[$y][$x]->isVide()) {
+            while (!$this->cases[$y][$x]->getContent() == null) {
                 // On lui attribue une nouvelle position aléatoire
-                $oEnemy->setPositiony(mt_rand(0, 15));
+                $oEnemy->setPositionx(mt_rand(0, 14));
 
                 $x = $oEnemy->getPositionx();
                 $y = $oEnemy->getPositiony();
@@ -178,11 +179,18 @@ class Board {
         // on récupère les ennemis et on met à jour leurs anciennes et nouvelles cases
         $enemys = $this->getEnemy();
         foreach ($enemys as $enemy) {
-            // met à null l'ancienne case de chaque ennemi.
-            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
-            $enemy->move();
-            // alimente la nouvelle case
-            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
+
+            // retourne la nouvelle position pour contrôle : $newPos[$newPosy][$newPsox]
+            $nextPos = $enemy->calculNextPosition();
+            // on vérifie si la case est disponible
+            if ($this->cases[$nextPos['y']][$nextPos['x']]->getContent() == null) {
+                // met à null l'ancienne case de chaque ennemi.
+                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+                // met à jour les positions x,y
+                $enemy->move($nextPos['x'], $nextPos['y']);
+                // alimente le contenu de la nouvelle case
+                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
+            }
         }
 
         // met à null l'ancienne case du user avion
