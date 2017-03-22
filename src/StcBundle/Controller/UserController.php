@@ -4,6 +4,7 @@ namespace StcBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use StcBundle\Entity\User;
 use StcBundle\Form\Type\UserType;
@@ -11,8 +12,9 @@ use StcBundle\Form\Type\InscriptionType;
 
 class UserController extends Controller {
 
-    /**
+     /**
      * @Route("/register", name = "register")
+     * @Method({"SESSION", "POST", "GET"})
      */
     public function registerAction(Request $request) {
 
@@ -55,8 +57,9 @@ class UserController extends Controller {
         ));
     }
 
-    /**
+     /**
      * @Route("/login", name = "login")
+     * @Method({"SESSION", "POST", "GET"})
      */
     public function loginAction(Request $request) {
 
@@ -90,8 +93,9 @@ class UserController extends Controller {
         ));
     }
 
-    /**
+     /**
      * @Route("/logout", name = "logout")
+     * @Method({"SESSION", "POST", "GET"})
      */
     public function logoutAction(Request $request) {
         // Si l'utilisateur souhaite se déconnecter, on efface la session
