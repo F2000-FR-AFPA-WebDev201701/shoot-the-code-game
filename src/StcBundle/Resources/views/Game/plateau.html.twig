@@ -72,6 +72,9 @@
                     {% elseif case.content.status == constant('STATUS_GOOD', case.content) %}
                         {% set class = class ~ ' status-good' %}
                     {% endif %}
+                {% elseif case.content.idEnemy is defined %}
+                    {% set class = 'enemy' %}
+                    {% set avion = '<img id="enemy-img" src="' ~ asset('images/bang.png') ~ '" alt="Enemy" />' %}
                 {% endif %}
 
                 {# On crée la case avec la classe adaptée et la balise img si nécessaire,
