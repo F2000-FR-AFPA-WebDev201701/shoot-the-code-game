@@ -225,7 +225,7 @@ class Board {
                     // retourne la nouvelle position pour contrôle : return ['x' => $newPosx, 'y' => $newPosy]
                     $nextPos = $enemy->calculNextPosition($direction);
                     // on vérifie si la case est disponible
-                    if ($this->cases[$nextPos['y']][$nextPos['x']]->getContent() == null) {
+                    if ($this->cases[$nextPos['y']][$nextPos['x']]->getContent() === null) {
                         // met à null l'ancienne case de chaque ennemi.
                         $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
                         // met à jour les positions x,y

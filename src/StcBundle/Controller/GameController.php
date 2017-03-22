@@ -24,6 +24,9 @@ class GameController extends Controller {
         $oContactForm = $this->createForm(ContactType::class);
         $oContactForm->handleRequest($request);
         if ($oContactForm->isSubmitted() && $oContactForm->isValid()) {
+            return $this->redirectToRoute('index', array(
+                    'contactForm' => $oContactForm->createView()
+            ));
         }
         return $this->render('StcBundle:Game:index.html.twig', array(
                     'contactForm' => $oContactForm->createView()

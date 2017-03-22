@@ -88,19 +88,19 @@ class Enemy extends Movable {
         $this->setPositiony($posy);
     }
 
-    function getVitesseEnemy() {
+    public function getVitesseEnemy() {
         return $this->vitesseEnemy;
     }
 
-    function setVitesseEnemy($vitesseEnemy) {
+    public function setVitesseEnemy($vitesseEnemy) {
         $this->vitesseEnemy = $vitesseEnemy;
     }
 
-    function getLastMoveEnemy() {
+    public function getLastMoveEnemy() {
         return $this->lastMoveEnemy;
     }
 
-    function setLastMoveEnemy($lastMoveEnemy) {
+    public function setLastMoveEnemy($lastMoveEnemy) {
         $this->lastMoveEnemy = $lastMoveEnemy;
     }
 
