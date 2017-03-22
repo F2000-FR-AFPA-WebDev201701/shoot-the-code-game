@@ -167,17 +167,21 @@ class GameController extends Controller {
         //On récupère les infos du plateau
         $oBoard = unserialize($oGame->getBoard());
 
+
         // On effectue l'action demandée suite à l'entrée clavier
         if ($oGame->getState() == Game::CURRENT_GAME && !is_null($action)) {
             $oBoard->doAction($oUser->getId(), $action);
-            $oGame->setBoard(serialize($oBoard));
         }
+
         // on vérifie si la partie est terminée
         if ($oBoard->isEndGame()) {
             $oGame->setState(Game::END_GAME);
         }
 
-        //On recharge le nouveau plateau dans la base de données
+        // on met à jour le board et on le serialize pour l'enregistrement en base
+        $oGame->setBoard(serialize($oBoard));
+
+        //On en enregistre la partie dans la base de données
         $em = $this->getDoctrine()->getManager();
         $em->persist($oGame);
         $em->flush();
