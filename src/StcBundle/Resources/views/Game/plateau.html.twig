@@ -54,13 +54,13 @@
                 {# Pour chaque case de la ligne en cours, on cherche si on a un enemy #}
                 {% if case.content.idEnemy is defined %}
                     {% if case.content.typeEnemy == 'php' %}
-                        {% set movable = '<img id="" src="' ~ asset('images/enemyPhp.png') ~ '" alt="Enemy PHP" />' %}
+                        {% set movable = asset('images/enemyPhp.png') %}
                         {% set class = 'enemyPhp' %}
                     {% endif %}
 
                     {# sinon on cherche si on a un avion présent #}
                 {% elseif case.content.idUser is defined %}
-                    {% set movable = '<img id="my-plane-img" src="' ~ asset('images/avion.png') ~ '" alt="Avion" />' %}
+                    {% set movable = asset('images/avion.png') %}
                     {% set class = 'avion' %}
 
                     {# Si on a un avion, on vérifie si c'est celui du joueur #}
@@ -84,7 +84,11 @@
                 {# On crée la case avec la classe adaptée et la balise img si nécessaire,
                 le raw signifie que le contenu est interprété et pas simplement affiché #}
                 <td class="{{ class }}">
-                    {{ movable|raw }}
+
+                        {% if case.content.idEnemy is defined or case.content.idUser is defined %}
+                            <img src="{{ movable }}" alt="" />
+                        {% endif %}
+
                 </td>
             {% endfor %}
         </tr>
