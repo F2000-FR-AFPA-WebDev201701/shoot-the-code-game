@@ -132,7 +132,7 @@ class Board {
             $y = $oEnemy->getPositiony();
 
             // Tant que la position actuelle est occupée par un autre ennemi
-            while (!$this->cases[$y][$x]->getContent() == null) {
+            while (!$this->cases[$y][$x]->getContent() === null) {
                 // On lui attribue une nouvelle position aléatoire
                 $oEnemy->setPositionx(mt_rand(0, 14));
 
@@ -183,7 +183,7 @@ class Board {
             // retourne la nouvelle position pour contrôle : $newPos[$newPosy][$newPsox]
             $nextPos = $enemy->calculNextPosition();
             // on vérifie si la case est disponible
-            if ($this->cases[$nextPos['y']][$nextPos['x']]->getContent() == null) {
+            if ($this->cases[$nextPos['y']][$nextPos['x']]->getContent() === null) {
                 // met à null l'ancienne case de chaque ennemi.
                 $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
                 // met à jour les positions x,y
