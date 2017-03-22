@@ -14,6 +14,8 @@ class Enemy extends Movable {
 // variables du Model Enemy
     private $idEnemy;
     private $typeEnemy;
+    private $vitesseEnemy;
+    private $lastMoveEnemy;
 
     const TYPES = ['html', 'css', 'js', 'php', 'sql'];
     const MOVES = ['left', 'right', 'down'];
@@ -21,6 +23,8 @@ class Enemy extends Movable {
     public function __construct() {
         $type = ['html', 'css', 'js', 'php', 'sql'];
         $randomPosx = mt_rand(0, 14);
+        $this->lastMoveEnemy = new \Datetime();
+        $this->vitesseEnemy = 5;
         $this->setPositionx($randomPosx);
         $this->setPositiony(2);
         //$this->typeEnemy = self::TYPES[mt_rand(0, count(self::TYPES)-1)];
@@ -83,6 +87,22 @@ class Enemy extends Movable {
     public function move($posx, $posy) {
         $this->setPositionx($posx);
         $this->setPositiony($posy);
+    }
+
+    function getVitesseEnemy() {
+        return $this->vitesseEnemy;
+    }
+
+    function setVitesseEnemy($vitesseEnemy) {
+        $this->vitesseEnemy = $vitesseEnemy;
+    }
+
+    function getLastMoveEnemy() {
+        return $this->lastMoveEnemy;
+    }
+
+    function setLastMoveEnemy($lastMoveEnemy) {
+        $this->lastMoveEnemy = $lastMoveEnemy;
     }
 
 }

@@ -166,7 +166,7 @@ class GameController extends Controller {
         $oBoard = unserialize($oGame->getBoard());
 
         // On effectue l'action demandée suite à l'entrée clavier
-        if ($oGame->getState() == Game::CURRENT_GAME && !is_null($action)) {
+        if ($oGame->getState() == Game::CURRENT_GAME) {
             $oBoard->doAction($oUser->getId(), $action);
         }
 
