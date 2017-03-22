@@ -21,14 +21,12 @@ class Enemy extends Movable {
     const MOVES = ['left', 'right', 'down'];
 
     public function __construct() {
-        $type = ['html', 'css', 'js', 'php', 'sql'];
         $randomPosx = mt_rand(0, 14);
         $this->lastMoveEnemy = new \Datetime();
         $this->vitesseEnemy = 5;
         $this->setPositionx($randomPosx);
         $this->setPositiony(2);
-        //$this->typeEnemy = self::TYPES[mt_rand(0, count(self::TYPES)-1)];
-        $this->typeEnemy = 'php';
+        $this->typeEnemy = self::TYPES[mt_rand(0, count(self::TYPES) - 1)];
     }
 
 //Getters et Setters
@@ -51,6 +49,7 @@ class Enemy extends Movable {
     public function calculNextPosition($direction) {
         $oldPosx = $this->getPositionx();
         $oldPosy = $this->getPositiony();
+        $delete = false;
         switch ($direction) {
             case 'left':
                 if ($oldPosx > 0) {
@@ -73,6 +72,7 @@ class Enemy extends Movable {
                     $newPosy = $oldPosy + 1;
                 } else {
                     $newPosy = $oldPosy;
+                    $delete = true;
                 }
                 $newPosx = $oldPosx;
                 break;
@@ -88,19 +88,19 @@ class Enemy extends Movable {
         $this->setPositiony($posy);
     }
 
-    function getVitesseEnemy() {
+    public function getVitesseEnemy() {
         return $this->vitesseEnemy;
     }
 
-    function setVitesseEnemy($vitesseEnemy) {
+    public function setVitesseEnemy($vitesseEnemy) {
         $this->vitesseEnemy = $vitesseEnemy;
     }
 
-    function getLastMoveEnemy() {
+    public function getLastMoveEnemy() {
         return $this->lastMoveEnemy;
     }
 
-    function setLastMoveEnemy($lastMoveEnemy) {
+    public function setLastMoveEnemy($lastMoveEnemy) {
         $this->lastMoveEnemy = $lastMoveEnemy;
     }
 
