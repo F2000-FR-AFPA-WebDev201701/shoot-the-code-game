@@ -22,7 +22,6 @@ class GameController extends Controller {
         $oContactForm = $this->createForm(ContactType::class);
         $oContactForm->handleRequest($request);
         if ($oContactForm->isSubmitted() && $oContactForm->isValid()) {
-            // TODO : prévoir l'envoit d'un email à l'administrateur
         }
         return $this->render('StcBundle:Game:index.html.twig', array(
                     'contactForm' => $oContactForm->createView()
@@ -250,7 +249,7 @@ class GameController extends Controller {
         if ($request->getSession()->get('userStatus') != 'connected') {
             return false;
         }
-        if ($idGame != null) {
+        if ($idGame !== null) {
             //On recherche les parties en attente de l'utilisateur inactif
             $oGame = $this->getDoctrine()->getRepository('StcBundle:Game')->find($idGame);
             if ($oGame->getState() == Game::PENDING_GAME) {
