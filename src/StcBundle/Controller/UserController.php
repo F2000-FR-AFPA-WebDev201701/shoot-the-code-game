@@ -102,7 +102,7 @@ class UserController extends Controller {
         return $this->redirectToRoute('index');
     }
 
-    public function displayErrorsForm(User $oUser) {
+    private function displayErrorsForm(User $oUser) {
         //On récupère les erreurs
         $validator = $this->get('validator');
         $errors = $validator->validate($oUser);

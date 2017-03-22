@@ -23,13 +23,15 @@ class Board {
     private $combinaison = [];
     // booléen true si la partie est terminée
     private $endGame;
+    // variable temps de jeu
+    private $chronometer;
 
-//Constructeur
+    //Constructeur
     public function __construct() {
         $this->init();
     }
 
-//Fonctions
+    //Fonctions
     public function init() {
         for ($y = 0; $y < $this->hauteur; $y++) {
             $this->cases[$y] = [];
@@ -52,7 +54,7 @@ class Board {
         $this->cases[1][12]->setContent($this->block[3]);
     }
 
-//Getters et Setters
+    //Getters et Setters
     public function getEnemy() {
         return $this->enemy;
     }
@@ -75,6 +77,10 @@ class Board {
 
     public function getCombinaison() {
         return $this->combinaison;
+    }
+
+    public function getChronometer() {
+        return $this->chronometer;
     }
 
     public function isEndGame() {
@@ -111,7 +117,11 @@ class Board {
         }
 
         // Génération d'un nombre variable d'ennemis
-        $this->generateEnemies(mt_rand(0, 15));
+        $this->generateEnemies(mt_rand(0, ($longueur-1));
+    }
+
+    public function setChronometer() {
+        $this->chronometer = new \DateTime('now');
     }
 
     public function generateEnemies($nbEnemy) {
@@ -124,7 +134,7 @@ class Board {
             // Tant que la position actuelle est occupée par un autre ennemi
             while (!$this->cases[$y][$x]->getContent() == null) {
                 // On lui attribue une nouvelle position aléatoire
-                $oEnemy->setPositionx(mt_rand(0, 15));
+                $oEnemy->setPositionx(mt_rand(0, ($longueur - 1)));
 
                 $x = $oEnemy->getPositionx();
                 $y = $oEnemy->getPositiony();
@@ -176,13 +186,18 @@ class Board {
             $expireMove = $lastMove->add(new \DateInterval('PT' . $enemy->getVitesseEnemy() . 'S'));
             dump($expireMove < $now);
             if ($expireMove < $now) {
-                // met à null l'ancienne case de chaque ennemi.
-                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
-                $enemy->move();
-                // alimente la nouvelle case
-                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
-                //Mise à jour de la derniere action ennemi
-                $enemy->setLastMoveEnemy($now);
+                // retourne la nouvelle position pour contrôle : $newPos[$newPosy][$newPsox]
+                $nextPos = $enemy->calculNextPosition();
+                // on vérifie si la case est disponible
+                if ($this->cases[$nextPos['y']][$nextPos['x']]->getContent() == null) {
+                    // met à null l'ancienne case de chaque ennemi.
+                    $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+                    $enemy->move($nextPos['x'], $nextPos['y']);
+                    // alimente la nouvelle case
+                    $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
+                    //Mise à jour de la derniere action ennemi
+                    $enemy->setLastMoveEnemy($now);
+                }
             }
         }
 

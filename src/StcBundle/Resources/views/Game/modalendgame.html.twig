@@ -1,0 +1,30 @@
+<div class="modal fade" id="EndGameModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Fin de la partie</strong>
+            </div>
+            <div class="modal-body text-center row">
+                <img src="{{ asset('images/golden-thophy.jpg')}}" alt="Victoire!"/>
+                <br />
+                <table class="col-lg-6 col-lg-offset-3">
+                    {% for player in players %}
+                        <tr>
+                            <td>
+                                <p>{{ player.login }}</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td>
+                            <p>{{ score }}</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a href="{{path('index')}}" class="btn btn-info" role="button">Retour accueil</a>
+            </div>
+        </div>
+    </div>
+</div>
