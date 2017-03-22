@@ -13,6 +13,15 @@ class Plane extends Movable {
 
 // variables du Model Plane
     private $idUser;
+    //Attaque de l'avion
+    private $damagePlane;
+    //Points de vie de l'avion
+    private $hpPlane;
+
+    function __construct() {
+        $this->damagePlane = 1;
+        $this->hpPlane = 1;
+    }
 
 //Getters et Setters
     public function getIdUser() {
@@ -22,7 +31,23 @@ class Plane extends Movable {
     public function setIdUser($idUser) {
         $this->idUser = $idUser;
     }
-    
+
+    function getDamagePlane() {
+        return $this->damagePlane;
+    }
+
+    function getHpPlane() {
+        return $this->hpPlane;
+    }
+
+    function setDamagePlane($damagePlane) {
+        $this->damagePlane = $damagePlane;
+    }
+
+    function setHpPlane($hpPlane) {
+        $this->hpPlane = $hpPlane;
+    }
+
     public function move($action = null) {
         $oldPosx = $this->getPositionx();
         $oldPosy = $this->getPositiony();
@@ -64,6 +89,30 @@ class Plane extends Movable {
                 $this->setPositiony($newPosy);
                 break;
         }
+    }
+
+    public function shootFirstEnemy($enemys) {
+        $target = null;
+        //Pour chqua ennemi, on regarde sur la colonne ou on a tiré
+        foreach ($enemys as $enemy) {
+            //Si c'est la même colonne
+            if ($enemy->getPositionx() == $this->positionx) {
+                //On assigne l'ennemi comme cible si aucune cible déjà présente
+                if ($target == null) {
+                    $target = $enemy;
+                } else {
+                    //Sinon si il y a plusieurs cibles possibles on prend la plus proche
+                    if ($enemy->getPositiony() > $target->getPositiony()) {
+                        $target = $enemy;
+                    }
+                }
+            }
+        }
+        if ($target instanceof Enemy) {
+            $target->takeDamage($this->damagePlane);
+        }
+
+        return $target;
     }
 
 }
