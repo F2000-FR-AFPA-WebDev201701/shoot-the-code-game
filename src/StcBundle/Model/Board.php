@@ -117,7 +117,8 @@ class Board {
         }
 
         // Génération d'un nombre variable d'ennemis
-        $this->generateEnemies(mt_rand(0, ($longueur-1));
+        //$this->generateEnemies(mt_rand(0, ($this->longueur - 1)));
+        $this->generateEnemies(3);
     }
 
     public function setChronometer() {
@@ -134,7 +135,7 @@ class Board {
             // Tant que la position actuelle est occupée par un autre ennemi
             while (!$this->cases[$y][$x]->getContent() == null) {
                 // On lui attribue une nouvelle position aléatoire
-                $oEnemy->setPositionx(mt_rand(0, ($longueur - 1)));
+                $oEnemy->setPositionx(mt_rand(0, ($this->longueur - 1)));
 
                 $x = $oEnemy->getPositionx();
                 $y = $oEnemy->getPositiony();
@@ -183,8 +184,10 @@ class Board {
             // Pour mettre à jour le déplacement des ennemis,
             // on vérifie qu'on a dépassé le temps minimum autorisé
             $lastMove = $enemy->getLastMoveEnemy();
-            $expireMove = $lastMove->add(new \DateInterval('PT' . $enemy->getVitesseEnemy() . 'S'));
-            dump($expireMove < $now);
+            $expireMove = clone $lastMove;
+            dump($lastMove);
+            $expireMove = $expireMove->add(new \DateInterval('PT' . $enemy->getVitesseEnemy() . 'S'));
+            dump($expireMove);
             if ($expireMove < $now) {
                 // retourne la nouvelle position pour contrôle : $newPos[$newPosy][$newPsox]
                 $nextPos = $enemy->calculNextPosition();
