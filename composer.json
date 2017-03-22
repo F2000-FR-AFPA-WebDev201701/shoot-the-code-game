@@ -5,6 +5,7 @@
     "description": "Jeu de shootermind futuriste en 2D",
     "autoload": {
         "psr-4": {
+            "AppBundle\\": "src/AppBundle",
             "StcBundle\\": "src/StcBundle"
         },
         "classmap": [
