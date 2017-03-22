@@ -7,7 +7,18 @@
     {% if case.content.idEnemy is defined %}
         {% if case.content.typeEnemy == 'php' %}
             {% set movable = asset('images/enemyPhp.png') %}
-            {% set class = 'enemyPhp' %}
+        {% endif %}
+        {% if case.content.typeEnemy == 'css' %}
+            {% set movable = asset('images/enemyCss.png') %}
+        {% endif %}
+        {% if case.content.typeEnemy == 'html' %}
+            {% set movable = asset('images/enemyHtml.png') %}
+        {% endif %}
+        {% if case.content.typeEnemy == 'sql' %}
+            {% set movable = asset('images/enemySql.png') %}
+        {% endif %}
+        {% if case.content.typeEnemy == 'js' %}
+            {% set movable = asset('images/enemyJavascript.png') %}
         {% endif %}
 
         {# sinon on cherche si on a un avion présent #}
@@ -36,8 +47,8 @@
     {# On crée la case avec la classe adaptée et la balise img si nécessaire,
     le raw signifie que le contenu est interprété et pas simplement affiché #}
     <td class="{{ class }}">
-            {% if case.content.idEnemy is defined or case.content.idUser is defined %}
-                <img src="{{ movable }}" alt="" />
-            {% endif %}
+        {% if case.content.idEnemy is defined or case.content.idUser is defined %}
+            <img src="{{ movable }}" alt="" />
+        {% endif %}
     </td>
 {% endfor %}
