@@ -37,7 +37,7 @@ class Enemy extends Movable {
         return $this->typeEnemy;
     }
 
-    public function setTypeEnemy($idEnemy) {
+    public function setTypeEnemy($typeEnemy) {
         $this->typeEnemy = $typeEnemy;
     }
     
