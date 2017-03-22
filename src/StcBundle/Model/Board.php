@@ -23,13 +23,15 @@ class Board {
     private $combinaison = [];
     // booléen true si la partie est terminée
     private $endGame;
+    // variable temps de jeu
+    private $chronometer;
 
-//Constructeur
+    //Constructeur
     public function __construct() {
         $this->init();
     }
 
-//Fonctions
+    //Fonctions
     public function init() {
         for ($y = 0; $y < $this->hauteur; $y++) {
             $this->cases[$y] = [];
@@ -61,7 +63,7 @@ class Board {
         }
     }
 
-//Getters et Setters
+    //Getters et Setters
     public function getEnemy() {
         return $this->enemy;
     }
@@ -84,6 +86,10 @@ class Board {
 
     public function getCombinaison() {
         return $this->combinaison;
+    }
+
+    public function getChronometer() {
+        return $this->chronometer;
     }
 
     public function isEndGame() {
@@ -121,6 +127,10 @@ class Board {
 
         // Génération d'un nombre variable d'ennemis
         $this->generateEnemies(mt_rand(0, 15));
+    }
+
+    public function setChronometer() {
+        $this->chronometer = new \DateTime('now');
     }
 
     public function generateEnemies($nbEnemy) {

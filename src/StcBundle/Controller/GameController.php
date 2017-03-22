@@ -86,6 +86,9 @@ class GameController extends Controller {
             $oBoard = unserialize($oGame->getBoard());
             $oBoard->setPlayers($oGame->getUsers());
 
+            // On déclenche le chronomètre de la partie
+            $oBoard->setChronometer;
+
             //on met à jour le board
             $oGame->setBoard(serialize($oBoard));
         }
