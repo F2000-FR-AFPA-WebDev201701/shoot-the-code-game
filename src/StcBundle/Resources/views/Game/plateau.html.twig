@@ -13,8 +13,9 @@
 
 <table class="col-lg-9 col-lg-offset-1">
     {% for ligne in plateau %}
+        {% set dataY = loop.index %}
         <tr>
-            {% include 'StcBundle:Game:case.html.twig' %}
+            {% include 'StcBundle:Game:case.html.twig' with {'dataY': dataY } %}
         </tr>
     {% endfor %}
 

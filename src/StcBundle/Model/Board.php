@@ -150,8 +150,10 @@ class Board {
     }
 
     public function deleteEnemy($enemy) {
-        $offset = array_search($enemy, $this->enemies);
-        array_splice($this->enemies, $offset, 1);
+        $index = array_search($enemy, $this->enemies);
+        if ($index !== false) {
+            unset($this->enemies[$index]);
+        }
     }
 
     public function doAction($idUser, $action) {

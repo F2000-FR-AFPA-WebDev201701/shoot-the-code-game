@@ -30,12 +30,13 @@ class Enemy extends Movable {
     const MOVES = ['left', 'right', 'down'];
 
     public function __construct() {
-        $randomPosx = mt_rand(0, 14);
+
         $this->lastMoveEnemy = new \Datetime();
         $this->vitesseEnemy = 7;
         $this->damageEnemy = 1;
         $this->pointsEnemy = 1;
         $this->hpEnemy = 1;
+        $randomPosx = mt_rand(0, 14);
         $this->setPositionx($randomPosx);
         $this->setPositiony(2);
         $this->typeEnemy = self::TYPES[mt_rand(0, count(self::TYPES) - 1)];
