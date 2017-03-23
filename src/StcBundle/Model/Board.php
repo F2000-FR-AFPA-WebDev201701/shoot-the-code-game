@@ -171,6 +171,7 @@ class Board {
 
     public function doAction($idUser, $action) {
 
+        $points = 0;
         // on récupère le bon avion, celui du l'utilisateur connecté sur le poste
         $oUserPlane = null;
         foreach ($this->planeTab as $oPlane) {
@@ -183,7 +184,7 @@ class Board {
             return;
         }
         // déplacement des ennemis
-        $this->moveEnnemies();
+        //$this->moveEnnemies();
         // met à null l'ancienne case du user avion
         $this->cases[$oUserPlane->getPositiony()][$oUserPlane->getPositionx()]->setContent();
         $oUserPlane->move($action);
@@ -192,12 +193,13 @@ class Board {
         switch ($action) {
             case 'shoot':
                 //Tir sur le premier ennemi aligné
-                $oTarget = $oUserPlane->shootFirstEnemy($enemys);
+                $oTarget = $oUserPlane->shootFirstEnemy($this->enemy);
                 //Si on a trouvé une cible
                 if ($oTarget instanceof Enemy) {
                     //Si la cible est morte
                     if (!$oTarget->isAlive()) {
                         $this->cases[$oTarget->getPositiony()][$oTarget->getPositionx()]->setContent();
+                        $points = $oTarget->getPointsEnemy();
                         $this->deleteEnemy($oTarget);
                     }
                 } else {
@@ -220,6 +222,7 @@ class Board {
                     $this->checkColor();
                 }
         }
+        return $points;
     }
 
     private function moveEnnemies() {

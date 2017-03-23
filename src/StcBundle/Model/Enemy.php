@@ -23,6 +23,8 @@ class Enemy extends Movable {
     private $damageEnemy;
     //Points de vie de l'ennemi
     private $hpEnemy;
+    //Points donnés par l'ennemi
+    private $pointsEnemy;
 
     const TYPES = ['html', 'css', 'js', 'php', 'sql'];
     const MOVES = ['left', 'right', 'down'];
@@ -32,6 +34,7 @@ class Enemy extends Movable {
         $this->lastMoveEnemy = new \Datetime();
         $this->vitesseEnemy = 5;
         $this->damageEnemy = 1;
+        $this->pointsEnemy = 1;
         $this->hpEnemy = 1;
         $this->setPositionx($randomPosx);
         $this->setPositiony(2);
@@ -143,6 +146,14 @@ class Enemy extends Movable {
 
     public function setLastMoveEnemy($lastMoveEnemy) {
         $this->lastMoveEnemy = $lastMoveEnemy;
+    }
+
+    function getPointsEnemy() {
+        return $this->pointsEnemy;
+    }
+
+    function setPointsEnemy($pointsEnemy) {
+        $this->pointsEnemy = $pointsEnemy;
     }
 
 }
