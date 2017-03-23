@@ -23,6 +23,8 @@ class Enemy extends Movable {
     private $damageEnemy;
     //Points de vie de l'ennemi
     private $hpEnemy;
+    //Points donnés par l'ennemi
+    private $pointsEnemy;
 
     const TYPES = ['html', 'css', 'js', 'php', 'sql'];
     const MOVES = ['left', 'right', 'down'];
@@ -30,8 +32,9 @@ class Enemy extends Movable {
     public function __construct() {
         $randomPosx = mt_rand(0, 14);
         $this->lastMoveEnemy = new \Datetime();
-        $this->vitesseEnemy = 5;
+        $this->vitesseEnemy = 7;
         $this->damageEnemy = 1;
+        $this->pointsEnemy = 1;
         $this->hpEnemy = 1;
         $this->setPositionx($randomPosx);
         $this->setPositiony(2);
@@ -74,7 +77,7 @@ class Enemy extends Movable {
     public function calculNextPosition($direction) {
         $oldPosx = $this->getPositionx();
         $oldPosy = $this->getPositiony();
-        $delete = false;
+
         switch ($direction) {
             case 'left':
                 if ($oldPosx > 0) {
@@ -85,7 +88,7 @@ class Enemy extends Movable {
                 $newPosy = $oldPosy;
                 break;
             case 'right':
-                if ($oldPosx < 14) {
+                if ($oldPosx < Board::LONGUEUR - 1) {
                     $newPosx = $oldPosx + 1;
                 } else {
                     $newPosx = $oldPosx;
@@ -93,12 +96,7 @@ class Enemy extends Movable {
                 $newPosy = $oldPosy;
                 break;
             case 'down':
-                if ($oldPosy < 19) {
-                    $newPosy = $oldPosy + 1;
-                } else {
-                    $newPosy = $oldPosy;
-                    $delete = true;
-                }
+                $newPosy = $oldPosy + 1;
                 $newPosx = $oldPosx;
                 break;
         }
@@ -143,6 +141,14 @@ class Enemy extends Movable {
 
     public function setLastMoveEnemy($lastMoveEnemy) {
         $this->lastMoveEnemy = $lastMoveEnemy;
+    }
+
+    function getPointsEnemy() {
+        return $this->pointsEnemy;
+    }
+
+    function setPointsEnemy($pointsEnemy) {
+        $this->pointsEnemy = $pointsEnemy;
     }
 
 }

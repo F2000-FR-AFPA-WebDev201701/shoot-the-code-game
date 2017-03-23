@@ -14,7 +14,7 @@ use StcBundle\Form\Type\GameType;
 use StcBundle\Entity\Game;
 
 class GameController extends Controller {
-    
+
     const NB_DISPLAYED_GAMES = 5;
     const USER_TIMEOUT = 5;
 
@@ -28,7 +28,7 @@ class GameController extends Controller {
         $oContactForm->handleRequest($request);
         if ($oContactForm->isSubmitted() && $oContactForm->isValid()) {
             return $this->redirectToRoute('index', array(
-                    'contactForm' => $oContactForm->createView()
+                        'contactForm' => $oContactForm->createView()
             ));
         }
         return $this->render('StcBundle:Game:index.html.twig', array(
@@ -48,9 +48,11 @@ class GameController extends Controller {
         //On créé une nouvelle partie : nom de la partie, maxPlayer, initialized board.
         $oGame = new Game();
         $oCreateGameForm = $this->createForm(GameType::class, $oGame, array('nom' => $request->getSession()->get('userName')));
-        
-        //Si le formulaire est envoyé et valide
         $oCreateGameForm->handleRequest($request);
+        $rendu = $this->render('StcBundle:Game:creategame.html.twig', array(
+            'createGameForm' => $oCreateGameForm->createView())
+        );
+        //Si le formulaire est envoyé et valide
         if ($oCreateGameForm->isSubmitted() && $oCreateGameForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($oGame);
@@ -58,12 +60,9 @@ class GameController extends Controller {
 
             // Redirection vers gameAction avec l'id de la partie
             $this->updateAction($request);
-            return $this->redirectToRoute('join', array('idGame' => $oGame->getId()));
+            $rendu = $this->redirectToRoute('join', array('idGame' => $oGame->getId()));
         }
-        
-        return $this->render('StcBundle:Game:creategame.html.twig', array(
-            'createGameForm' => $oCreateGameForm->createView())
-        );
+        return $rendu;
     }
 
     /**
@@ -94,7 +93,6 @@ class GameController extends Controller {
 
             // On met à jour les Players
             $oBoard = unserialize($oGame->getBoard());
-            
             $oBoard->setPlayers($oGame->getUsers());
 
             // On déclenche le chronomètre de la partie
@@ -153,7 +151,7 @@ class GameController extends Controller {
 
         //On fixe le nombre de parties à afficher dans l'affichage des parties à rejoindre
         $nbParties = self::NB_DISPLAYED_GAMES;
-        
+
         //On compte le nombre de parties en attente
         $nbPendingGame = count($rep->findByState(Game::PENDING_GAME));
         //On calcul le nombre de pages à retourner
@@ -164,7 +162,7 @@ class GameController extends Controller {
         }
         //On met à jour l'affichage en fonction de l'index
         $oGame = $rep->findByState(Game::PENDING_GAME, null, $nbParties * $page, $nbParties * ($page - 1));
-        
+
         $this->updateAction($request);
         return $this->render(
                         'StcBundle:Game:listgame.html.twig', array(
@@ -183,10 +181,11 @@ class GameController extends Controller {
         //  - soit met à jour le board en fonction de l'action et affiche un plateau à jour.
         // On vérifie que l'utilisateur est autorisé à effectuer l'action sinon => index
         if (!$oUser = $this->isAuthorized($request, $idGame)) {
-            return $this->redirectToRoute('index'); 
+            return $this->redirectToRoute('index');
         }
         // On récupère la partie correspondant à l'action en cours
-        $oGame = $this->getDoctrine()->getRepository('StcBundle:Game')->find($idGame);
+        $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
+        $oGame = $rep->find($idGame);
 
         // l'utilisateur peut alors effectuer des actions
         //On récupère les infos du plateau
@@ -194,7 +193,11 @@ class GameController extends Controller {
 
         // On effectue l'action demandée suite à l'entrée clavier
         if ($oGame->getState() == Game::CURRENT_GAME) {
-            $oBoard->doAction($oUser->getId(), $action);
+            $points = $oBoard->doAction($oUser->getId(), $action);
+            //On augmente le score si on a tué un ennemi
+            if ($points > 0) {
+                $oGame->setScore($oGame->getScore() + $points);
+            }
         }
 
         // on vérifie si la partie est terminée
@@ -213,15 +216,14 @@ class GameController extends Controller {
         // paramètres communs aux cas refresh et actions
         $aParams = [
             'plateau' => $oBoard->getCases(),
-            'status' => ($oGame->getState())
-        ];
+            'status' => ($oGame->getState())]
+        ;
 
         // ajout des params joueurs et le score si la partie est terminée
         if ($oGame->getState() == Game::END_GAME) {
             $aParams['players'] = $oGame->getUsers();
             $aParams['score'] = $oGame->getScore();
         }
-        
         $this->updateAction($request, $idGame);
         return $this->render('StcBundle:Game:plateau.html.twig', $aParams);
     }
@@ -276,7 +278,7 @@ class GameController extends Controller {
         if ($request->getSession()->get('userStatus') != 'connected') {
             return;
         }
-        
+
         if ($idGame) {
             //On recherche les parties en attente de l'utilisateur inactif
             $oGame = $this->getDoctrine()->getRepository('StcBundle:Game')->find($idGame);
@@ -285,7 +287,7 @@ class GameController extends Controller {
                 foreach ($oGame->getUsers() as $user) {
                     //On récupère la date de la dernière action effectué par l'utilisateur
                     $expireDate = $user->getLastActionDate()->add(new \DateInterval('PT' . self::USER_TIMEOUT . 'M'));
-                    
+
                     //On déconnecte l'utilisateur des parties qu'il a rejoint depuis plus de x   minutes
                     //Si il n'a montré aucun signe d'activité
                     if ($expireDate < new \Datetime()) {
