@@ -23,9 +23,9 @@
             <div class="col-lg-1">
                 <div class="row">
                     <a href="{{path('index')}}">
-
                         <img src="http://fakeimg.pl/87x87/?text=Accueil" alt="Accueil" title="Accueil" class="col-lg-12" id="jouer_accueil" />
                     </a>
+                    <div class="col-lg-12" id="timer"></div>
                     <div id ="players" class="col-lg-12">
                         {% include 'StcBundle:Game:players.html.twig' %}
                     </div>
@@ -75,9 +75,19 @@
         var moveInProgress = false;
         // variable de la distance entre le bloc couleur et l'avion utilisée pour le tir missile
         var distanceTir;
+        
+        var time = '{{ dategame}}';
+        if (time != null){
+            var currentTime = new Date(time);
+            setInterval(tick, 1000);
+            tick();
+        }
 
-
-
+        function tick() {
+            var diff = new Date ( new Date() - currentTime ).toISOString().substr(11, 8);
+            $('#timer').html(diff);
+        }
+        
         $('body').keypress(function (e) {
 
             e.preventDefault();

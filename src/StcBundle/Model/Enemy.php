@@ -13,9 +13,18 @@ class Enemy extends Movable {
 
 // variables du Model Enemy
     private $idEnemy;
+    //Type d'ennemi
     private $typeEnemy;
+    //Vitesse de l'ennemi
     private $vitesseEnemy;
+    //Date de dernière action de l'ennemi
     private $lastMoveEnemy;
+    //Attaque de l'ennemi
+    private $damageEnemy;
+    //Points de vie de l'ennemi
+    private $hpEnemy;
+    //Points donnés par l'ennemi
+    private $pointsEnemy;
 
     const TYPES = ['html', 'css', 'js', 'php', 'sql'];
     const MOVES = ['left', 'right', 'down'];
@@ -23,7 +32,10 @@ class Enemy extends Movable {
     public function __construct() {
         $randomPosx = mt_rand(0, 14);
         $this->lastMoveEnemy = new \Datetime();
-        $this->vitesseEnemy = 5;
+        $this->vitesseEnemy = 7;
+        $this->damageEnemy = 1;
+        $this->pointsEnemy = 1;
+        $this->hpEnemy = 1;
         $this->setPositionx($randomPosx);
         $this->setPositiony(2);
         $this->typeEnemy = self::TYPES[mt_rand(0, count(self::TYPES) - 1)];
@@ -46,10 +58,26 @@ class Enemy extends Movable {
         $this->typeEnemy = $typeEnemy;
     }
 
+    function getDamageEnemy() {
+        return $this->damageEnemy;
+    }
+
+    function getHpEnemy() {
+        return $this->hpEnemy;
+    }
+
+    function setDamageEnemy($damageEnemy) {
+        $this->damageEnemy = $damageEnemy;
+    }
+
+    function setHpEnemy($hpEnemy) {
+        $this->hpEnemy = $hpEnemy;
+    }
+
     public function calculNextPosition($direction) {
         $oldPosx = $this->getPositionx();
         $oldPosy = $this->getPositiony();
-        $delete = false;
+
         switch ($direction) {
             case 'left':
                 if ($oldPosx > 0) {
@@ -60,7 +88,7 @@ class Enemy extends Movable {
                 $newPosy = $oldPosy;
                 break;
             case 'right':
-                if ($oldPosx < 14) {
+                if ($oldPosx < Board::LONGUEUR - 1) {
                     $newPosx = $oldPosx + 1;
                 } else {
                     $newPosx = $oldPosx;
@@ -68,12 +96,7 @@ class Enemy extends Movable {
                 $newPosy = $oldPosy;
                 break;
             case 'down':
-                if ($oldPosy < 19) {
-                    $newPosy = $oldPosy + 1;
-                } else {
-                    $newPosy = $oldPosy;
-                    $delete = true;
-                }
+                $newPosy = $oldPosy + 1;
                 $newPosx = $oldPosx;
                 break;
         }
@@ -81,6 +104,22 @@ class Enemy extends Movable {
             'x' => $newPosx,
             'y' => $newPosy,
         ];
+    }
+
+    public function takeDamage($damage) {
+        //On calcul les points de vie apres attaque
+        $newhp = $this->hpEnemy - $damage;
+        if ($newhp > 0) {
+            //Si l'ennemi est toujours en vie, on met à jour ses points de vie
+            $this->hpEnemy = $newhp;
+        } else {
+            //On le détruit sinon
+            $this->hpEnemy = 0;
+        }
+    }
+
+    public function isAlive() {
+        return $this->hpEnemy > 0;
     }
 
     public function move($posx, $posy) {
@@ -102,6 +141,14 @@ class Enemy extends Movable {
 
     public function setLastMoveEnemy($lastMoveEnemy) {
         $this->lastMoveEnemy = $lastMoveEnemy;
+    }
+
+    function getPointsEnemy() {
+        return $this->pointsEnemy;
+    }
+
+    function setPointsEnemy($pointsEnemy) {
+        $this->pointsEnemy = $pointsEnemy;
     }
 
 }
