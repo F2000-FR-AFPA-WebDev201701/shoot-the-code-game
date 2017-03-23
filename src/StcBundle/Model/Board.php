@@ -12,6 +12,7 @@ class Board {
     // le board : hauteur, longueur et tableau de cases à 2 dimensions
     const HAUTEUR = 20;
     const LONGUEUR = 15;
+    const BONUS_LASER = 1;
 
     private $cases = [];
     // tableau d'avion vide pour les futurs joueurs
@@ -75,7 +76,7 @@ class Board {
     public function getGameDate() {
         return $this->gameDate;
     }
-    
+
     public function setGameDate($date) {
         $this->gameDate = $date;
     }
@@ -177,7 +178,7 @@ class Board {
         }
 
         // déplacement des ennemis
-        $this->moveEnnemies();
+        //$this->moveEnnemies();
         // met à null l'ancienne case du user avion
         $this->cases[$oUserPlane->getPositiony()][$oUserPlane->getPositionx()]->setContent();
         $oUserPlane->move($action);
@@ -186,35 +187,43 @@ class Board {
         switch ($action) {
             case 'shoot':
                 //Tir sur le premier ennemi aligné
-                $oTarget = $oUserPlane->shootFirstEnemy($this->enemies);
-                //Si on a trouvé une cible
-                if ($oTarget instanceof Enemy) {
-                    //Si la cible est morte
-                    if (!$oTarget->isAlive()) {
-                        $this->cases[$oTarget->getPositiony()][$oTarget->getPositionx()]->setContent();
-                        $points = $oTarget->getPointsEnemy();
-                        $this->deleteEnemy($oTarget);
-                    }
-                } else {
-                    switch ($oUserPlane->getPositionx()) {
-                        case 2:
-                            $this->block[0]->nextColor();
-                            break;
-                        case 5:
-                            //$oTarget = $oUserPlane->shootFirstEnemy($enemys);
+                $oTargets = $oUserPlane->shootEnemy($this->enemies);
 
-                            $this->block[1]->nextColor();
-                            break;
-                        case 9:
-                            $this->block[2]->nextColor();
-                            break;
-                        case 12:
-                            $this->block[3]->nextColor();
-                            break;
+                foreach ($oTargets as $oTarget) {
+                    //Si on a trouvé au moins une cible
+                    if ($oTarget instanceof Enemy) {
+                        //Si la cible est morte
+                        if (!$oTarget->isAlive()) {
+                            $this->cases[$oTarget->getPositiony()][$oTarget->getPositionx()]->setContent();
+
+                            $points += $oTarget->getPointsEnemy();
+
+                            $this->deleteEnemy($oTarget);
+                            if ($oTarget->getBonus()) {
+                                $oUserPlane->addPower($oTarget->getBonus());
+                            }
+                        }
+                    } else {
+                        switch ($oUserPlane->getPositionx()) {
+                            case 2:
+                                $this->block[0]->nextColor();
+                                break;
+                            case 5:
+                                $this->block[1]->nextColor();
+                                break;
+                            case 9:
+                                $this->block[2]->nextColor();
+                                break;
+                            case 12:
+                                $this->block[3]->nextColor();
+                                break;
+                        }
+                        $this->checkColor();
                     }
-                    $this->checkColor();
                 }
+                break;
         }
+
         return $points;
     }
 
