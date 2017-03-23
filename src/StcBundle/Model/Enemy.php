@@ -32,7 +32,7 @@ class Enemy extends Movable {
     public function __construct() {
         $randomPosx = mt_rand(0, 14);
         $this->lastMoveEnemy = new \Datetime();
-        $this->vitesseEnemy = 7;
+        $this->vitesseEnemy = 1;
         $this->damageEnemy = 1;
         $this->pointsEnemy = 1;
         $this->hpEnemy = 1;

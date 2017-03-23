@@ -3,6 +3,7 @@
 {% endif %}
 
 {% if status == constant('StcBundle\\Entity\\Game::CURRENT_GAME') %}
+    <audio src="{{ asset('sons/musique.mp3') }}" autoplay loop></audio>
     <script>
         function animationFond() {
             $('#fond').animate({"background-position-y": "0%"}, 8000, "linear").animate({"background-position-y": "100%"}, 0, animationFond);
