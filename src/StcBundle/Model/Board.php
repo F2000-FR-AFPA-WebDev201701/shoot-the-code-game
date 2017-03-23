@@ -168,6 +168,12 @@ class Board {
         if (!$oUserPlane) {
             return;
         }
+
+        // si on a plus assez d'ennmis à l'écran on fait respawn
+        if (count($this->enemies) <= 3) {
+            $this->generateEnemies(mt_rand(5, (self::LONGUEUR - 1)));
+        }
+
         // déplacement des ennemis
         $this->moveEnnemies();
         // met à null l'ancienne case du user avion
