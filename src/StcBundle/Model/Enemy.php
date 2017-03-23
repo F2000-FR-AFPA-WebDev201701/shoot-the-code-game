@@ -49,7 +49,7 @@ class Enemy extends Movable {
     public function calculNextPosition($direction) {
         $oldPosx = $this->getPositionx();
         $oldPosy = $this->getPositiony();
-        $delete = false;
+
         switch ($direction) {
             case 'left':
                 if ($oldPosx > 0) {
@@ -60,7 +60,7 @@ class Enemy extends Movable {
                 $newPosy = $oldPosy;
                 break;
             case 'right':
-                if ($oldPosx < 14) {
+                if ($oldPosx < Board::LONGUEUR - 1) {
                     $newPosx = $oldPosx + 1;
                 } else {
                     $newPosx = $oldPosx;
@@ -68,12 +68,7 @@ class Enemy extends Movable {
                 $newPosy = $oldPosy;
                 break;
             case 'down':
-                if ($oldPosy < 19) {
-                    $newPosy = $oldPosy + 1;
-                } else {
-                    $newPosy = $oldPosy;
-                    $delete = true;
-                }
+                $newPosy = $oldPosy + 1;
                 $newPosx = $oldPosx;
                 break;
         }

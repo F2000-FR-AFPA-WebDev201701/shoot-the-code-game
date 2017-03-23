@@ -10,15 +10,16 @@ use StcBundle\Model\Enemy;
 class Board {
 
     // le board : hauteur, longueur et tableau de cases à 2 dimensions
-    private $hauteur = 20;
-    private $longueur = 15;
+    const HAUTEUR = 20;
+    const LONGUEUR = 15;
+
     private $cases = [];
     // tableau d'avion vide pour les futurs joueurs
     private $planeTab = [];
     // tableau des blocs couleurs
     private $block = [];
     // Tableau des ennemis
-    private $enemy = [];
+    private $enemies = [];
     // tableau avec la combinaison réponse
     private $combinaison = [];
     // booléen true si la partie est terminée
@@ -33,9 +34,9 @@ class Board {
 
     //Fonctions
     public function init() {
-        for ($y = 0; $y < $this->hauteur; $y++) {
+        for ($y = 0; $y < self::HAUTEUR; $y++) {
             $this->cases[$y] = [];
-            for ($x = 0; $x < $this->longueur; $x++) {
+            for ($x = 0; $x < self::LONGUEUR; $x++) {
                 $this->cases[$y][$x] = new Square($x, $y);
             }
         }
@@ -55,20 +56,12 @@ class Board {
     }
 
     //Getters et Setters
-    public function getEnemy() {
-        return $this->enemy;
+    public function getEnemies() {
+        return $this->enemies;
     }
 
     public function getPlaneTab() {
         return $this->planeTab;
-    }
-
-    public function getHauteur() {
-        return $this->hauteur;
-    }
-
-    public function getLongueur() {
-        return $this->longueur;
     }
 
     public function getCases() {
@@ -91,14 +84,6 @@ class Board {
         $this->planeTab = $planeTab;
     }
 
-    public function setHauteur($hauteur) {
-        $this->hauteur = $hauteur;
-    }
-
-    public function setLongueur($longueur) {
-        $this->longueur = $longueur;
-    }
-
     public function setCases($cases) {
         $this->cases = $cases;
     }
@@ -118,7 +103,7 @@ class Board {
 
         // Génération d'un nombre variable d'ennemis
 
-        $this->generateEnemies(mt_rand(5, ($this->longueur - 1)));
+        $this->generateEnemies(mt_rand(5, (self::LONGUEUR - 1)));
     }
 
     public function setChronometer() {
@@ -135,7 +120,7 @@ class Board {
             // Tant que la position actuelle est occupée par un autre ennemi
             while (!$this->cases[$y][$x]->getContent() === null) {
                 // On lui attribue une nouvelle position aléatoire
-                $oEnemy->setPositionx(mt_rand(0, ($this->longueur - 1)));
+                $oEnemy->setPositionx(mt_rand(0, (self::LONGUEUR - 1)));
 
                 $x = $oEnemy->getPositionx();
                 $y = $oEnemy->getPositiony();
@@ -144,7 +129,7 @@ class Board {
             // On assigne le type d'ennemi à la case correspondant à sa position
             $this->cases[$y][$x]->setContent($oEnemy);
 
-            $this->enemy[] = $oEnemy;
+            $this->enemies[] = $oEnemy;
         }
     }
 
@@ -208,8 +193,7 @@ class Board {
 
     private function moveEnnemies() {
         // on récupère les ennemis et on met à jour leurs anciennes et nouvelles cases
-        $enemys = $this->getEnemy();
-        foreach ($enemys as $enemy) {
+        foreach ($this->enemies as $idx => $enemy) {
             // init vars
             $moved = false;
             $dirPossible = ['left', 'right', 'down'];
@@ -223,13 +207,21 @@ class Board {
 
                 if ($direction) {
                     // retourne la nouvelle position pour contrôle : return ['x' => $newPosx, 'y' => $newPosy]
-                    $nextPos = $enemy->calculNextPosition($direction);
-                    // on vérifie si la case est disponible
-                    if ($this->cases[$nextPos['y']][$nextPos['x']]->getContent() == null) {
+                    $nextState = $enemy->calculNextPosition($direction);
+
+                    // si l'ennemi essaye de sortir du bas du plateau on le supprime
+                    if (!array_key_exists($nextState['y'], $this->cases)) {
+                        // met à null l'ancienne case de chaque ennemi.
+                        $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+                        unset($this->enemies[$idx]);
+                        $moved = true;
+                    }
+                    // sinon on vérifie si la case est disponible
+                    elseif (($this->cases[$nextState['y']][$nextState['x']]->getContent() == null)) {
                         // met à null l'ancienne case de chaque ennemi.
                         $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
                         // met à jour les positions x,y
-                        $enemy->move($nextPos['x'], $nextPos['y']);
+                        $enemy->move($nextState['x'], $nextState['y']);
                         // alimente le contenu de la nouvelle case
                         $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
                         $moved = true;

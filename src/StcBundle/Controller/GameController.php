@@ -24,6 +24,7 @@ class GameController extends Controller {
         $oContactForm = $this->createForm(ContactType::class);
         $oContactForm->handleRequest($request);
         if ($oContactForm->isSubmitted() && $oContactForm->isValid()) {
+
         }
         return $this->render('StcBundle:Game:index.html.twig', array(
                     'contactForm' => $oContactForm->createView()
@@ -163,7 +164,9 @@ class GameController extends Controller {
         //  - fait un refresh du plateau si action n'est pas renseigné
         //  - soit met à jour le board en fonction de l'action et affiche un plateau à jour.
         // On vérifie que l'utilisateur est autorisé à effectuer l'action sinon => index
-        if (!$oUser = $this->isAuthorized($request, $idGame)) { return $this->redirectToRoute('index'); }
+        if (!$oUser = $this->isAuthorized($request, $idGame)) {
+            return $this->redirectToRoute('index');
+        }
         // On récupère la partie correspondant à l'action en cours
         $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
         $oGame = $rep->find($idGame);
@@ -178,7 +181,9 @@ class GameController extends Controller {
         }
 
         // on vérifie si la partie est terminée
-        if ($oBoard->isEndGame()) { $oGame->setState(Game::END_GAME); }
+        if ($oBoard->isEndGame()) {
+            $oGame->setState(Game::END_GAME);
+        }
 
         // on met à jour le board et on le serialize pour l'enregistrement en base
         $oGame->setBoard(serialize($oBoard));
@@ -189,7 +194,10 @@ class GameController extends Controller {
         $em->flush();
 
         // paramètres communs aux cas refresh et actions
-        $aParams = ['plateau' => $oBoard->getCases(),'status' => ($oGame->getState())];
+        $aParams = [
+            'plateau' => $oBoard->getCases(),
+            'status' => ($oGame->getState())]
+        ;
 
         // ajout des params joueurs et le score si la partie est terminée
         if ($oGame->getState() == Game::END_GAME) {
@@ -247,7 +255,9 @@ class GameController extends Controller {
 
     //Fonction de mise à jour de la date de derniere action
     private function updateAction(Request $request, $idGame = null) {
-        if ($request->getSession()->get('userStatus') != 'connected') { return false;}
+        if ($request->getSession()->get('userStatus') != 'connected') {
+            return false;
+        }
         if ($idGame !== null) {
             //On recherche les parties en attente de l'utilisateur inactif
             $oGame = $this->getDoctrine()->getRepository('StcBundle:Game')->find($idGame);
@@ -262,7 +272,9 @@ class GameController extends Controller {
                     $expireDate = $lastAction->add(new \DateInterval('PT' . $minutes . 'M'));
                     //On déconnecte l'utilisateur des parties qu'il a rejoint depuis plus de x   minutes
                     //Si il n'a montré aucun signe d'activité
-                    if ($expireDate < $now) {$oGame->removeUser($user);}
+                    if ($expireDate < $now) {
+                        $oGame->removeUser($user);
+                    }
                 }
             }
         }

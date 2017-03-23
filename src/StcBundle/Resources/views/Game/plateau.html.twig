@@ -1,5 +1,5 @@
 {% if status == constant('StcBundle\\Entity\\Game::END_GAME') %}
-    {% include 'StcBundle:Game:modalendgame.html.twig' with {'players': players, 'score' : score} %} 
+    {% include 'StcBundle:Game:modalendgame.html.twig' with {'players': players, 'score' : score} %}
 {% endif %}
 
 {% if status == constant('StcBundle\\Entity\\Game::CURRENT_GAME') %}
@@ -17,7 +17,7 @@
             {% include 'StcBundle:Game:case.html.twig' %}
         </tr>
     {% endfor %}
-    
+
     {% if status == constant('StcBundle\\Entity\\Game::PENDING_GAME') %}
         <div id="loading">
             <img src="{{ asset('images/hourglass.gif')}}" alt="Chargement ..."/>
