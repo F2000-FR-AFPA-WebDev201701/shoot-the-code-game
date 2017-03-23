@@ -24,7 +24,7 @@ class Board {
     // booléen true si la partie est terminée
     private $endGame;
     // variable temps de jeu
-    private $chronometer;
+    private $gameDate;
 
     //Constructeur
     public function __construct() {
@@ -79,8 +79,12 @@ class Board {
         return $this->combinaison;
     }
 
-    public function getChronometer() {
-        return $this->chronometer;
+    public function getGameDate() {
+        return $this->gameDate;
+    }
+    
+    public function setGameDate($date) {
+        $this->gameDate = $date;
     }
 
     public function isEndGame() {
@@ -119,10 +123,6 @@ class Board {
         // Génération d'un nombre variable d'ennemis
 
         $this->generateEnemies(mt_rand(5, ($this->longueur - 1)));
-    }
-
-    public function setChronometer() {
-        $this->chronometer = new \DateTime('now');
     }
 
     public function generateEnemies($nbEnemy) {

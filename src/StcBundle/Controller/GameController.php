@@ -94,10 +94,11 @@ class GameController extends Controller {
 
             // On met à jour les Players
             $oBoard = unserialize($oGame->getBoard());
+            
             $oBoard->setPlayers($oGame->getUsers());
 
             // On déclenche le chronomètre de la partie
-            $oBoard->setChronometer();
+            $oBoard->setGameDate(new \DateTime());
 
             //on met à jour le board
             $oGame->setBoard(serialize($oBoard));
@@ -127,8 +128,15 @@ class GameController extends Controller {
         $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
         $oGame = $rep->find($id);
         
+        $dategame = null;
+        if($oGame->getState() == Game::CURRENT_GAME){
+            $dategame = unserialize($oGame->getBoard())->getGameDate()->format('Y-m-d H:i:s');
+        }
+        
+        
         $this->updateAction($request, $id);
-        return $this->render('StcBundle:Game:jouer.html.twig', ['game' => $oGame]);
+        return $this->render('StcBundle:Game:jouer.html.twig', ['game' => $oGame,
+                                                                'dategame'=> $dategame ]);
     }
 
     /**
