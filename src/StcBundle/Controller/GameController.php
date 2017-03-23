@@ -205,7 +205,10 @@ class GameController extends Controller {
         $em->flush();
 
         // paramètres communs aux cas refresh et actions
-        $aParams = ['plateau' => $oBoard->getCases(), 'status' => ($oGame->getState())];
+        $aParams = [
+            'plateau' => $oBoard->getCases(),
+            'status' => ($oGame->getState())]
+        ;
 
         // ajout des params joueurs et le score si la partie est terminée
         if ($oGame->getState() == Game::END_GAME) {
