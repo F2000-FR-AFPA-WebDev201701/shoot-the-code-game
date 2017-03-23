@@ -185,12 +185,11 @@
             moveInProgress = false;
             $('#tableau').html(view);
         }
-        /*
-         var pageRefresh = setInterval(function () {
-         $('#tableau').load('{{ path("controls", {"idGame" : game.id, "action" : "null"}) }}');
-         $('#players').load('{{ path("players", {"idGame" : game.id}) }}');
-         }, 3000);
-         */
+
+        var pageRefresh = setInterval(function () {
+            $('#tableau').load('{{ path("controls", {"idGame" : game.id, "action" : "null"}) }}');
+            $('#players').load('{{ path("players", {"idGame" : game.id}) }}');
+        }, 3000);
 
     </script>
 {% endblock %}
