@@ -30,13 +30,12 @@ class Enemy extends Movable {
     const MOVES = ['left', 'right', 'down'];
 
     public function __construct() {
-        $randomPosx = mt_rand(0, 14);
         $this->lastMoveEnemy = new \Datetime();
-        $this->vitesseEnemy = 7;
+        $this->vitesseEnemy = 2;
         $this->damageEnemy = 1;
         $this->pointsEnemy = 1;
         $this->hpEnemy = 1;
-        $this->setPositionx($randomPosx);
+        $this->setPositionx(mt_rand(0, 14));
         $this->setPositiony(2);
         $this->typeEnemy = self::TYPES[mt_rand(0, count(self::TYPES) - 1)];
     }
@@ -74,48 +73,11 @@ class Enemy extends Movable {
         $this->hpEnemy = $hpEnemy;
     }
 
-    public function calculNextPosition($direction) {
-        $oldPosx = $this->getPositionx();
-        $oldPosy = $this->getPositiony();
-
-        switch ($direction) {
-            case 'left':
-                if ($oldPosx > 0) {
-                    $newPosx = $oldPosx - 1;
-                } else {
-                    $newPosx = $oldPosx;
-                }
-                $newPosy = $oldPosy;
-                break;
-            case 'right':
-                if ($oldPosx < Board::LONGUEUR - 1) {
-                    $newPosx = $oldPosx + 1;
-                } else {
-                    $newPosx = $oldPosx;
-                }
-                $newPosy = $oldPosy;
-                break;
-            case 'down':
-                $newPosy = $oldPosy + 1;
-                $newPosx = $oldPosx;
-                break;
-        }
-        return [
-            'x' => $newPosx,
-            'y' => $newPosy,
-        ];
-    }
-
     public function takeDamage($damage) {
         //On calcul les points de vie apres attaque
         $newhp = $this->hpEnemy - $damage;
-        if ($newhp > 0) {
-            //Si l'ennemi est toujours en vie, on met à jour ses points de vie
-            $this->hpEnemy = $newhp;
-        } else {
-            //On le détruit sinon
-            $this->hpEnemy = 0;
-        }
+        //Si les points de vie sont inférieur à 0 on les remet à 0 pour éviter des problèmes
+        $this->hpEnemy = ($newhp > 0) ? $newhp : 0;
     }
 
     public function isAlive() {
