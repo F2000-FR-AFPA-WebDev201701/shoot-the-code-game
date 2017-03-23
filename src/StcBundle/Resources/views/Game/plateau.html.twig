@@ -5,10 +5,10 @@
 {% if status == constant('StcBundle\\Entity\\Game::CURRENT_GAME') %}
     <script>
         function animationFond() {
-            $('#fond').animate({"background-position-y": "0%"}, 5000, "linear").animate({"background-position-y": "100%"}, 0, animationFond);
+            $('#fond').animate({"background-position-y": "0%"}, 8000, "linear").animate({"background-position-y": "100%"}, 0, animationFond);
         }
         function animationNuages() {
-            $('#nuages').animate({"background-position-y": "0%"}, 8000, "linear").animate({"background-position-y": "100%"}, 0, animationNuages);
+            $('#nuages').animate({"background-position-y": "0%"}, 5000, "linear").animate({"background-position-y": "100%"}, 0, animationNuages);
         }
         animationFond();
         animationNuages();
