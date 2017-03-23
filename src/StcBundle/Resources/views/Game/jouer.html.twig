@@ -186,14 +186,39 @@
         });
         // function de calcul de la distance de tir
         function distance() {
-            // sélecteur complexe : pour chaque tr (ligne), récupère les 3è td (cellules) dont la classe est
-            // my-plane => si on en trouve une c'est que l'avion est en colonne 3! On restreint la longueur
-            // de tir car on a un bloc couleur sur cette colonne.
-            if ($('#tableau td:nth-child(3).my-plane').length === 1 || $('#tableau td:nth-child(6).my-plane').length === 1 ||
-                    $('#tableau td:nth-child(10).my-plane').length === 1 || $('#tableau td:nth-child(13).my-plane').length === 1) {
-                return (($('.avion.my-plane').offset().top - $('tr:nth-child(3)').offset().top) + 3);
+            var planePosx = $('.my-plane').attr('data-x');
+            var planePosy = $('.my-plane').attr('data-y');
+            var enemyTabPlaneCol = $(".enemy[data-x='" + planePosx + "']");
+            var firstEnnemy = null;
+            var diffPosyMin = 20;
+            // les différentes distances que la fonction peut renvoyer
+            var distanceMax = ($('.avion.my-plane').offset().top - $('tr:nth-child(1)').offset().top) + 3;
+            var distanceBloc = ($('.avion.my-plane').offset().top - $('tr:nth-child(3)').offset().top) + 3;
+            var distanceEnnemi = null;
+            // pour chaque ennemis dans la colonne de l'avion
+            enemyTabPlaneCol.each(function () {
+                diffPosy = planePosy - $(this).attr('data-y');
+
+                // Si l'ennemi est au dessus de l'avion et plus proche sur la colonne
+                if (diffPosy > 0 && (diffPosy < diffPosyMin)) {
+                    diffPosyMin = diffPosy;
+                    firstEnnemy = $(this);
+                }
+            });
+            // si on tire sur l'ennemi le plus proche
+            if (firstEnnemy !== null) {
+                return distanceEnnemi = diffPosyMin * 30;
+                // sinon on tire sur un bloc ou dans le vide
             } else {
-                return (($('.avion.my-plane').offset().top - $('tr:nth-child(1)').offset().top) + 3);
+                // sélecteur complexe : pour chaque tr (ligne), récupère les 3è td (cellules) dont la classe est
+                // my-plane => si on en trouve une c'est que l'avion est en colonne 3! On restreint la longueur
+                // de tir car on a un bloc couleur sur cette colonne.
+                if ($('#tableau td:nth-child(3).my-plane').length === 1 || $('#tableau td:nth-child(6).my-plane').length === 1 ||
+                        $('#tableau td:nth-child(10).my-plane').length === 1 || $('#tableau td:nth-child(13).my-plane').length === 1) {
+                    return distanceBloc;
+                } else {
+                    return distanceMax;
+                }
             }
         }
 
