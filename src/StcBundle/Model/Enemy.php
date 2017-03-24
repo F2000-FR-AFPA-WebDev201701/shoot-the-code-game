@@ -39,17 +39,15 @@ class Enemy extends Movable {
         $this->damageEnemy = 1;
         $this->pointsEnemy = 1;
         $this->hpEnemy = 1;
-        //$randomPosx = mt_rand(0, 14);
-        //$this->setPositionx($randomPosx);
-        //$this->setPositiony(2);
-        $randomPosy = mt_rand(0, 14);
-        $this->setPositiony($randomPosy);
-        $this->setPositionx(8);
+        $randomPosx = mt_rand(0, 14);
+        $this->setPositionx($randomPosx);
+        $this->setPositiony(2);
         $this->typeEnemy = self::TYPES[mt_rand(0, count(self::TYPES) - 1)];
+
         $bonusLoot = mt_rand(0, 9);
-        //if ($bonusLoot == 5) {
-        $this->bonus = self::BONUS[mt_rand(0, count(self::BONUS) - 1)];
-        //}
+        if ($bonusLoot == 5) {
+            $this->bonus = self::BONUS[mt_rand(0, count(self::BONUS) - 1)];
+        }
     }
 
 //Getters et Setters

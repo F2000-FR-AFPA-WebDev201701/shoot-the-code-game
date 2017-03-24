@@ -121,20 +121,20 @@ class GameController extends Controller {
         if (!$this->isAuthorized($request, $id)) {
             return $this->redirectToRoute('index');
         }
-        
+
         //On récupère les informations de la partie demandée
         $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
         $oGame = $rep->find($id);
-        
+
         $dategame = null;
-        if($oGame->getState() == Game::CURRENT_GAME){
+        if ($oGame->getState() == Game::CURRENT_GAME) {
             $dategame = unserialize($oGame->getBoard())->getGameDate()->format('Y-m-d H:i:s');
         }
-        
-        
+
+
         $this->updateAction($request, $id);
         return $this->render('StcBundle:Game:jouer.html.twig', ['game' => $oGame,
-                                                                'dategame'=> $dategame ]);
+                    'dategame' => $dategame]);
     }
 
     /**
@@ -213,10 +213,21 @@ class GameController extends Controller {
         $em->persist($oGame);
         $em->flush();
 
+        $oUserPlane = null;
+        foreach ($oBoard->getPlaneTab() as $oPlane) {
+            if ($oPlane->getIdUser() == $oUser->getId()) {
+                $oUserPlane = $oPlane;
+            }
+        }
+
         // paramètres communs aux cas refresh et actions
         $aParams = [
             'plateau' => $oBoard->getCases(),
-            'status' => ($oGame->getState())]
+            'status' => $oGame->getState(),
+            'game' => $oGame,
+            'board' => $oBoard,
+            'user_plane' => $oUserPlane,
+                ]
         ;
 
         // ajout des params joueurs et le score si la partie est terminée
@@ -226,24 +237,6 @@ class GameController extends Controller {
         }
         $this->updateAction($request, $idGame);
         return $this->render('StcBundle:Game:plateau.html.twig', $aParams);
-    }
-
-    /**
-     * @Route("/player/{idGame}", name="players")
-     * @Method({"POST", "GET"})
-     */
-    public function viewPlayersAction(Request $request, $idGame) {
-        // On vérifie que l'utilisateur est autorisé à effectuer l'action
-        if (!$this->isAuthorized($request, $idGame)) {
-            return $this->redirectToRoute('index');
-        }
-        //On récupère la partie en cours
-        $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
-        $oGame = $rep->find($idGame);
-        //On renvoi les infos de la partie pour l'affichage
-        //Pas de MAJ necessaire de la dernière action car déjà appelé dans controls action
-        return $this->render('StcBundle:Game:players.html.twig', array(
-                    'game' => $oGame));
     }
 
     //Fonction permetttant d'autorisé ou non à effectuer des actions

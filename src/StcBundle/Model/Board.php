@@ -178,7 +178,7 @@ class Board {
         }
 
         // déplacement des ennemis
-        //$this->moveEnnemies();
+        $this->moveEnnemies();
         // met à null l'ancienne case du user avion
         $this->cases[$oUserPlane->getPositiony()][$oUserPlane->getPositionx()]->setContent();
         $oUserPlane->move($action);

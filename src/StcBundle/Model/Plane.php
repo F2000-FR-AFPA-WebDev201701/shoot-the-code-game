@@ -25,6 +25,10 @@ class Plane extends Movable {
     }
 
 //Getters et Setters
+    public function hasPower($power) {
+        return in_array($power, $this->powers);
+    }
+
     public function getPowers() {
         return $this->powers;
     }
@@ -130,7 +134,6 @@ class Plane extends Movable {
                 $aTargets = [$firstTarget];
             }
         }
-
         return $aTargets;
     }
 
