@@ -17,6 +17,7 @@ class Plane extends Movable {
     private $damagePlane;
     //Points de vie de l'avion
     private $hpPlane;
+    private $powers = [];
 
     public function __construct() {
         $this->damagePlane = 1;
@@ -24,6 +25,18 @@ class Plane extends Movable {
     }
 
 //Getters et Setters
+    public function hasPower($power) {
+        return in_array($power, $this->powers);
+    }
+
+    public function getPowers() {
+        return $this->powers;
+    }
+
+    public function addPower($power) {
+        $this->powers[] = $power;
+    }
+
     public function getIdUser() {
         return $this->idUser;
     }
@@ -53,28 +66,37 @@ class Plane extends Movable {
         $this->setPositiony($y);
     }
 
-    public function shootFirstEnemy($enemys) {
-        $target = null;
-        //Pour chqua ennemi, on regarde sur la colonne ou on a tiré
-        foreach ($enemys as $enemy) {
+    public function shootEnemy($enemies) {
+        $firstTarget = null;
+        $aTargets = [];
+
+        //Pour chaque ennemi, on regarde sur la colonne ou on a tiré
+        foreach ($enemies as $enemy) {
             //Si c'est la même colonne
             if ($enemy->getPositionx() == $this->positionx) {
+                $aTargets[] = $enemy;
+
                 //On assigne l'ennemi comme cible si aucune cible déjà présente
-                if ($target === null) {
-                    $target = $enemy;
-                } else {
-                    //Sinon si il y a plusieurs cibles possibles on prend la plus proche
-                    if ($enemy->getPositiony() > $target->getPositiony()) {
-                        $target = $enemy;
-                    }
+                //Sinon si il y a plusieurs cibles possibles on prend la plus proche
+                if ($firstTarget == null) {
+                    $firstTarget = $enemy;
+                } elseif ($enemy->getPositiony() > $firstTarget->getPositiony()) {
+                    $firstTarget = $enemy;
                 }
             }
         }
-        if ($target instanceof Enemy) {
-            $target->takeDamage($this->damagePlane);
-        }
 
-        return $target;
+        if ($aTargets) {
+            if ($this->hasPower(Board::BONUS_LASER)) {
+                foreach ($aTargets as $target) {
+                    $target->takeDamage($this->damagePlane);
+                }
+            } else {
+                $firstTarget->takeDamage($this->damagePlane);
+                $aTargets = [$firstTarget];
+            }
+        }
+        return $aTargets;
     }
 
     public function takeDamage($damage) {

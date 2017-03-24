@@ -213,10 +213,21 @@ class GameController extends Controller {
         $em->persist($oGame);
         $em->flush();
 
+        $oUserPlane = null;
+        foreach ($oBoard->getPlaneTab() as $oPlane) {
+            if ($oPlane->getIdUser() == $oUser->getId()) {
+                $oUserPlane = $oPlane;
+            }
+        }
+
         // paramètres communs aux cas refresh et actions
         $aParams = [
             'plateau' => $oBoard->getCases(),
-            'status' => ($oGame->getState())]
+            'status' => $oGame->getState(),
+            'game' => $oGame,
+            'board' => $oBoard,
+            'user_plane' => $oUserPlane,
+                ]
         ;
 
         // ajout des params joueurs et le score si la partie est terminée

@@ -27,9 +27,12 @@ class Enemy extends Movable {
     private $pointsEnemy;
     //Direction pour le sql
     private $directionEnemy;
+    // l'ennemi porte éventuellement un bonus
+    private $bonus;
 
     const TYPES = ['html', 'css', 'js', 'php', 'sql'];
     const MOVES = ['left', 'right', 'down'];
+    const BONUS = [Board::BONUS_LASER];
 
     public function __construct() {
         $this->lastMoveEnemy = new \Datetime();
@@ -40,6 +43,7 @@ class Enemy extends Movable {
         $this->setPositionx(mt_rand(0, 14));
         $this->setPositiony(2);
         $this->typeEnemy = self::TYPES[mt_rand(0, count(self::TYPES) - 1)];
+
         //On initialise les ennemis sql à aller à droite à leur création
         if ($this->typeEnemy == 'sql') {
             $this->directionEnemy = 'right';
@@ -48,9 +52,17 @@ class Enemy extends Movable {
         if ($this->typeEnemy == 'css') {
             $this->directionEnemy = 'down';
         }
+        $bonusLoot = mt_rand(0, 9);
+        if ($bonusLoot == 5) {
+            $this->bonus = self::BONUS[mt_rand(0, count(self::BONUS) - 1)];
+        }
     }
 
 //Getters et Setters
+    public function getBonus() {
+        return $this->bonus;
+    }
+
     public function getIdEnemy() {
         return $this->idEnemy;
     }
@@ -83,11 +95,44 @@ class Enemy extends Movable {
         $this->hpEnemy = $hpEnemy;
     }
 
+    public function calculNextPosition($direction) {
+        $oldPosx = $this->getPositionx();
+        $oldPosy = $this->getPositiony();
+
+        switch ($direction) {
+            case 'left':
+                if ($oldPosx > 0) {
+                    $newPosx = $oldPosx - 1;
+                } else {
+                    $newPosx = $oldPosx;
+                }
+                $newPosy = $oldPosy;
+                break;
+            case 'right':
+                if ($oldPosx < Board::LONGUEUR - 1) {
+                    $newPosx = $oldPosx + 1;
+                } else {
+                    $newPosx = $oldPosx;
+                }
+                $newPosy = $oldPosy;
+                break;
+            case 'down':
+                $newPosy = $oldPosy + 1;
+                $newPosx = $oldPosx;
+                break;
+        }
+        return [
+            'x' => $newPosx,
+            'y' => $newPosy,
+        ];
+    }
+
+    /**
+     * On calcul les points de vie apres attaque
+     * @param type $damage
+     */
     public function takeDamage($damage) {
-        //On calcul les points de vie apres attaque
-        $newhp = $this->hpEnemy - $damage;
-        //Si les points de vie sont inférieur à 0 on les remet à 0 pour éviter des problèmes
-        $this->hpEnemy = ($newhp > 0) ? $newhp : 0;
+        $this->hpEnemy -= $damage;
     }
 
     public function isAlive() {
