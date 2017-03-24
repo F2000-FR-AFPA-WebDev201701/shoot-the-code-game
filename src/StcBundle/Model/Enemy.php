@@ -31,7 +31,7 @@ class Enemy extends Movable {
 
     public function __construct() {
         $this->lastMoveEnemy = new \Datetime();
-        $this->vitesseEnemy = 2;
+        $this->vitesseEnemy = 1;
         $this->damageEnemy = 1;
         $this->pointsEnemy = 1;
         $this->hpEnemy = 1;
@@ -57,19 +57,19 @@ class Enemy extends Movable {
         $this->typeEnemy = $typeEnemy;
     }
 
-    function getDamageEnemy() {
+    public function getDamageEnemy() {
         return $this->damageEnemy;
     }
 
-    function getHpEnemy() {
+    public function getHpEnemy() {
         return $this->hpEnemy;
     }
 
-    function setDamageEnemy($damageEnemy) {
+    public function setDamageEnemy($damageEnemy) {
         $this->damageEnemy = $damageEnemy;
     }
 
-    function setHpEnemy($hpEnemy) {
+    public function setHpEnemy($hpEnemy) {
         $this->hpEnemy = $hpEnemy;
     }
 
@@ -105,11 +105,11 @@ class Enemy extends Movable {
         $this->lastMoveEnemy = $lastMoveEnemy;
     }
 
-    function getPointsEnemy() {
+    public function getPointsEnemy() {
         return $this->pointsEnemy;
     }
 
-    function setPointsEnemy($pointsEnemy) {
+    public function setPointsEnemy($pointsEnemy) {
         $this->pointsEnemy = $pointsEnemy;
     }
 

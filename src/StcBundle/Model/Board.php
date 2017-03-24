@@ -307,29 +307,29 @@ class Board {
         // init vars
         $moved = false;
 
-        while (!$moved) {
-
-            //if ($direction) {
-            // si l'ennemi essaye de sortir du bas du plateau on le supprime
-            if (!array_key_exists($newPosy, $this->cases)) {
-                // met à null l'ancienne case de chaque ennemi.
-                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
-                unset($this->enemies[array_search($enemy, $this->enemies)]);
-                $moved = true;
-            }
-            // sinon on vérifie si la case est disponible
-            elseif (($this->cases[$newPosy][$newPosx]->getContent() == null)) {
-                // met à null l'ancienne case de chaque ennemi.
-                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
-                // met à jour les positions x,y
-                $enemy->move($newPosx, $newPosy);
-                // alimente le contenu de la nouvelle case
-                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
-                $enemy->setLastMoveEnemy(new \DateTime());
-                $moved = true;
-            } else {
-                //si on a testé tous les déplacements, on sort et donc l'ennemi reste sur place
-                $moved = true;
+                        // si l'ennemi essaye de sortir du bas du plateau on le supprime
+                        if (!array_key_exists($nextState['y'], $this->cases)) {
+                            // met à null l'ancienne case de chaque ennemi.
+                            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+                            unset($this->enemies[$idx]);
+                            $moved = true;
+                        }
+                        // sinon on vérifie si la case est disponible
+                        elseif (($this->cases[$nextState['y']][$nextState['x']]->getContent() === null)) {
+                            // met à null l'ancienne case de chaque ennemi.
+                            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+                            // met à jour les positions x,y
+                            $enemy->move($nextState['x'], $nextState['y']);
+                            // alimente le contenu de la nouvelle case
+                            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
+                            $enemy->setLastMoveEnemy($now);
+                            $moved = true;
+                        }
+                    } else {
+                        //si on a testé tous les déplacements, on sort et donc l'enemi reste sur place
+                        $moved = true;
+                    }
+                }
             }
         }
     }

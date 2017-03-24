@@ -1,20 +1,3 @@
-{% if status == constant('StcBundle\\Entity\\Game::END_GAME') %}
-    {% include 'StcBundle:Game:modalendgame.html.twig' with {'players': players, 'score' : score} %}
-{% endif %}
-
-{% if status == constant('StcBundle\\Entity\\Game::CURRENT_GAME') %}
-    <script>
-        function animationFond() {
-            $('#fond').animate({"background-position-y": "0%"}, 8000, "linear").animate({"background-position-y": "100%"}, 0, animationFond);
-        }
-        function animationNuages() {
-            $('#nuages').animate({"background-position-y": "0%"}, 5000, "linear").animate({"background-position-y": "100%"}, 0, animationNuages);
-        }
-        animationFond();
-        animationNuages();
-    </script>
-{% endif %}
-
 <table class="col-lg-9 col-lg-offset-1">
     {% for ligne in plateau %}
         {% set dataY = loop.index %}
@@ -30,9 +13,12 @@
     {% endif %}
 </table>
 
-<script src="{{ asset('js/script.js') }}"></script>
-<script>
-    {% if status == constant('StcBundle\\Entity\\Game::END_GAME') %}
+{% if status == constant('StcBundle\\Entity\\Game::CURRENT_GAME') %}
+    <script src="{{ asset('js/backgroundanimate.js') }}"></script>
+{% endif %}
+
+{% if status == constant('StcBundle\\Entity\\Game::END_GAME') %}
+    <script>
         clearInterval(pageRefresh);
         $('#fond').stop(true, false);
         $('#nuages').stop(true, false);
@@ -40,5 +26,8 @@
         $(window).keypress(function (e) {
             e.preventDefault();
         });
-    {% endif %}
-</script>
+    </script>
+    {% include 'StcBundle:Game:modalendgame.html.twig' with {'players': players, 'score' : score} %}
+{% endif %}
+
+<script src="{{ asset('js/script.js') }}"></script>

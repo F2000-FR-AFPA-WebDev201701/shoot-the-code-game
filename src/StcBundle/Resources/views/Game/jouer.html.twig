@@ -57,8 +57,9 @@
             </div>
         </div>
         <!-- /Indications -->
-
     </main>
+    
+    <audio src="{{ asset('sons/music.mp3') }}" autoplay loop></audio>
 
     <!-- Résolution trop faible -->
     <main class="hidden-lg text-center">
@@ -159,7 +160,7 @@
                     moveInProgress = true;
                     // tir jusqu'au bout du plateau ou jusqu'au bloc
                     var distanceTir = distance();
-                    //On cré la variable imgTir qui va contenir la balise img à injecter au DOM
+                    //On crée la variable imgTir qui va contenir la balise img à injecter au DOM
                     imgTir = $('<img />', {
                         'src': '{{asset('images/missile_petit.png')}}',
                         'style': '  left: 25px; position:absolute; z-index: 1;'
@@ -168,6 +169,9 @@
 
                     imgTir.animate({"top": "-=" + distanceTir + "px"}, 200, "linear",
                             function () {
+                                // On lance le son de l'explosion
+                                var audio = new Audio('{{ asset("sons/explosion.mp3") }}');
+                                audio.play();
                                 imgTir.attr({'src': '{{asset('images/bang.png')}}', 'style': 'left:12px; top: -' + distanceTir + 'px;'});
                             }
                     );
