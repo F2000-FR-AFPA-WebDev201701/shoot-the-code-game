@@ -172,11 +172,11 @@ class Board {
             return;
         }
 
-//        // si on a plus assez d'ennmis à l'écran on fait respawn
-//        if (count($this->enemies) <= 3) {
-//            $this->generateEnemies(mt_rand(5, (self::LONGUEUR - 1)));
-//        }
-//
+        // si on a plus assez d'ennmis à l'écran on fait respawn
+        if (count($this->enemies) <= 3) {
+            $this->generateEnemies(mt_rand(5, (self::LONGUEUR - 1)));
+        }
+
 //On bouge les différentes entités(ennemis, avions)
         $this->moveEnnemies();
 //Déplacement de l'avion
