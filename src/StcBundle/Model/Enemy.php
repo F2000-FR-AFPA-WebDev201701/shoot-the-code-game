@@ -59,19 +59,19 @@ class Enemy extends Movable {
         $this->typeEnemy = $typeEnemy;
     }
 
-    function getDamageEnemy() {
+    public function getDamageEnemy() {
         return $this->damageEnemy;
     }
 
-    function getHpEnemy() {
+    public function getHpEnemy() {
         return $this->hpEnemy;
     }
 
-    function setDamageEnemy($damageEnemy) {
+    public function setDamageEnemy($damageEnemy) {
         $this->damageEnemy = $damageEnemy;
     }
 
-    function setHpEnemy($hpEnemy) {
+    public function setHpEnemy($hpEnemy) {
         $this->hpEnemy = $hpEnemy;
     }
 
@@ -144,11 +144,11 @@ class Enemy extends Movable {
         $this->lastMoveEnemy = $lastMoveEnemy;
     }
 
-    function getPointsEnemy() {
+    public function getPointsEnemy() {
         return $this->pointsEnemy;
     }
 
-    function setPointsEnemy($pointsEnemy) {
+    public function setPointsEnemy($pointsEnemy) {
         $this->pointsEnemy = $pointsEnemy;
     }
 

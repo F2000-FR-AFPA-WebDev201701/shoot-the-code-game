@@ -201,8 +201,6 @@ class Board {
                             $this->block[0]->nextColor();
                             break;
                         case 5:
-                            //$oTarget = $oUserPlane->shootFirstEnemy($enemys);
-
                             $this->block[1]->nextColor();
                             break;
                         case 9:
@@ -258,7 +256,7 @@ class Board {
                             $moved = true;
                         }
                         // sinon on vérifie si la case est disponible
-                        elseif (($this->cases[$nextState['y']][$nextState['x']]->getContent() == null)) {
+                        elseif (($this->cases[$nextState['y']][$nextState['x']]->getContent() === null)) {
                             // met à null l'ancienne case de chaque ennemi.
                             $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
                             // met à jour les positions x,y

@@ -18,7 +18,7 @@ class Plane extends Movable {
     //Points de vie de l'avion
     private $hpPlane;
 
-    function __construct() {
+    public function __construct() {
         $this->damagePlane = 1;
         $this->hpPlane = 1;
     }
@@ -32,19 +32,19 @@ class Plane extends Movable {
         $this->idUser = $idUser;
     }
 
-    function getDamagePlane() {
+    public function getDamagePlane() {
         return $this->damagePlane;
     }
 
-    function getHpPlane() {
+    public function getHpPlane() {
         return $this->hpPlane;
     }
 
-    function setDamagePlane($damagePlane) {
+    public function setDamagePlane($damagePlane) {
         $this->damagePlane = $damagePlane;
     }
 
-    function setHpPlane($hpPlane) {
+    public function setHpPlane($hpPlane) {
         $this->hpPlane = $hpPlane;
     }
 
@@ -98,7 +98,7 @@ class Plane extends Movable {
             //Si c'est la même colonne
             if ($enemy->getPositionx() == $this->positionx) {
                 //On assigne l'ennemi comme cible si aucune cible déjà présente
-                if ($target == null) {
+                if ($target === null) {
                     $target = $enemy;
                 } else {
                     //Sinon si il y a plusieurs cibles possibles on prend la plus proche
