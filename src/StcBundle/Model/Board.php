@@ -109,6 +109,7 @@ class Board {
         $this->generateEnemies(mt_rand(5, (self::LONGUEUR - 1)));
     }
 
+    //Fonction générant des ennemis
     public function generateEnemies($nbEnemy) {
         // Génération des ennemis
         for ($i = 0; $i < $nbEnemy; $i++) {
@@ -148,6 +149,7 @@ class Board {
         }
     }
 
+    //Fonction supprimant un ennemi
     public function deleteEnemy($enemy) {
         $index = array_search($enemy, $this->enemies);
         if ($index !== false) {
@@ -214,6 +216,7 @@ class Board {
         return $points;
     }
 
+    //Fonction gérant le mouvement des ennemis
     private function moveEnnemies() {
 
         // on récupère les ennemis et on met à jour leurs anciennes et nouvelles cases
@@ -232,6 +235,7 @@ class Board {
         }
     }
 
+    //Fonction permettant la mise à jour de la direction après la validation d'un mouvement ennemi
     public function validDirection($enemy) {
         $direction = $enemy->getDirectionEnemy();
         $x = $enemy->getPositionx();
@@ -268,6 +272,7 @@ class Board {
         }
     }
 
+    //Fonction permettant de savoir si la cellule cible est vide et comprise dans le plateau
     public function checkisPossible($x, $y) {
         $check = false;
         if ($x > 0 && $x < Board::LONGUEUR && $y >= 2) {
@@ -276,6 +281,7 @@ class Board {
         return $check;
     }
 
+    //Fonction calculant les déplacements possibles d'un ennemi
     public function calculNextPosition($enemy) {
         $oldPosx = $enemy->getPositionx();
         $oldPosy = $enemy->getPositiony();
@@ -385,37 +391,24 @@ class Board {
             default:
                 break;
         }
-
-        // init vars
-        $moved = false;
-
-        while (!$moved) {
-
-            //if ($direction) {
-            // si l'ennemi essaye de sortir du bas du plateau on le supprime
-            if (!array_key_exists($newPosy, $this->cases)) {
-                // met à null l'ancienne case de chaque ennemi.
-                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
-                unset($this->enemies[array_search($enemy, $this->enemies)]);
-                $moved = true;
-            }
-            // sinon on vérifie si la case est disponible
-            elseif (($this->cases[$newPosy][$newPosx]->getContent() == null)) {
-                //On met à jour les directions
-                $this->validDirection($enemy);
-                // met à null l'ancienne case de chaque ennemi.
-                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
-                // met à jour les positions x,y
-                $enemy->move($newPosx, $newPosy);
-                // alimente le contenu de la nouvelle case
-                $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
-                //On met à jour l'instant du dernier mouvement ennemi
-                $enemy->setLastMoveEnemy(new \DateTime());
-                $moved = true;
-            } else {
-                //si on a testé tous les déplacements, on sort et donc l'ennemi reste sur place
-                $moved = true;
-            }
+        // si l'ennemi essaye de sortir du bas du plateau on le supprime
+        if (!array_key_exists($newPosy, $this->cases)) {
+            // met à null l'ancienne case de chaque ennemi.
+            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+            unset($this->enemies[array_search($enemy, $this->enemies)]);
+        }
+        // sinon on vérifie si la case est disponible
+        elseif (($this->cases[$newPosy][$newPosx]->getContent() == null)) {
+            //On met à jour les directions
+            $this->validDirection($enemy);
+            // met à null l'ancienne case de chaque ennemi.
+            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+            // met à jour les positions x,y
+            $enemy->move($newPosx, $newPosy);
+            // alimente le contenu de la nouvelle case
+            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
+            //On met à jour l'instant du dernier mouvement ennemi
+            $enemy->setLastMoveEnemy(new \DateTime());
         }
     }
 
