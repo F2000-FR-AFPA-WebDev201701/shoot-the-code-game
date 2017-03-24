@@ -25,6 +25,8 @@ class Enemy extends Movable {
     private $hpEnemy;
     //Points donnés par l'ennemi
     private $pointsEnemy;
+    //Direction pour le sql
+    private $directionEnemy;
 
     const TYPES = ['html', 'css', 'js', 'php', 'sql'];
     const MOVES = ['left', 'right', 'down'];
@@ -38,6 +40,14 @@ class Enemy extends Movable {
         $this->setPositionx(mt_rand(0, 14));
         $this->setPositiony(2);
         $this->typeEnemy = self::TYPES[mt_rand(0, count(self::TYPES) - 1)];
+        //On initialise les ennemis sql à aller à droite à leur création
+        if ($this->typeEnemy == 'sql') {
+            $this->directionEnemy = 'right';
+        }
+        //On initialise les ennemis css à aller à descendre à leur création
+        if ($this->typeEnemy == 'css') {
+            $this->directionEnemy = 'down';
+        }
     }
 
 //Getters et Setters
@@ -111,6 +121,14 @@ class Enemy extends Movable {
 
     public function setPointsEnemy($pointsEnemy) {
         $this->pointsEnemy = $pointsEnemy;
+    }
+
+    function getDirectionEnemy() {
+        return $this->directionEnemy;
+    }
+
+    function setDirectionEnemy($directionEnemy) {
+        $this->directionEnemy = $directionEnemy;
     }
 
 }

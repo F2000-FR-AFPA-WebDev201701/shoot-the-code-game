@@ -106,10 +106,10 @@ class Board {
         }
 
         // Génération d'un nombre variable d'ennemis
-        //$this->generateEnemies(mt_rand(5, (self::LONGUEUR - 1)));
-        $this->generateEnemies(2);
+        $this->generateEnemies(mt_rand(5, (self::LONGUEUR - 1)));
     }
 
+    //Fonction générant des ennemis
     public function generateEnemies($nbEnemy) {
         // Génération des ennemis
         for ($i = 0; $i < $nbEnemy; $i++) {
@@ -149,6 +149,7 @@ class Board {
         }
     }
 
+    //Fonction supprimant un ennemi
     public function deleteEnemy($enemy) {
         $index = array_search($enemy, $this->enemies);
         if ($index !== false) {
@@ -171,11 +172,10 @@ class Board {
             return;
         }
 
-        // si on a plus assez d'ennmis à l'écran on fait respawn
-        if (count($this->enemies) <= 3) {
-            $this->generateEnemies(mt_rand(5, (self::LONGUEUR - 1)));
-        }
-
+//        // si on a plus assez d'ennmis à l'écran on fait respawn
+//        if (count($this->enemies) <= 3) {
+//            $this->generateEnemies(mt_rand(5, (self::LONGUEUR - 1)));
+//        }
         // déplacement des ennemis
         $this->moveEnnemies();
         // met à null l'ancienne case du user avion
@@ -216,6 +216,7 @@ class Board {
         return $points;
     }
 
+    //Fonction gérant le mouvement des ennemis
     private function moveEnnemies() {
 
         // on récupère les ennemis et on met à jour leurs anciennes et nouvelles cases
@@ -234,10 +235,57 @@ class Board {
         }
     }
 
+    //Fonction permettant la mise à jour de la direction après la validation d'un mouvement ennemi
+    public function validDirection($enemy) {
+        $direction = $enemy->getDirectionEnemy();
+        $x = $enemy->getPositionx();
+        $y = $enemy->getPositiony();
+
+        //En fonction de l'ennemi on met à jour sa prochaine direction
+        switch ($enemy->getTypeEnemy()) {
+            case 'css':
+                if ($direction == 'down') {
+                    if ($y >= 2) {
+                        $enemy->setDirectionEnemy('up');
+                    }
+                } elseif ($direction == 'up') {
+                    if ($y >= 3) {
+                        $enemy->setDirectionEnemy('down');
+                    }
+                }
+                break;
+
+            case 'sql':
+                if ($direction == 'left') {
+                    if ($x == 0) {
+                        $enemy->setDirectionEnemy('right');
+                    }
+                } elseif ($direction == 'right') {
+                    if ($x == Board::LONGUEUR - 1) {
+                        $enemy->setDirectionEnemy('left');
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    //Fonction permettant de savoir si la cellule cible est vide et comprise dans le plateau
+    public function checkisPossible($x, $y) {
+        $check = false;
+        if ($x > 0 && $x < Board::LONGUEUR && $y >= 2) {
+            $check = ($this->cases[$y][$x]->getContent() == null);
+        }
+        return $check;
+    }
+
+    //Fonction calculant les déplacements possibles d'un ennemi
     public function calculNextPosition($enemy) {
         $oldPosx = $enemy->getPositionx();
         $oldPosy = $enemy->getPositiony();
-        $possibilities = [];
+        $direction = $enemy->getDirectionEnemy();
 
         switch ($enemy->getTypeEnemy()) {
             case 'html':
@@ -255,40 +303,66 @@ class Board {
                         }
                     }
                 }
-                $choice = ($enemy->getPositionx() > $oPlane->getPositionx()) ? 'left' : 'right';
-
+                $choice = ($enemy->getPositionx() > $target->getPositionx()) ? 'left' : 'right';
                 //On cherche à se rapprocher de l'avion
                 if ($choice == 'left') {
                     $direction = $oldPosx - 1;
                 } elseif ($choice == 'right') {
                     $direction = $oldPosx + 1;
                 }
-
                 $newPosx = ($direction < Board::LONGUEUR ) ? $direction : $oldPosx; // gauche ou droite
                 $newPosy = $oldPosy + 1;
                 break;
             case 'css':
-                $newPosx = $oldPosx;
                 $newPosy = $oldPosy;
-
+                $newPosx = $oldPosx;
+                if ($direction == 'down') {
+                    if ($oldPosy >= 2) {
+                        $newPosy += 2;
+                    }
+                } elseif ($direction == 'up') {
+                    if ($oldPosy >= 3) {
+                        $newPosy -= 1;
+                    }
+                }
                 break;
             case 'js':
+                $newPosy = $oldPosy;
+                $newPosx = $oldPosx;
                 $possibilities = ['left', 'right', 'down'];
-                $choice = $possibilities[mt_rand(0, count($possibilities) - 1)];
 
-                switch ($choice) {
-                    case 'left':
-                        $newPosx = ($oldPosx > 0) ? $oldPosx - 1 : $oldPosx;
-                        $newPosy = $oldPosy;
+                $moved = false;
+                while (!$moved) {
+                    // on choisi une direction aléatoire parmi les possibles restantes
+                    // on mélange le tableau des positions
+                    shuffle($possibilities);
+                    // on retire et on teste les dernier élément du tableau des positions restantes
+                    $choice = array_pop($possibilities);
+
+                    if ($choice) {
+                        switch ($choice) {
+                            case 'left':
+                                $newPosx2 = ($oldPosx > 0) ? $oldPosx - 1 : $oldPosx;
+                                $newPosy2 = $oldPosy;
+                                break;
+                            case 'right':
+                                $newPosx2 = ($oldPosx < Board::LONGUEUR - 1) ? $oldPosx + 1 : $oldPosx;
+                                $newPosy2 = $oldPosy;
+                                break;
+                            case 'down':
+                                $newPosy2 = $oldPosy + 1;
+                                $newPosx2 = $oldPosx;
+                                break;
+                        }
+                        if ($moved = $this->checkIsPossible($newPosx2, $newPosy2)) {
+                            $newPosy = $newPosy2;
+                            $newPosx = $newPosx2;
+                        }
                         break;
-                    case 'right':
-                        $newPosx = ($oldPosx < Board::LONGUEUR ) ? $oldPosx + 1 : $oldPosx;
-                        $newPosy = $oldPosy;
-                        break;
-                    case 'down':
-                        $newPosy = $oldPosy + 1;
-                        $newPosx = $oldPosx;
-                        break;
+                    } else {
+                        //si on a testé tous les déplacements, on sort et donc l'enemi reste sur place
+                        $moved = true;
+                    }
                 }
                 break;
 
@@ -297,40 +371,44 @@ class Board {
                 $newPosy = $oldPosy + 1;
                 break;
             case 'sql':
-                $newPosx = $oldPosx; // à définir
                 $newPosy = $oldPosy;
+                $newPosx = $oldPosx;
+                if ($direction == 'left') {
+                    if ($oldPosx > 0) {
+                        $newPosx -= 1;
+                    } else {
+                        $newPosy += 1;
+                    }
+                } elseif ($direction == 'right') {
+                    if ($oldPosx != Board::LONGUEUR - 1) {
+                        $newPosx += 1;
+                    } else {
+                        $newPosy += 1;
+                    }
+                }
                 break;
+
             default:
                 break;
         }
-
-        // init vars
-        $moved = false;
-
-                        // si l'ennemi essaye de sortir du bas du plateau on le supprime
-                        if (!array_key_exists($nextState['y'], $this->cases)) {
-                            // met à null l'ancienne case de chaque ennemi.
-                            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
-                            unset($this->enemies[$idx]);
-                            $moved = true;
-                        }
-                        // sinon on vérifie si la case est disponible
-                        elseif (($this->cases[$nextState['y']][$nextState['x']]->getContent() === null)) {
-                            // met à null l'ancienne case de chaque ennemi.
-                            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
-                            // met à jour les positions x,y
-                            $enemy->move($nextState['x'], $nextState['y']);
-                            // alimente le contenu de la nouvelle case
-                            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
-                            $enemy->setLastMoveEnemy($now);
-                            $moved = true;
-                        }
-                    } else {
-                        //si on a testé tous les déplacements, on sort et donc l'enemi reste sur place
-                        $moved = true;
-                    }
-                }
-            }
+        // si l'ennemi essaye de sortir du bas du plateau on le supprime
+        if (!array_key_exists($newPosy, $this->cases)) {
+            // met à null l'ancienne case de chaque ennemi.
+            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+            unset($this->enemies[array_search($enemy, $this->enemies)]);
+        }
+        // sinon on vérifie si la case est disponible
+        elseif (($this->cases[$newPosy][$newPosx]->getContent() == null)) {
+            //On met à jour les directions
+            $this->validDirection($enemy);
+            // met à null l'ancienne case de chaque ennemi.
+            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent();
+            // met à jour les positions x,y
+            $enemy->move($newPosx, $newPosy);
+            // alimente le contenu de la nouvelle case
+            $this->cases[$enemy->getPositiony()][$enemy->getPositionx()]->setContent($enemy);
+            //On met à jour l'instant du dernier mouvement ennemi
+            $enemy->setLastMoveEnemy(new \DateTime());
         }
     }
 
