@@ -121,20 +121,20 @@ class GameController extends Controller {
         if (!$this->isAuthorized($request, $id)) {
             return $this->redirectToRoute('index');
         }
-        
+
         //On récupère les informations de la partie demandée
         $rep = $this->getDoctrine()->getRepository('StcBundle:Game');
         $oGame = $rep->find($id);
-        
+
         $dategame = null;
-        if($oGame->getState() == Game::CURRENT_GAME){
+        if ($oGame->getState() == Game::CURRENT_GAME) {
             $dategame = unserialize($oGame->getBoard())->getGameDate()->format('Y-m-d H:i:s');
         }
-        
-        
+
+
         $this->updateAction($request, $id);
         return $this->render('StcBundle:Game:jouer.html.twig', ['game' => $oGame,
-                                                                'dategame'=> $dategame ]);
+                    'dategame' => $dategame]);
     }
 
     /**
@@ -191,6 +191,11 @@ class GameController extends Controller {
         //On récupère les infos du plateau
         $oBoard = unserialize($oGame->getBoard());
 
+        // on vérifie si la partie est terminée
+        if ($oBoard->isEndGame()) {
+            $oGame->setState(Game::END_GAME);
+        }
+
         // On effectue l'action demandée suite à l'entrée clavier
         if ($oGame->getState() == Game::CURRENT_GAME) {
             $points = $oBoard->doAction($oUser->getId(), $action);
@@ -198,11 +203,6 @@ class GameController extends Controller {
             if ($points > 0) {
                 $oGame->setScore($oGame->getScore() + $points);
             }
-        }
-
-        // on vérifie si la partie est terminée
-        if ($oBoard->isEndGame()) {
-            $oGame->setState(Game::END_GAME);
         }
 
         // on met à jour le board et on le serialize pour l'enregistrement en base

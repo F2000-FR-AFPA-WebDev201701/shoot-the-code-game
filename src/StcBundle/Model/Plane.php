@@ -48,47 +48,9 @@ class Plane extends Movable {
         $this->hpPlane = $hpPlane;
     }
 
-    public function move($action = null) {
-        $oldPosx = $this->getPositionx();
-        $oldPosy = $this->getPositiony();
-
-        switch ($action) {
-            case 'left':
-                if ($oldPosx > 0) {
-                    $newPosx = $oldPosx - 1;
-                } else {
-                    $newPosx = $oldPosx;
-                }
-                $this->setPositionx($newPosx);
-                break;
-
-            case 'right':
-                if ($oldPosx < 14) {
-                    $newPosx = $oldPosx + 1;
-                } else {
-                    $newPosx = $oldPosx;
-                }
-                $this->setPositionx($newPosx);
-                break;
-
-            case 'up':
-                if ($oldPosy > 2) {
-                    $newPosy = $oldPosy - 1;
-                } else {
-                    $newPosy = $oldPosy;
-                }
-                $this->setPositiony($newPosy);
-                break;
-
-            case 'down':
-                if ($oldPosy < 19) {
-                    $newPosy = $oldPosy + 1;
-                } else {
-                    $newPosy = $oldPosy;
-                }
-                $this->setPositiony($newPosy);
-                break;
-        }
+    public function move($x, $y) {
+        $this->setPositionx($x);
+        $this->setPositiony($y);
     }
 
     public function shootFirstEnemy($enemys) {
@@ -113,6 +75,17 @@ class Plane extends Movable {
         }
 
         return $target;
+    }
+
+    public function takeDamage($damage) {
+        //On calcul les points de vie apres attaque
+        $newhp = $this->hpPlane - $damage;
+        //Si les points de vie sont inférieur à 0 on les remet à 0 pour éviter des problèmes
+        $this->hpPlane = ($newhp > 0) ? $newhp : 0;
+    }
+
+    public function isAlive() {
+        return $this->hpPlane > 0;
     }
 
 }
