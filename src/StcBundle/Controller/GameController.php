@@ -233,6 +233,7 @@ class GameController extends Controller {
         // ajout des params joueurs et le score si la partie est terminée
         if ($oGame->getState() == Game::END_GAME) {
             $aParams['players'] = $oGame->getUsers();
+            $aParams['deaths'] = $oBoard->getPlaneDeaths();
             $aParams['score'] = $oGame->getScore();
         }
         $this->updateAction($request, $idGame);

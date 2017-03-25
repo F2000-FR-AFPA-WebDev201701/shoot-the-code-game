@@ -5,16 +5,49 @@
                 <strong>Fin de la partie</strong>
             </div>
             <div class="modal-body text-center row">
-                <img src="{{ asset('images/golden-thophy.jpg')}}" alt="Victoire!"/>
+                {% if board.planeTab is not empty %}
+                    <img src="{{ asset('images/golden-thophy.jpg')}}" alt="Victoire!"/>
+                {% else %}
+                    <img src="{{ asset('images/loser.png')}}" alt="Défaite!"/>
+                {% endif %}
                 <br />
                 <table class="col-lg-6 col-lg-offset-3">
-                    {% for player in players %}
+                    {% if board.planeTab is not empty %}
                         <tr>
                             <td>
-                                <p>{{ player.login }}</p>
+                                Vivants :
+                                {% for plane in board.planeTab %}
+                                    {% for player in players %}
+                                        {% if player.Id == plane.IdUser %}
+                                            {% if app.request.session.get('userId') == player.Id%}
+                                                <p><strong>{{ player.login | upper  }}</strong></p>
+                                            {% else %}
+                                                <p>{{ player.login | upper  }}</p>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    {% if deaths is not empty %}
+                        <tr>
+                            <td>
+                                Morts :
+                                {% for plane in deaths %}
+                                    {% for player in players %}
+                                        {% if player.Id == plane.IdUser %}
+                                            {% if app.request.session.get('userId') == player.Id%}
+                                                <p><strong>{{ player.login | upper  }}</strong></p>
+                                            {% else %}
+                                                <p>{{ player.login | upper  }}</p>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
                             </td>
                         </tr>
-                    {% endfor %}
+                    {% endif %}
                     <tr>
                         <td>
                             <p>Ennemis tués : {{ score }}</p>

@@ -27,6 +27,8 @@ class Board {
     private $endGame;
 // variable temps de jeu
     private $gameDate;
+    //tableau des morts
+    private $planeDeaths = [];
 
 //Constructeur
     public function __construct() {
@@ -91,6 +93,14 @@ class Board {
 
     public function setCases($cases) {
         $this->cases = $cases;
+    }
+
+    function getPlaneDeaths() {
+        return $this->planeDeaths;
+    }
+
+    function setPlaneDeaths($planeDeaths) {
+        $this->planeDeaths = $planeDeaths;
     }
 
     public function setPlayers($oUserTab) {
@@ -179,7 +189,7 @@ class Board {
         }
 
 //On bouge les différentes entités(ennemis, avions)
-        //$this->moveEnnemies();
+        $this->moveEnnemies();
 //Déplacement de l'avion
         $this->movePlane($oUserPlane, $action);
         //On sort de l'action si la partie est terminée
@@ -193,40 +203,40 @@ class Board {
                 //Tir sur le premier ennemi aligné
                 $oTargets = $oUserPlane->shootEnemy($this->enemies);
 
-                if(!$oTargets) {
-                        switch ($oUserPlane->getPositionx()) {
-                            case 2:
-                                $this->block[0]->nextColor();
-                                break;
-                            case 5:
-                                $this->block[1]->nextColor();
-                                break;
-                            case 9:
-                                $this->block[2]->nextColor();
-                                break;
-                            case 12:
-                                $this->block[3]->nextColor();
-                                break;
-                        }
-                        $this->checkColor();
-                }else {
+                if (!$oTargets) {
+                    switch ($oUserPlane->getPositionx()) {
+                        case 2:
+                            $this->block[0]->nextColor();
+                            break;
+                        case 5:
+                            $this->block[1]->nextColor();
+                            break;
+                        case 9:
+                            $this->block[2]->nextColor();
+                            break;
+                        case 12:
+                            $this->block[3]->nextColor();
+                            break;
+                    }
+                    $this->checkColor();
+                } else {
                     foreach ($oTargets as $oTarget) {
-                    //Si on a trouvé au moins une cible
-                    if ($oTarget instanceof Enemy) {
-                        //Si la cible est morte
-                        if (!$oTarget->isAlive()) {
-                            $this->cases[$oTarget->getPositiony()][$oTarget->getPositionx()]->setContent();
+                        //Si on a trouvé au moins une cible
+                        if ($oTarget instanceof Enemy) {
+                            //Si la cible est morte
+                            if (!$oTarget->isAlive()) {
+                                $this->cases[$oTarget->getPositiony()][$oTarget->getPositionx()]->setContent();
 
-                            $points += $oTarget->getPointsEnemy();
+                                $points += $oTarget->getPointsEnemy();
 
-                            $this->deleteEnemy($oTarget);
-                            if ($oTarget->getBonus()) {
-                                $oUserPlane->addPower($oTarget->getBonus());
+                                $this->deleteEnemy($oTarget);
+                                if ($oTarget->getBonus()) {
+                                    $oUserPlane->addPower($oTarget->getBonus());
+                                }
                             }
                         }
                     }
                 }
-        }
                 break;
         }
 
@@ -358,6 +368,7 @@ class Board {
                 $plane->takeDamage($squareTarget->getDamageEnemy());
                 if (!$plane->isAlive()) {
                     $this->cases[$plane->getPositiony()][$plane->getPositionx()]->setContent();
+                    $this->planeDeaths[] = $plane;
                     unset($this->planeTab[array_search($plane, $this->planeTab)]);
                     if (!$this->checkExistPlayers()) {
                         $this->endGame = true;
@@ -511,6 +522,7 @@ class Board {
                 $squareTarget->takeDamage($enemy->getDamageEnemy());
                 if (!$squareTarget->isAlive()) {
                     $this->cases[$squareTarget->getPositiony()][$squareTarget->getPositionx()]->setContent();
+                    $this->planeDeaths[] = $squareTarget;
                     unset($this->planeTab[array_search($squareTarget, $this->planeTab)]);
                     if (!$this->checkExistPlayers()) {
                         $this->endGame = true;
@@ -523,6 +535,7 @@ class Board {
         }
     }
 
+    //Vérifie qu'il y a encore des joueurs dans la partie
     public function checkExistPlayers() {
         return $this->planeTab;
     }

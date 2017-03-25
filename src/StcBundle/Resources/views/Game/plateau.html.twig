@@ -14,6 +14,7 @@
 </table>
 
 <!-- Menu latéral -->
+
 <div class="col-lg-1">
     <div class="row">
         <a href="{{path('index')}}">
@@ -24,20 +25,29 @@
             {% include 'StcBundle:Game:players.html.twig' %}
         </div>
 
-        <div id="powers">
-            {% set power1 = '' %}
-            {% for weapon in user_plane.getPowers %}
-                {% if weapon == constant('BONUS_LASER', board) %}
-                    {% set power1 = 'power-laser' %}
-                {% endif %}
-            {% endfor %}
+        {% if status == constant('StcBundle\\Entity\\Game::CURRENT_GAME')%}
+            {% if user_plane != null %}
+                <div id="powers" class="col-lg-12">
+                    {% set power1 = '' %}
+                    {% for weapon in user_plane.getPowers %}
+                        {% if weapon == constant('BONUS_LASER', board) %}
+                            {% set power1 = 'power-laser' %}
+                        {% endif %}
+                    {% endfor %}
 
-            <img class="col-lg-12 power {{ power1 }}" src="http://fakeimg.pl/87x87/?text=Pouvoir_1" alt="Laser" title="Laser" />
-            <img class="col-lg-12 power" src="http://fakeimg.pl/87x87/?text=Pouvoir_2" alt="Pouvoir 2" title="Pouvoir 2" />
-            <img class="col-lg-12 power" src="http://fakeimg.pl/87x87/?text=Pouvoir_3" alt="Pouvoir 3" title="Pouvoir 3"  />
-        </div>
+                    <img class="col-lg-12 power {{ power1 }}" src="http://fakeimg.pl/87x87/?text=Pouvoir_1" alt="Laser" title="Laser" />
+                    <img class="col-lg-12 power" src="http://fakeimg.pl/87x87/?text=Pouvoir_2" alt="Pouvoir 2" title="Pouvoir 2" />
+                    <img class="col-lg-12 power" src="http://fakeimg.pl/87x87/?text=Pouvoir_3" alt="Pouvoir 3" title="Pouvoir 3"  />
+                </div>
+            {% else %}
+                <div id="infos" class="col-lg-12">
+                    <strong> Vous avez été tué ! </strong>
+                </div>
+            {% endif %}
+        {% endif %}
     </div>
 </div>
+
 <!-- /Menu latéral -->
 
 {% if status == constant('StcBundle\\Entity\\Game::END_GAME') %}
