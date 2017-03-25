@@ -131,7 +131,6 @@ class GameController extends Controller {
             $dategame = unserialize($oGame->getBoard())->getGameDate()->format('Y-m-d H:i:s');
         }
 
-
         $this->updateAction($request, $id);
         return $this->render('StcBundle:Game:jouer.html.twig', ['game' => $oGame,
                     'dategame' => $dategame]);
