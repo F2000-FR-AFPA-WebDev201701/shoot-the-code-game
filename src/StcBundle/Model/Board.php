@@ -179,7 +179,7 @@ class Board {
         }
 
 //On bouge les différentes entités(ennemis, avions)
-        $this->moveEnnemies();
+        //$this->moveEnnemies();
 //Déplacement de l'avion
         $this->movePlane($oUserPlane, $action);
         //On sort de l'action si la partie est terminée
@@ -193,21 +193,7 @@ class Board {
                 //Tir sur le premier ennemi aligné
                 $oTargets = $oUserPlane->shootEnemy($this->enemies);
 
-                foreach ($oTargets as $oTarget) {
-                    //Si on a trouvé au moins une cible
-                    if ($oTarget instanceof Enemy) {
-                        //Si la cible est morte
-                        if (!$oTarget->isAlive()) {
-                            $this->cases[$oTarget->getPositiony()][$oTarget->getPositionx()]->setContent();
-
-                            $points += $oTarget->getPointsEnemy();
-
-                            $this->deleteEnemy($oTarget);
-                            if ($oTarget->getBonus()) {
-                                $oUserPlane->addPower($oTarget->getBonus());
-                            }
-                        }
-                    } else {
+                if(!$oTargets) {
                         switch ($oUserPlane->getPositionx()) {
                             case 2:
                                 $this->block[0]->nextColor();
@@ -223,8 +209,24 @@ class Board {
                                 break;
                         }
                         $this->checkColor();
+                }else {
+                    foreach ($oTargets as $oTarget) {
+                    //Si on a trouvé au moins une cible
+                    if ($oTarget instanceof Enemy) {
+                        //Si la cible est morte
+                        if (!$oTarget->isAlive()) {
+                            $this->cases[$oTarget->getPositiony()][$oTarget->getPositionx()]->setContent();
+
+                            $points += $oTarget->getPointsEnemy();
+
+                            $this->deleteEnemy($oTarget);
+                            if ($oTarget->getBonus()) {
+                                $oUserPlane->addPower($oTarget->getBonus());
+                            }
+                        }
                     }
                 }
+        }
                 break;
         }
 
