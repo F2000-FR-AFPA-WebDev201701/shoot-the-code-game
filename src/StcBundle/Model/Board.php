@@ -316,7 +316,11 @@ class Board {
     public function checkisPossible($x, $y) {
         $check = false;
         if ($x > 0 && $x < Board::LONGUEUR && $y >= 2) {
-            $check = ($this->cases[$y][$x]->getContent() == null);
+            if ($y < Board::HAUTEUR) {
+                $check = ($this->cases[$y][$x]->getContent() == null);
+            } elseif ($y == Board::HAUTEUR) {
+                $check = true;
+            }
         }
         return $check;
     }

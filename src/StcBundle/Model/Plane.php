@@ -15,13 +15,16 @@ class Plane extends Movable {
     private $idUser;
     //Attaque de l'avion
     private $damagePlane;
-    //Points de vie de l'avion
+    //Points de vie courant de l'avion
     private $hpPlane;
+    //Points de vie max de l'avion
+    private $hpMaxPlane;
     private $powers = [];
 
     public function __construct() {
         $this->damagePlane = 1;
-        $this->hpPlane = 1;
+        $this->hpMaxPlane = 4;
+        $this->hpPlane = $this->hpMaxPlane;
     }
 
 //Getters et Setters
@@ -61,6 +64,14 @@ class Plane extends Movable {
         $this->hpPlane = $hpPlane;
     }
 
+    public function getHpMaxPlane() {
+        return $this->hpMaxPlane;
+    }
+
+    public function setHpMaxPlane($hpMaxPlane) {
+        $this->hpMaxPlane = $hpMaxPlane;
+    }
+
     public function move($x, $y) {
         $this->setPositionx($x);
         $this->setPositiony($y);
@@ -73,7 +84,7 @@ class Plane extends Movable {
         //Pour chaque ennemi, on regarde sur la colonne ou on a tiré
         foreach ($enemies as $enemy) {
             //Si c'est la même colonne
-            if ($enemy->getPositionx() == $this->positionx) {
+            if ($enemy->getPositionx() == $this->positionx && $enemy->getPositiony() > $this->positiony) {
                 $aTargets[] = $enemy;
 
                 //On assigne l'ennemi comme cible si aucune cible déjà présente

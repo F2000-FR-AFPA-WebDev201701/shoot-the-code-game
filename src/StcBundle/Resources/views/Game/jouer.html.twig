@@ -58,11 +58,13 @@
         var moveInProgress = false;
         // variable de la distance entre le bloc couleur et l'avion utilisée pour le tir missile
         var distanceTir;
+
+
         {% if dategame is not null %}
             var time = '{{ dategame}}';
             if (time != null) {
                 var currentTime = new Date(time);
-                var pageTimer = setInterval(tick, 1000);
+                var pageTimer = setInterval(tick, 50);
                 tick();
             }
 
@@ -252,5 +254,7 @@
                 $('#tableau').load('{{ path("controls", {"idGame" : game.id, "action" : "null"}) }}');
             }, 3000);
 
+
     </script>
+
 {% endblock %}
