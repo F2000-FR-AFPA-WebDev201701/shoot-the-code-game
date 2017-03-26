@@ -96,7 +96,7 @@ class GameController extends Controller {
             $oBoard->setPlayers($oGame->getUsers());
 
             // On déclenche le chronomètre de la partie
-            $oBoard->setGameDate(new \DateTime());
+            $oBoard->setstartGameDate(new \DateTime());
 
             //on met à jour le board
             $oGame->setBoard(serialize($oBoard));
@@ -128,7 +128,7 @@ class GameController extends Controller {
 
         $dategame = null;
         if ($oGame->getState() == Game::CURRENT_GAME) {
-            $dategame = unserialize($oGame->getBoard())->getGameDate()->format('Y-m-d H:i:s');
+            $dategame = unserialize($oGame->getBoard())->getstartGameDate()->format('Y-m-d H:i:s');
         }
 
         $this->updateAction($request, $id);
@@ -234,6 +234,7 @@ class GameController extends Controller {
             $aParams['players'] = $oGame->getUsers();
             $aParams['deaths'] = $oBoard->getPlaneDeaths();
             $aParams['score'] = $oGame->getScore();
+            $aParams['time'] = $oBoard->getTimeGame();
         }
         $this->updateAction($request, $idGame);
         return $this->render('StcBundle:Game:plateau.html.twig', $aParams);

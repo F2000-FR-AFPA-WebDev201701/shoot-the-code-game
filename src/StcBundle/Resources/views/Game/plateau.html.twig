@@ -54,6 +54,7 @@
     {% include 'StcBundle:Game:modalendgame.html.twig' with {'players': players, 'score' : score} %}
     <script>
         clearInterval(pageRefresh);
+        clearInterval(pageTimer);
         $('#fond').stop(true, false);
         $('#nuages').stop(true, false);
         $('#EndGameModal').modal();

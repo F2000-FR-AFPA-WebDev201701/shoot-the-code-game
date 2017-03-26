@@ -26,7 +26,7 @@ class Board {
 // boolÃ©en true si la partie est terminÃ©e
     private $endGame;
 // variable temps de jeu
-    private $gameDate;
+    private $startGameDate;
     //tableau des morts
     private $planeDeaths = [];
 
@@ -75,16 +75,16 @@ class Board {
         return $this->combinaison;
     }
 
-    public function getGameDate() {
-        return $this->gameDate;
+    public function getstartGameDate() {
+        return $this->startGameDate;
     }
 
-    public function setGameDate($date) {
-        $this->gameDate = $date;
+    public function setstartGameDate($date) {
+        $this->startGameDate = $date;
     }
 
     public function isEndGame() {
-        return $this->endGame;
+        return ($this->endGame != null);
     }
 
     public function setPlaneTab($planeTab) {
@@ -95,12 +95,20 @@ class Board {
         $this->cases = $cases;
     }
 
-    function getPlaneDeaths() {
+    public function getPlaneDeaths() {
         return $this->planeDeaths;
     }
 
-    function setPlaneDeaths($planeDeaths) {
+    public function setPlaneDeaths($planeDeaths) {
         $this->planeDeaths = $planeDeaths;
+    }
+
+    public function getTimeGame() {
+        if ($this->isEndGame()) {
+            //On calcul la différence entre la date de début et de fin de partie
+            $time = $this->endGame->diff($this->startGameDate);
+            return $time->format('%i:%s');
+        }
     }
 
     public function setPlayers($oUserTab) {
@@ -146,16 +154,17 @@ class Board {
 
 // met Ã  jour le status de chaque bloc couleur et renvoie un boolÃ©en fin de partie true si la combinaison est ok
     public function checkColor() {
-        $this->endGame = true;
+        $this->endGame = new \Datetime();
         foreach ($this->block as $key => $oBlock) {
             if ($oBlock->getColor() == $this->combinaison[$key]) {
                 $oBlock->setStatus(Block::STATUS_GOOD);
+                //On enregistre l'heure de fin de partie
             } elseif (in_array($oBlock->getColor(), $this->combinaison)) {
                 $oBlock->setStatus(Block::STATUS_ALMOST);
-                $this->endGame = false;
+                $this->endGame = null;
             } else {
                 $oBlock->setStatus(Block::STATUS_WRONG);
-                $this->endGame = false;
+                $this->endGame = null;
             }
         }
     }
@@ -370,7 +379,7 @@ class Board {
                     $this->planeDeaths[] = $plane;
                     unset($this->planeTab[array_search($plane, $this->planeTab)]);
                     if (!$this->checkExistPlayers()) {
-                        $this->endGame = true;
+                        $this->endGame = new \DateTime;
                     }
                 } else {
                     // met Ã  null l'ancienne case du user avion
@@ -530,7 +539,7 @@ class Board {
                         $this->planeDeaths[] = $squareTarget;
                         unset($this->planeTab[array_search($squareTarget, $this->planeTab)]);
                         if (!$this->checkExistPlayers()) {
-                            $this->endGame = true;
+                            $this->endGame = new \DateTime;
                         }
                     }
                     //On dÃ©truit l'ennemi

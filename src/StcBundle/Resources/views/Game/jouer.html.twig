@@ -62,7 +62,7 @@
             var time = '{{ dategame}}';
             if (time != null) {
                 var currentTime = new Date(time);
-                setInterval(tick, 1000);
+                var pageTimer = setInterval(tick, 1000);
                 tick();
             }
 
