@@ -19,9 +19,15 @@ class Plane extends Movable {
     private $hpPlane;
     //Points de vie max de l'avion
     private $hpMaxPlane;
+    //Vitesse de l'avion
+    private $vitessePlane;
+    //Date de dernière action de l'avion
+    private $lastMovePlane;
     private $powers = [];
 
     public function __construct() {
+        $this->lastMovePlane = new \Datetime();
+        $this->vitessePlane = 1;
         $this->damagePlane = 1;
         $this->hpMaxPlane = 4;
         $this->hpPlane = $this->hpMaxPlane;
@@ -72,9 +78,27 @@ class Plane extends Movable {
         $this->hpMaxPlane = $hpMaxPlane;
     }
 
+    public function getVitessePlane() {
+        return $this->vitessePlane;
+    }
+
+    public function getLastMovePlane() {
+        return $this->lastMovePlane;
+    }
+
+    public function setVitessePlane($vitessePlane) {
+        $this->vitessePlane = $vitessePlane;
+    }
+
+    public function setLastMovePlane($lastMovePlane) {
+        $this->lastMovePlane = $lastMovePlane;
+    }
+
     public function move($x, $y) {
         $this->setPositionx($x);
         $this->setPositiony($y);
+        //On met à jour la date du dernier mouvement de l'avion
+        $this->lastMovePlane = new \DateTime();
     }
 
     public function shootEnemy($enemies) {
