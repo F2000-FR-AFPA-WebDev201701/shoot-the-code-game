@@ -251,8 +251,18 @@ class Board {
     }
 
     public function movePlane($plane, $action) {
-        //On observe la case ciblé par l'avion
-        $this->calculNextPositionPlane($plane, $action);
+        //On récupère le dernier move de l'avion
+        $lastMove = $plane->getLastMovePlane();
+
+        // Pour mettre à  jour le déplacement de l'avion,
+        // on vérifie qu'on a dépassé le temps minimum autorisé
+        $expireMove = clone $lastMove;
+        $expireMove = $expireMove->add(new \DateInterval('PT' . $plane->getVitessePlane() . 'S'));
+
+        if ($expireMove < new \DateTime()) {
+            //On observe la case ciblé par l'avion
+            $this->calculNextPositionPlane($plane, $action);
+        }
     }
 
     //Fonction gérant le mouvement des ennemis
