@@ -314,7 +314,7 @@ class Board {
     //Fonction permettant de savoir si la cellule cible est vide et comprise dans le plateau
     public function checkisPossible($x, $y) {
         $check = false;
-        if ($x > 0 && $x < Board::LONGUEUR && $y >= 2) {
+        if ($x >= 0 && $x < Board::LONGUEUR && $y >= 2) {
             if ($y < Board::HAUTEUR) {
                 $check = ($this->cases[$y][$x]->getContent() == null);
             } elseif ($y == Board::HAUTEUR) {
