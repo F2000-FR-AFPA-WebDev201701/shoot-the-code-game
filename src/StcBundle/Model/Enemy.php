@@ -164,6 +164,8 @@ class Enemy extends Movable {
     public function move($posx, $posy) {
         $this->setPositionx($posx);
         $this->setPositiony($posy);
+        //On met à jour l'instant du dernier mouvement ennemi
+        $this->lastMoveEnemy = new \DateTime();
     }
 
     public function getVitesseEnemy() {

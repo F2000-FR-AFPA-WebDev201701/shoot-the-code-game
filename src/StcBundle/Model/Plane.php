@@ -97,6 +97,8 @@ class Plane extends Movable {
     public function move($x, $y) {
         $this->setPositionx($x);
         $this->setPositiony($y);
+        //On met à jour la date du dernier mouvement de l'avion
+        $this->lastMovePlane = new \DateTime();
     }
 
     public function shootEnemy($enemies) {
