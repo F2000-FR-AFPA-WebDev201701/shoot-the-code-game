@@ -84,7 +84,7 @@ class Plane extends Movable {
         //Pour chaque ennemi, on regarde sur la colonne ou on a tiré
         foreach ($enemies as $enemy) {
             //Si c'est la même colonne
-            if ($enemy->getPositionx() == $this->positionx && $enemy->getPositiony() > $this->positiony) {
+            if ($enemy->getPositionx() == $this->positionx && $enemy->getPositiony() < $this->positiony) {
                 $aTargets[] = $enemy;
 
                 //On assigne l'ennemi comme cible si aucune cible déjà présente

@@ -44,17 +44,39 @@ class Enemy extends Movable {
         $this->setPositiony(2);
         $this->typeEnemy = self::TYPES[mt_rand(0, count(self::TYPES) - 1)];
 
-        //On initialise les ennemis sql à aller à droite à leur création
-        if ($this->typeEnemy == 'sql') {
-            $this->directionEnemy = 'right';
-        }
-        //On initialise les ennemis css à aller à descendre à leur création
-        if ($this->typeEnemy == 'css') {
-            $this->directionEnemy = 'down';
-        }
         $bonusLoot = mt_rand(0, 9);
         if ($bonusLoot == 5) {
             $this->bonus = self::BONUS[mt_rand(0, count(self::BONUS) - 1)];
+        }
+
+        switch ($this->typeEnemy) {
+            case 'html':
+                $this->damageEnemy = 2;
+                $this->hpEnemy = 2;
+                break;
+            case 'css':
+                $this->damageEnemy = 3;
+                $this->hpEnemy = 2;
+                //On initialise les ennemis css à aller à descendre à leur création
+                $this->directionEnemy = 'down';
+                break;
+            case 'sql':
+                $this->damageEnemy = 3;
+                $this->hpEnemy = 2;
+                //On initialise les ennemis sql à aller à droite à leur création
+                $this->directionEnemy = 'right';
+                break;
+            case 'php':
+                $this->damageEnemy = 1;
+                $this->hpEnemy = 4;
+                break;
+            case 'js':
+                $this->damageEnemy = 2;
+                $this->hpEnemy = 1;
+                break;
+
+            default:
+                break;
         }
     }
 
