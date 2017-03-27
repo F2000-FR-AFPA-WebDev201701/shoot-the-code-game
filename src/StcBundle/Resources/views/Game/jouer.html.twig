@@ -177,11 +177,11 @@
                         switch (weapon) {
                             case 'laser':
                                 console.log("animate laser");
-                                imgTir.animate({"top": "-=" + distanceTir + "px"}, 200, "linear");
+                                imgTir.animate({"top": "-=" + distanceTir + "px"}, 75, "linear");
                                 break;
 
                             default:
-                                imgTir.animate({"top": "-=" + distanceTir + "px"}, 200, "linear",
+                                imgTir.animate({"top": "-=" + distanceTir + "px"}, 75, "linear",
                                         function () {
                                             imgTir.attr({'src': '{{asset('images/bang.png')}}', 'style': 'left:12px; top: -' + distanceTir + 'px;'});
                                         }
@@ -257,7 +257,7 @@
 
             var pageRefresh = setInterval(function () {
                 $('#tableau').load('{{ path("controls", {"idGame" : game.id, "action" : "null"}) }}');
-            }, 3000);
+            }, 1000);
 
 
     </script>
