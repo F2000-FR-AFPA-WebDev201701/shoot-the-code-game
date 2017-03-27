@@ -382,6 +382,8 @@ class Board {
             $plane->move($newPosx, $newPosy);
             // alimente la nouvelle case
             $this->cases[$plane->getPositiony()][$plane->getPositionx()]->setContent($plane);
+            //On met à jour la date du dernier mouvement de l'avion
+            $plane->setLastMovePlane(new \DateTime());
         } else {
             $squareTarget = $this->cases[$newPosy][$newPosx]->getContent();
             if ($squareTarget instanceof Enemy) {
@@ -401,6 +403,8 @@ class Board {
                     $plane->move($newPosx, $newPosy);
                     // alimente la nouvelle case
                     $this->cases[$plane->getPositiony()][$plane->getPositionx()]->setContent($plane);
+                    //On met à jour la date du dernier mouvement de l'avion
+                    $plane->setLastMovePlane(new \DateTime());
                 }
                 $this->cases[$squareTarget->getPositiony()][$squareTarget->getPositionx()]->setContent();
                 unset($this->enemies[array_search($squareTarget, $this->enemies)]);
