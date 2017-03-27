@@ -148,6 +148,8 @@
                             weapon = 'laser';
                         }
 
+                        console.log(weapon);
+
                         switch (weapon) {
                             case 'laser':
                                 //On cré la variable imgTir qui va contenir la balise img laser à injecter au DOM
@@ -155,6 +157,7 @@
                                     'src': '{{asset('images/laser.png')}}',
                                     'style': '  left: 0px; position:absolute; z-index: 1;'
                                 });
+                                console.log(imgTir);
                                 break;
 
                             default:
@@ -173,6 +176,7 @@
 
                         switch (weapon) {
                             case 'laser':
+                                console.log("animate laser");
                                 imgTir.animate({"top": "-=" + distanceTir + "px"}, 200, "linear");
                                 break;
 
@@ -207,6 +211,7 @@
 
                 switch (weapon) {
                     case 'laser':
+                        console.log("distance laser");
                         if ($('#tableau td:nth-child(3).my-plane').length === 1 || $('#tableau td:nth-child(6).my-plane').length === 1 ||
                                 $('#tableau td:nth-child(10).my-plane').length === 1 || $('#tableau td:nth-child(13).my-plane').length === 1) {
                             return distanceBloc - 65;
