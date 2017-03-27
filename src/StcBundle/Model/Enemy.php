@@ -53,9 +53,9 @@ class Enemy extends Movable {
             $this->directionEnemy = 'down';
         }
         $bonusLoot = mt_rand(0, 9);
-        if ($bonusLoot == 5) {
-            $this->bonus = self::BONUS[mt_rand(0, count(self::BONUS) - 1)];
-        }
+        //if ($bonusLoot == 5) {
+        $this->bonus = self::BONUS[mt_rand(0, count(self::BONUS) - 1)];
+        //}
     }
 
 //Getters et Setters
