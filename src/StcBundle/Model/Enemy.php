@@ -25,24 +25,66 @@ class Enemy extends Movable {
     private $hpEnemy;
     //Points donnés par l'ennemi
     private $pointsEnemy;
+    //Direction pour le sql
+    private $directionEnemy;
+    // l'ennemi porte éventuellement un bonus
+    private $bonus;
 
     const TYPES = ['html', 'css', 'js', 'php', 'sql'];
     const MOVES = ['left', 'right', 'down'];
+    const BONUS = [Board::BONUS_LASER];
 
     public function __construct() {
-
         $this->lastMoveEnemy = new \Datetime();
         $this->vitesseEnemy = 1;
         $this->damageEnemy = 1;
         $this->pointsEnemy = 1;
         $this->hpEnemy = 1;
-        $randomPosx = mt_rand(0, 14);
-        $this->setPositionx($randomPosx);
+        $this->setPositionx(mt_rand(0, 14));
         $this->setPositiony(2);
         $this->typeEnemy = self::TYPES[mt_rand(0, count(self::TYPES) - 1)];
+
+        $bonusLoot = mt_rand(0, 9);
+        if ($bonusLoot == 5) {
+            $this->bonus = self::BONUS[mt_rand(0, count(self::BONUS) - 1)];
+        }
+
+        switch ($this->typeEnemy) {
+            case 'html':
+                $this->damageEnemy = 2;
+                $this->hpEnemy = 2;
+                break;
+            case 'css':
+                $this->damageEnemy = 3;
+                $this->hpEnemy = 2;
+                //On initialise les ennemis css à aller à descendre à leur création
+                $this->directionEnemy = 'down';
+                break;
+            case 'sql':
+                $this->damageEnemy = 3;
+                $this->hpEnemy = 2;
+                //On initialise les ennemis sql à aller à droite à leur création
+                $this->directionEnemy = 'right';
+                break;
+            case 'php':
+                $this->damageEnemy = 1;
+                $this->hpEnemy = 4;
+                break;
+            case 'js':
+                $this->damageEnemy = 2;
+                $this->hpEnemy = 1;
+                break;
+
+            default:
+                break;
+        }
     }
 
 //Getters et Setters
+    public function getBonus() {
+        return $this->bonus;
+    }
+
     public function getIdEnemy() {
         return $this->idEnemy;
     }
@@ -107,16 +149,12 @@ class Enemy extends Movable {
         ];
     }
 
+    /**
+     * On calcul les points de vie apres attaque
+     * @param type $damage
+     */
     public function takeDamage($damage) {
-        //On calcul les points de vie apres attaque
-        $newhp = $this->hpEnemy - $damage;
-        if ($newhp > 0) {
-            //Si l'ennemi est toujours en vie, on met à jour ses points de vie
-            $this->hpEnemy = $newhp;
-        } else {
-            //On le détruit sinon
-            $this->hpEnemy = 0;
-        }
+        $this->hpEnemy -= $damage;
     }
 
     public function isAlive() {
@@ -150,6 +188,14 @@ class Enemy extends Movable {
 
     public function setPointsEnemy($pointsEnemy) {
         $this->pointsEnemy = $pointsEnemy;
+    }
+
+    function getDirectionEnemy() {
+        return $this->directionEnemy;
+    }
+
+    function setDirectionEnemy($directionEnemy) {
+        $this->directionEnemy = $directionEnemy;
     }
 
 }

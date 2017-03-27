@@ -15,4 +15,3 @@ $('#inscription a').click(function (event) {
 function refreshList(view) {
     $('#multiModal').html(view);
 }
-;

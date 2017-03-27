@@ -13,13 +13,57 @@
     {% endif %}
 </table>
 
-{% if status == constant('StcBundle\\Entity\\Game::CURRENT_GAME') %}
-    <script src="{{ asset('js/backgroundanimate.js') }}"></script>
-{% endif %}
+<!-- Menu latéral -->
+
+<div class="col-lg-1">
+    <div class="row">
+        {% if status != constant('StcBundle\\Entity\\Game::CURRENT_GAME')%}
+            <a href="{{path('index')}}">
+                <img src="http://fakeimg.pl/87x87/?text=Accueil" alt="Accueil" title="Accueil" class="col-lg-12" id="jouer_accueil" />
+            </a>
+        {% else %}
+            <div id="lifepoint" class="col-lg-12">
+                {% if user_plane == null %}
+                    <img class="col-lg-12 power" src="{{ asset('images/rip.png')}}" alt="Vous êtes mort!" title="death" />
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="col-lg-12" id="timer">
+        </div>
+        <div id="players" class="col-lg-12">
+            {% include 'StcBundle:Game:players.html.twig' %}
+        </div>
+        {% if status == constant('StcBundle\\Entity\\Game::CURRENT_GAME')%}
+            {% if user_plane != null %}
+                {% set power1 = '' %}
+                {% set src_power1 = 'http://fakeimg.pl/87x87/?text=Pouvoir_1'%}
+
+                <script src="{{ asset('js/backgroundanimate.js') }}"></script>
+                <div id="powers" class="col-lg-12">
+                    {% for weapon in user_plane.getPowers %}
+                        {% if weapon == constant('BONUS_LASER', board) %}
+                            {% set power1 = 'power-laser' %}
+                            {% set src_power1 = asset('images/btn_laser.png') %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <img class="col-lg-12 power {{ power1 }}" src="{{ src_power1 }}" alt="Laser" title="Laser" />
+                    <img class="col-lg-12 power" src="http://fakeimg.pl/87x87/?text=Pouvoir_2" alt="Pouvoir 2" title="Pouvoir 2" />
+                    <img class="col-lg-12 power" src="http://fakeimg.pl/87x87/?text=Pouvoir_3" alt="Pouvoir 3" title="Pouvoir 3"  />
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<!-- /Menu latéral -->
 
 {% if status == constant('StcBundle\\Entity\\Game::END_GAME') %}
+    {% include 'StcBundle:Game:modalendgame.html.twig' with {'players': players, 'score' : score} %}
     <script>
         clearInterval(pageRefresh);
+        clearInterval(pageTimer);
         $('#fond').stop(true, false);
         $('#nuages').stop(true, false);
         $('#EndGameModal').modal();
@@ -27,7 +71,35 @@
             e.preventDefault();
         });
     </script>
-    {% include 'StcBundle:Game:modalendgame.html.twig' with {'players': players, 'score' : score} %}
 {% endif %}
 
 <script src="{{ asset('js/script.js') }}"></script>
+<script src="{{ asset('js/jquery.circliful.min.js') }}"></script>
+{% if status == constant('StcBundle\\Entity\\Game::CURRENT_GAME') and user_plane is not null %}
+    <script>
+        var maxLife = '{{ user_plane.hpMaxPlane}}';
+        var life = '{{ user_plane.hpPlane}}';
+        var displayLife = 100 * life / maxLife;
+        var color = '#00F9F0';
+        if (displayLife <= 25) {
+            color = '#FD1010';
+        } else if (displayLife <= 50) {
+            color = '#F9A600';
+        } else if (displayLife <= 75) {
+            color = '#18E56A';
+        }
+        $("#lifepoint").circliful({
+            animation: 0,
+            foregroundBorderWidth: 5,
+            backgroundBorderWidth: 1,
+            foregroundColor: color,
+            percent: displayLife,
+            iconColor: color,
+            icon: 'f004',
+            iconSize: '40',
+            iconPosition: 'middle'
+        });
+    </script>
+{% endif %}
+
+
